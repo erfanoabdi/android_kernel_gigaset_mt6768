@@ -19,7 +19,10 @@
 
 #include "imgsensor_sensor.h"
 #include "imgsensor_hw.h"
-
+/*prize add by zhuzhengjiang for compate with main & sub is 3p9 2019618 start*/
+int curr_sensor_id =0;
+/*prize add by zhuzhengjiang for compate with main & sub is 3p9 2019618 end*/
+extern void AFRegulatorCtrl(int Stage); //prize  add  by zhuzhengjiang  for imx476 otp 20191227-begin
 enum IMGSENSOR_RETURN imgsensor_hw_init(struct IMGSENSOR_HW *phw)
 {
 	struct IMGSENSOR_HW_SENSOR_POWER      *psensor_pwr;
@@ -109,6 +112,9 @@ static enum IMGSENSOR_RETURN imgsensor_hw_power_sequence(
 	int                               pin_cnt = 0;
 
 	static DEFINE_RATELIMIT_STATE(ratelimit, 1 * HZ, 30);
+	/*prize add by zhuzhengjiang for compate with main & sub is 3p9 2019618 start*/
+	curr_sensor_id = (int)sensor_idx;
+	/*prize add by zhuzhengjiang for compate with main & sub is 3p9 2019618 end*/
 
 #ifdef CONFIG_FPGA_EARLY_PORTING  /*for FPGA*/
 	if (1) {
@@ -142,7 +148,7 @@ static enum IMGSENSOR_RETURN imgsensor_hw_power_sequence(
 				pdev =
 				phw->pdev[psensor_pwr->id[ppwr_info->pin]];
 
-				if (__ratelimit(&ratelimit))
+				 if (__ratelimit(&ratelimit))
 					PK_DBG(
 					"sensor_idx %d, ppwr_info->pin %d, ppwr_info->pin_state_on %d, delay %u",
 					sensor_idx,
@@ -221,6 +227,16 @@ enum IMGSENSOR_RETURN imgsensor_hw_power(
 		ret = IMGSENSOR_RETURN_ERROR;
 		return ret;
 	}
+	//prize  add  by zhuzhengjiang  for imx476 otp 2019127-begin
+	if(pwr_status == IMGSENSOR_HW_POWER_STATUS_ON && (sensor_idx == IMGSENSOR_SENSOR_IDX_SUB2 ||sensor_idx == IMGSENSOR_SENSOR_IDX_MAIN))
+	{
+		AFRegulatorCtrl(1);////prize  add  by zhuzhengjiang  for imx476 otp 2019127-begin
+	}
+	else if(pwr_status == IMGSENSOR_HW_POWER_STATUS_OFF && (sensor_idx == IMGSENSOR_SENSOR_IDX_SUB2 ||sensor_idx == IMGSENSOR_SENSOR_IDX_MAIN))
+	{
+		AFRegulatorCtrl(2);
+	}
+	//prize  add  by zhuzhengjiang  for imx476 otp 2019127-end
 	imgsensor_hw_power_sequence(
 			phw,
 			sensor_idx,

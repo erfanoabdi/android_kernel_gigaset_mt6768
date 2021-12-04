@@ -346,6 +346,40 @@ static inline int rt1711_i2c_read16(
 	return data;
 }
 
+/* prize add by liaoxingen according to richetk mail 20201106 start */
+static inline int rt1711_i2c_update_bits(struct tcpc_device *tcpc, u8 reg,
+					 u8 val, u8 mask)
+{
+	int ret;
+	u8 data;
+	struct rt1711_chip *chip = tcpc_get_dev_data(tcpc);
+
+	down(&chip->io_lock);
+	data = rt1711_reg_read(chip->client, reg);
+/*
+    if (ret < 0) {
+		up(&chip->io_lock);
+		return ret;
+	}
+*/
+	data &= ~mask;
+	data |= (val & mask);
+
+	ret = rt1711_reg_write(chip->client, reg, data);
+	up(&chip->io_lock);
+	return ret;
+}
+
+static inline int rt1711_i2c_set_bit(struct tcpc_device *tcpc, u8 reg, u8 mask)
+{
+	return rt1711_i2c_update_bits(tcpc, reg, mask, mask);
+}
+
+static inline int rt1711_i2c_clr_bit(struct tcpc_device *tcpc, u8 reg, u8 mask)
+{
+	return rt1711_i2c_update_bits(tcpc, reg, 0x00, mask);
+}
+/* prize add by liaoxingen according to richetk mail 20201106 end */
 #ifdef CONFIG_RT_REGMAP
 static struct rt_regmap_fops rt1711_regmap_fops = {
 	.read_device = rt1711_read_device,
@@ -1072,6 +1106,15 @@ static int rt1711_set_low_power_mode(
 	int rv = 0;
 	uint8_t data;
 
+   /* prize add by liaoxingen according to richetk mail 20201106 start */
+   /*
+    * Enable Autoidle when enter low power mode
+    * Disable Autoidle when leave low power mode
+    */
+   rv = (en ? rt1711_i2c_clr_bit : rt1711_i2c_set_bit)
+       (tcpc_dev, RT1711H_REG_IDLE_CTRL, RT1711H_REG_AUTOIDLE_EN);
+   /* prize add by liaoxingen according to richetk mail 20201106 end */
+
 	if (en) {
 		data = RT1711H_REG_BMCIO_LPEN;
 
@@ -1334,6 +1377,7 @@ static int rt_parse_dt(struct rt1711_chip *chip, struct device *dev)
 		return ret;
 	}
 	chip->irq_gpio = ret;
+	pr_err("%s chip->irq_gpio =%d\n", __func__,chip->irq_gpio);
 #else
 	ret = of_property_read_u32(np,
 		"rt1711pd,intr_gpio_num", &chip->irq_gpio);

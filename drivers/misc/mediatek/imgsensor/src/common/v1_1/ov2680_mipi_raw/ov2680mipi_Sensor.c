@@ -54,6 +54,9 @@
 /***************************   Modify end    *******************************/
 #define cam_pr_debug(format, args...) \
 	pr_debug(PFX "[%s] " format, __func__, ##args)
+/*prize add by zhuzhengjiang for search camera 20191119 start*/
+extern int curr_sensor_id;
+/*prize add by zhuzhengjiang for search camera 20191119 end*/
 
 static DEFINE_SPINLOCK(imgsensor_drv_lock);
 
@@ -158,7 +161,7 @@ static struct imgsensor_info_struct imgsensor_info = {
 	.sensor_output_dataformat = SENSOR_OUTPUT_FORMAT_RAW_B,
 	.mclk = 24,
 	.mipi_lane_num = SENSOR_MIPI_1_LANE,	/* mipi lane num */
-	.i2c_addr_table = {0x20, 0xff},
+	.i2c_addr_table = {0x6C, 0x20,0xFF},
 };
 
 static struct imgsensor_struct imgsensor = {
@@ -173,7 +176,7 @@ static struct imgsensor_struct imgsensor = {
 	.test_pattern = KAL_FALSE,
 	.current_scenario_id = MSDK_SCENARIO_ID_CAMERA_PREVIEW,
 	.ihdr_en = 0,
-	.i2c_write_id = 0x20,	/* record current sensor's i2c write id */
+	.i2c_write_id = 0x6C,	/* record current sensor's i2c write id */
 };
 
 /* Sensor output window information */
@@ -723,7 +726,12 @@ static kal_uint32 get_imgsensor_id(UINT32 *sensor_id)
 	kal_uint8 i = 0;
 	kal_uint8 retry_total = 1;
 	kal_uint8 retry_cnt = retry_total;
-
+	/*prize add by zhuzhengjiang for search camera 20191119 start*/
+	if(curr_sensor_id  != 2) {
+		*sensor_id = 0xFFFFFFFF;
+		return ERROR_SENSOR_CONNECT_FAIL;
+	}
+	/*prize add by zhuzhengjiang for search camera 20191119 end*/
 	while (imgsensor_info.i2c_addr_table[i] != 0xff) {
 		spin_lock(&imgsensor_drv_lock);
 		imgsensor.i2c_write_id = imgsensor_info.i2c_addr_table[i];
@@ -731,11 +739,11 @@ static kal_uint32 get_imgsensor_id(UINT32 *sensor_id)
 		do {
 			*sensor_id = return_sensor_id();
 			if (*sensor_id == imgsensor_info.sensor_id) {
-				cam_pr_debug("i2c write id: 0x%x, sensor id: 0x%x\n",
+				printk("ov2680 i2c write id: 0x%x, sensor id: 0x%x\n",
 					imgsensor.i2c_write_id, *sensor_id);
 				return ERROR_NONE;
 			}
-			cam_pr_debug("Read sensor id fail, write id: 0x%x, id: 0x%x\n",
+			printk("ov2680 Read sensor id fail, write id: 0x%x, id: 0x%x\n",
 				imgsensor.i2c_write_id, *sensor_id);
 			retry_cnt--;
 		} while (retry_cnt > 0);
@@ -774,7 +782,10 @@ static kal_uint32 open(void)
 
 	LOG_1;
 	LOG_2;
-
+	/*prize add by zhuzhengjiang for search camera 20191119 start*/
+	if(curr_sensor_id  != 2)
+		return ERROR_SENSOR_CONNECT_FAIL;
+	/*prize add by zhuzhengjiang for search camera 20191119 end*/
 	while (imgsensor_info.i2c_addr_table[i] != 0xff) {
 		spin_lock(&imgsensor_drv_lock);
 		imgsensor.i2c_write_id = imgsensor_info.i2c_addr_table[i];
@@ -782,11 +793,11 @@ static kal_uint32 open(void)
 		do {
 			sensor_id = return_sensor_id();
 			if (sensor_id == imgsensor_info.sensor_id) {
-				cam_pr_debug("i2c write id: 0x%x, sensor id: 0x%x\n",
+				printk("ov2680 i2c write id: 0x%x, sensor id: 0x%x\n",
 					imgsensor.i2c_write_id, sensor_id);
 				break;
 			}
-			cam_pr_debug("Read sensor id fail, write id: 0x%x, id: 0x%x\n",
+			printk("ov2680 Read sensor id fail, write id: 0x%x, id: 0x%x\n",
 				imgsensor.i2c_write_id, sensor_id);
 			retry--;
 		} while (retry > 0);
@@ -1373,7 +1384,73 @@ static kal_uint32 get_default_framerate_by_scenario(
 
 	return ERROR_NONE;
 }
+/*prize  add  for dual camera   stagnancy by zhuzhengjiang    20191120-begin*/
+/*************************************************************************
+ * FUNCTION
+ *	set_shutter_frame_length
+ *
+ * DESCRIPTION
+ *	for frame & 3A sync
+ *
+ *************************************************************************/
+static void set_shutter_frame_length(kal_uint16 shutter,
+				     kal_uint16 frame_length)
+{
+	unsigned long flags;
+	//kal_uint16 realtime_fps = 0;
+	kal_int32 dummy_line = 0;
 
+	spin_lock_irqsave(&imgsensor_drv_lock, flags);
+	imgsensor.shutter = shutter;
+	spin_unlock_irqrestore(&imgsensor_drv_lock, flags);
+	//LOG_DBG("shutter =%d, frame_time =%d\n", shutter, frame_time);
+
+	/* 0x3500, 0x3501, 0x3502 will increase VBLANK
+	 * to get exposure larger than frame exposure
+	 */
+	/* AE doesn't update sensor gain at capture mode,
+	 * thus extra exposure lines must be updated here.
+	 */
+
+	/* OV Recommend Solution */
+	/* if shutter bigger than frame_length,
+	 * should extend frame length first
+	 */
+	spin_lock(&imgsensor_drv_lock);
+	/*Change frame time */
+	if (frame_length > 1)
+		dummy_line = frame_length - imgsensor.frame_length;
+	imgsensor.frame_length = imgsensor.frame_length + dummy_line;
+
+	/*  */
+	if (shutter > imgsensor.frame_length - imgsensor_info.margin)
+		imgsensor.frame_length = shutter + imgsensor_info.margin;
+
+	if (imgsensor.frame_length > imgsensor_info.max_frame_length)
+		imgsensor.frame_length = imgsensor_info.max_frame_length;
+	spin_unlock(&imgsensor_drv_lock);
+
+	shutter = (shutter < imgsensor_info.min_shutter) ? imgsensor_info.min_shutter : shutter;
+	shutter = (shutter > (imgsensor_info.max_frame_length - imgsensor_info.margin)) ? (imgsensor_info.max_frame_length - imgsensor_info.margin) : shutter;
+
+    set_dummy()	;
+
+	// Update Shutter
+	if (shutter == (imgsensor.frame_length-1))
+		shutter += 1;
+
+	//if(shutter > 16383) shutter = 16383;
+	if(shutter < 1) shutter = 1;
+
+	//Update Shutter
+	write_cmos_sensor(0x3502, (shutter << 4) & 0xFF);
+	write_cmos_sensor(0x3501, (shutter >> 4) & 0xFF);
+	write_cmos_sensor(0x3500, (shutter >> 12) & 0x0F);
+
+	printk("Exit! shutter =%d, framelength =%d\n", shutter,imgsensor.frame_length);
+}/* set_shutter_frame_length */
+
+/*prize  add  for dual camera   stagnancy by zhuzhengjiang    20191120-end*/
 static kal_uint32 set_test_pattern_mode(kal_bool enable)
 {
 	cam_pr_debug("enable: %d\n", enable);
@@ -1573,6 +1650,12 @@ static kal_uint32 feature_control(MSDK_SENSOR_FEATURE_ENUM feature_id,
 			set_shutter(*feature_data);
 		streaming_control(KAL_TRUE);
 		break;
+	/*prize  add  for dual camera   stagnancy by zhuzhengjiang    20191120-begin*/
+	case SENSOR_FEATURE_SET_SHUTTER_FRAME_TIME:
+		set_shutter_frame_length((UINT16) (*feature_data),
+					(UINT16) (*(feature_data + 1)));
+		break;
+	/*prize  add  for dual camera   stagnancy by zhuzhengjiang    20191120-end*/
 	default:
 		break;
 	}

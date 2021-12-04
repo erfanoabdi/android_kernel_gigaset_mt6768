@@ -664,6 +664,7 @@ struct ion_handle *ion_alloc(struct ion_client *client, size_t len,
 	int ret;
 	unsigned long long start, end;
 	unsigned int heap_mask = ~0;
+	unsigned int alloc_err_heap = 0;
 
 	pr_debug("%s: len %zu align %zu heap_id_mask %u flags %x\n", __func__,
 		 len, align, heap_id_mask, flags);
@@ -706,6 +707,8 @@ struct ion_handle *ion_alloc(struct ion_client *client, size_t len,
 		buffer = ion_buffer_create(heap, dev, len, align, flags);
 		if (!IS_ERR(buffer))
 			break;
+		if (IS_ERR(buffer))
+			alloc_err_heap |= (1 << heap->id);
 	}
 	up_read(&dev->lock);
 
@@ -715,9 +718,18 @@ struct ion_handle *ion_alloc(struct ion_client *client, size_t len,
 	}
 
 	if (IS_ERR(buffer)) {
-		IONMSG("%s buffer is error 0x%lx, heap_mask: 0x%x.\n",
+		IONMSG("%s error 0x%lx, heap_mask: 0x%x size:%zu align:%zu.\n",
 		       __func__, (unsigned long)buffer,
-		       heap_id_mask);
+		       heap_id_mask, len, align);
+		IONMSG("error heap:0x%x\n", alloc_err_heap);
+		plist_for_each_entry(heap, &dev->heaps, node) {
+			if (!((1 << heap->id) & alloc_err_heap))
+				continue;
+			if (IS_ERR_OR_NULL(heap->debug_show))
+				continue;
+			IONMSG("heap[%s][%d] show:\n", heap->name, heap->id);
+			heap->debug_show(heap, NULL, NULL);
+		}
 		return ERR_CAST(buffer);
 	}
 
@@ -1174,20 +1186,27 @@ void ion_client_destroy(struct ion_client *client)
 {
 	struct ion_device *dev = client->dev;
 	struct rb_node *n;
+	struct task_struct *task = current->group_leader;
+	char task_comm[TASK_COMM_LEN];
+	pid_t pid;
+	unsigned long long time_s, time_e_lock, time_e_unlock;
 
 	pr_debug("%s: %d\n", __func__, __LINE__);
+	get_task_comm(task_comm, task);
+	pid = task_pid_nr(task);
+	time_s = sched_clock();
 	while ((n = rb_first(&client->handles))) {
 		struct ion_handle *handle = rb_entry(n, struct ion_handle,
 						     node);
 
 		mutex_lock(&client->lock);
-		IONMSG("%s:hdl=%p,buf=%p,sz=%zu,ref=%d,kmp=%d\n",
+		IONMSG(
+		       "%s:hdl=%p,buf=%p,sz=%zu,ref=%d,kmp=%d, client=%s,disp=%s,dbg=%s\n",
 		       __func__, handle, handle->buffer,
 		       handle->buffer->size,
 		       atomic_read(&handle->buffer->ref.refcount.refs),
-		       handle->buffer->kmap_cnt);
-		IONMSG("%s:client=%s,disp=%s,dbg=%s\n",
-		       __func__, client->name ? client->name : NULL,
+		       handle->buffer->kmap_cnt,
+		       client->name ? client->name : NULL,
 		       client->display_name ? client->display_name : NULL,
 		       client->dbg_name);
 		ion_handle_destroy(&handle->ref);
@@ -1195,6 +1214,12 @@ void ion_client_destroy(struct ion_client *client)
 	}
 
 	idr_destroy(&client->idr);
+
+	time_e_unlock = sched_clock();
+	if ((time_e_unlock - time_s) > 50000000) // 50ms
+		IONMSG("%s unlock warnning, time:%llu, task:%s (%d)\n",
+		       __func__, (time_e_unlock - time_s),
+		       task_comm, pid);
 
 	down_write(&dev->lock);
 	if (client->task)
@@ -1207,6 +1232,12 @@ void ion_client_destroy(struct ion_client *client)
 	proc_remove(client->proc_root);
 #endif
 	up_write(&dev->lock);
+
+	time_e_lock = sched_clock();
+	if ((time_e_lock - time_s) > 100000000) // 100ms
+		IONMSG("%s warnning, time:%llu, task:%s (%d)\n",
+		       __func__, (time_e_lock - time_s),
+		       task_comm, pid);
 
 	kfree(client->display_name);
 	kfree(client->name);

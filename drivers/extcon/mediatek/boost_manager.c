@@ -137,6 +137,75 @@ int usb_otg_set_vbus(int is_on)
 	return 0;
 }
 
+//prize add by lipengpeng 20210309 start
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+int usb_otg_set_reverse_vbus_limited_current(int is_on)
+{
+	if (!g_info)
+		return -1;
+
+#if CONFIG_MTK_GAUGE_VERSION == 30
+	if (is_on) {
+		charger_dev_enable_otg(g_info->primary_charger, true);
+		charger_dev_set_boost_current_limit(g_info->primary_charger,
+			1100000);
+	//prize add by lipengpeng 20210320 start set otg voltage 
+		charger_dev_set_boost_voltage_limit(g_info->primary_charger,5400);
+	//prize add by lipengpeng 20210320 end  set otg voltage 	
+		charger_dev_kick_wdt(g_info->primary_charger);
+		enable_boost_polling(true);
+	} else {
+	//prize add by lipengpeng 20210320 start set otg voltage 
+	//	charger_dev_set_boost_voltage_limit(g_info->primary_charger,5000);
+	//prize add by lipengpeng 20210320 end  set otg voltage 		
+		charger_dev_enable_otg(g_info->primary_charger, false);
+		enable_boost_polling(false);
+	}
+#else
+	if (is_on) {
+		charger_dev_enable_otg(g_info->primary_charger, true);
+		charger_dev_set_boost_current_limit(g_info->primary_charger,
+			1100000);
+	 //prize add by lipengpeng 20210320 start set otg voltage 
+		charger_dev_set_boost_voltage_limit(g_info->primary_charger,5400);
+	//prize add by lipengpeng 20210320 end  set otg voltage 
+	} else {
+		charger_dev_enable_otg(primary_charger, false);
+	}
+#endif
+	return 0;
+}
+
+int usb_otg_set_reverse_vbus(int is_on)
+{
+	if (!g_info)
+		return -1;
+
+#if CONFIG_MTK_GAUGE_VERSION == 30
+	if (is_on) {
+		charger_dev_enable_otg(g_info->primary_charger, true);
+		charger_dev_set_boost_current_limit(g_info->primary_charger,
+			200000);
+		charger_dev_kick_wdt(g_info->primary_charger);
+		enable_boost_polling(true);
+	} else {
+		charger_dev_enable_otg(g_info->primary_charger, false);
+		enable_boost_polling(false);
+	}
+#else
+	if (is_on) {
+		charger_dev_enable_otg(g_info->primary_charger, true);
+		charger_dev_set_boost_current_limit(g_info->primary_charger,
+			200000);
+	} else {
+		charger_dev_enable_otg(primary_charger, false);
+	}
+#endif
+	return 0;
+}
+#endif
+//prize add by lipengpeng 20210309 start
+
 static int usbotg_boost_probe(struct platform_device *pdev)
 {
 	struct usbotg_boost *info = NULL;

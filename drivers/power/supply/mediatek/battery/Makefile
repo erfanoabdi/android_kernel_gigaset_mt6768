@@ -23,3 +23,15 @@ subdir-ccflags-y += -Werror -I$(srctree)/drivers/power/supply/mediatek/misc
 ifeq ($(CONFIG_MTK_GAUGE_VERSION),30)
 	obj-y += mtk_battery.o mtk_power_misc.o mtk_gauge_coulomb_service.o mtk_gauge_class.o mtk_battery_recovery.o mtk_battery_core.o
 endif
+
+# begin, prize-lifenfen-20181207, add fuel gauge cw2015
+obj-$(CONFIG_MTK_CW2015_SUPPORT_OF) += cw2015_fuel_gauge_v3.4.o
+# end, prize-lifenfen-20181207, add fuel gauge cw2015
+
+# begin, prize-pengzhipeng-20210707, add fuel gauge cw2017
+obj-$(CONFIG_MTK_CW2017_SUPPORT_OF) += cw2017_fuel_gauge_base.o
+# end, prize-pengzhipeng-20210707, add fuel gauge cw2017
+
+# prize add by lipengpeng 20210814 start 
+obj-$(CONFIG_MTK_CW2015_BATTERY_ID_AUXADC) += batteryid_auxadc.o
+# prize add by lipengpeng 20210814 end 

@@ -58,5 +58,8 @@ obj-y  += common/lc898217afa/
 obj-y  += common/lc898217afb/
 obj-y  += common/lc898217afc/
 obj-y  += common/dw9800waf/
+#/*prize  add  for main2 af by zhuzhengjiang    20210604-begin*/
+obj-y += common/dw9714kaf/
+#/*prize  add  for main2 af by zhuzhengjiang    20210604-end*/
 
 endif

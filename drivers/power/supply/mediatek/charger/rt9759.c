@@ -1848,7 +1848,9 @@ static int rt9759_check_devinfo(struct i2c_client *client, u8 *chip_rev,
 		 *chip_rev, rt9759_type_name[*type]);
 	return 0;
 }
-
+//add by mahuiyin 20190410 start
+extern int is_chg2_exist;
+//add by mahuiyin 20190410 end
 static int rt9759_i2c_probe(struct i2c_client *client,
 			    const struct i2c_device_id *id)
 {
@@ -1919,6 +1921,9 @@ static int rt9759_i2c_probe(struct i2c_client *client,
 	}
 
 	dev_info(chip->dev, "%s successfully\n", __func__);
+	//add by mahuiyin 20190410 start
+	is_chg2_exist = 1;
+//add by mahuiyin 20190410 end	
 	return 0;
 err_initirq:
 	charger_device_unregister(chip->chg_dev);
@@ -1933,6 +1938,9 @@ err:
 	mutex_destroy(&chip->stat_lock);
 	mutex_destroy(&chip->adc_lock);
 	mutex_destroy(&chip->io_lock);
+	//add by mahuiyin 20190410 start
+	is_chg2_exist = 0;
+//add by mahuiyin 20190410 end
 	return ret;
 }
 

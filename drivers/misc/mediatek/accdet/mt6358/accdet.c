@@ -1649,8 +1649,9 @@ void accdet_irq_handle(void)
 {
 	u32 eintID = 0;
 	u32 irq_status;
-	unsigned int moisture_vol = 0;
+
 #ifdef CONFIG_ACCDET_EINT_IRQ
+	unsigned int moisture_vol = 0;
 	eintID = get_triggered_eint();
 #endif
 	irq_status = pmic_read(ACCDET_IRQ_STS);

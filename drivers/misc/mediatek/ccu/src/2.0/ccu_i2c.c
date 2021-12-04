@@ -281,6 +281,7 @@ int ccu_get_i2c_dma_buf_addr(struct ccu_i2c_buf_mva_ioarg *ioarg)
 
 	/*If there is existing i2c buffer mva allocated, deallocate it first*/
 	ccu_deallocate_mva(i2c_mva[ioarg->sensor_idx]);
+	i2c_mva[ioarg->sensor_idx] = 0;
 	ret = ccu_allocate_mva(&i2c_mva[ioarg->sensor_idx], va, 4096);
 	ioarg->mva = i2c_mva[ioarg->sensor_idx];
 	mutex_unlock(&ccu_i2c_mutex);
@@ -295,8 +296,8 @@ int ccu_i2c_free_dma_buf_mva_all(void)
 	mutex_lock(&ccu_i2c_mutex);
 	for (i = IMGSENSOR_SENSOR_IDX_MIN_NUM;
 		i < IMGSENSOR_SENSOR_IDX_MAX_NUM; i++) {
-		if (!ccu_deallocate_mva(i2c_mva[i]))
-			i2c_mva[i] = 0;
+		ccu_deallocate_mva(i2c_mva[i]);
+		i2c_mva[i] = 0;
 	}
 
 	LOG_INF_MUST("%s done.\n", __func__);
@@ -332,11 +333,13 @@ static int i2c_query_dma_buffer_addr(uint32_t sensor_idx,
 #endif
 	*i2c_id = i2c->id;
 #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
-	LOG_DBG_MUST("$$pa(%lld), va(%p), i2c-id(%d)\n",
+	LOG_DBG_MUST("$$sidx(%d), pa(%lld), va(%p), i2c-id(%d)\n", //prize_wrx-20210402 strat MTK PATCH 3/3: ALPS05552516 解决由CCU导致的双摄AE sync异常
+		sensor_idx,
 		i2c->dma_buf.paddr + PAGE_SIZE,
 		i2c->dma_buf.vaddr + PAGE_SIZE, (uint32_t)i2c->id);
 #else
-	LOG_DBG_MUST("$$pa(%ld), va(%p), i2c-id(%d)\n",
+	LOG_DBG_MUST("$$sidx(%d), pa(%ld), va(%p), i2c-id(%d)\n",
+		sensor_idx,   //prize_wrx-20210402 end MTK PATCH 3/3: ALPS05552516 解决由CCU导致的双摄AE sync异常
 		i2c->dma_buf.paddr + PAGE_SIZE,
 		i2c->dma_buf.vaddr + PAGE_SIZE, (uint32_t)i2c->id);
 #endif

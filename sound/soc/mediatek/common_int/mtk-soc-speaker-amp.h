@@ -32,6 +32,12 @@ enum mtk_spk_type {
 	MTK_SPK_RICHTEK_RT5509,
 	MTK_SPK_TI_TAS5782M,
 	MTK_SPK_MEDIATEK_MT6660,
+//prize added by huarui, aw8898 support, 20190111-start
+	MTK_SPK_AWINIC_AW8898,
+//prize added by huarui, aw8898 support, 20190111-end
+//prize added by huarui, fs1894u support, 20190111-start
+	MTK_SPK_FOURSEMI_FS16XX,
+//prize added by huarui, fs1894u support, 20190111-end
 	MTK_SPK_TYPE_NUM
 };
 

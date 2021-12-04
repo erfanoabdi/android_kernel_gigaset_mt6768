@@ -573,7 +573,6 @@ enum MTK_DRM_DISP_FEATURE {
 	DRM_DISP_FEATURE_THREE_SESSION = 0x00000020,
 	DRM_DISP_FEATURE_FBDC = 0x00000040,
 	DRM_DISP_FEATURE_SF_PRESENT_FENCE = 0x00000080,
-	DRM_DISP_FEATURE_PQ_34_COLOR_MATRIX = 0x00000100,
 };
 
 struct mtk_drm_disp_caps_info {
@@ -729,7 +728,6 @@ struct DRM_DISP_WRITE_REG {
 /* AAL IOCTL */
 #define AAL_HIST_BIN            33	/* [0..32] */
 #define AAL_DRE_POINT_NUM       29
-#define AAL_DRE_BLK_NUM			(16)
 
 struct DISP_AAL_INITREG {
 	/* DRE */
@@ -764,10 +762,6 @@ struct DISP_AAL_INITREG {
 	int act_win_y_end;
 	int blk_num_x_start;
 	int blk_num_x_end;
-	int dre0_blk_num_x_start;
-	int dre0_blk_num_x_end;
-	int dre1_blk_num_x_start;
-	int dre1_blk_num_x_end;
 	int blk_cnt_x_start;
 	int blk_cnt_x_end;
 	int blk_num_y_start;
@@ -801,21 +795,15 @@ struct DISP_AAL_DISPLAY_SIZE {
 struct DISP_AAL_HIST {
 	unsigned int serviceFlags;
 	int backlight;
-	int aal0_colorHist;
-	int aal1_colorHist;
-	unsigned int aal0_maxHist[AAL_HIST_BIN];
-	unsigned int aal1_maxHist[AAL_HIST_BIN];
+	int colorHist;
+	unsigned int maxHist[AAL_HIST_BIN];
 	int requestPartial;
 	unsigned long long dre30_hist;
 	unsigned int panel_type;
 	int essStrengthIndex;
 	int ess_enable;
 	int dre_enable;
-	unsigned int aal0_yHist[AAL_HIST_BIN];
-	unsigned int aal1_yHist[AAL_HIST_BIN];
-	unsigned int MaxHis_denominator_pipe0[AAL_DRE_BLK_NUM];
-	unsigned int MaxHis_denominator_pipe1[AAL_DRE_BLK_NUM];
-	int pipeLineNum;
+	unsigned int yHist[AAL_HIST_BIN];
 };
 
 #define DRM_IOCTL_MTK_AAL_INIT_REG	DRM_IOWR(DRM_COMMAND_BASE + \

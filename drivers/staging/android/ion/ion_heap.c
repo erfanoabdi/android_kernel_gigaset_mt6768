@@ -187,6 +187,7 @@ void ion_heap_freelist_add(struct ion_heap *heap, struct ion_buffer *buffer)
 	long nice;
 	size_t free_list_size = 0;
 	size_t unit = 200 * 1024 * 1024; //200M
+	char buf[200] = {0};
 
 	spin_lock(&heap->free_lock);
 	list_add(&buffer->list, &heap->free_list);
@@ -207,13 +208,17 @@ void ion_heap_freelist_add(struct ion_heap *heap, struct ion_buffer *buffer)
 		nice = -10;
 		break;
 	}
-	spin_unlock(&heap->free_lock);
 
 	if (free_list_size > unit) {
-		IONMSG(
-			"[ion_dbg] warning: free_list_size=%zu, heap_id:%u, nice:%ld\n",
-			heap->free_list_size, heap->id, nice);
+		scnprintf(buf, 200,
+			  "%s: free_size=%zu,heap_id:%u,nice:%ld,buf_name:%s,addr:0x%p,bf_size:%zu\n",
+			  __func__, heap->free_list_size, heap->id, nice,
+			  buffer->alloc_dbg, buffer, buffer->size);
 	}
+	spin_unlock(&heap->free_lock);
+
+	if (free_list_size > unit)
+		IONMSG("%s", buf);
 	set_user_nice(heap->task, nice);
 	wake_up(&heap->waitqueue);
 }

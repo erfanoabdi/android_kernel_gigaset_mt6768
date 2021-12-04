@@ -149,6 +149,31 @@ enum bat_temp_state_enum {
 	BAT_TEMP_HIGH
 };
 
+/*prize add by wangfei for for gigast customer  20210902 start  */
+#ifdef CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST
+enum charge_temperature_state_enum {
+	STEP_INIT = 0,
+	STEP_T1,
+	STEP_T2,
+	STEP_T3
+};
+
+struct battery_temperature_step_charge_data {
+	int current_step;//1: -5-15; 2: 15-45; 3:45-55
+	int start_step1_temp;// -5
+	int step1_max_current;
+	int step2_max_current;
+	int start_step2_temp;// 15
+	int start_step3_temp;// 45
+	int start_step4_temp;// 50
+	int step3_vot1_current;
+	int step3_vot2_current;
+	int enter_step3_battery_percentage;
+    int temp_stp3_cv_voltage;
+};
+#endif
+/*prizeadd by wangfei for for gigast customer  20210902 end  */
+
 struct battery_thermal_protection_data {
 	int sm;
 	bool enable_min_charge_temp;
@@ -174,7 +199,6 @@ struct charger_custom_data {
 	int charging_host_charger_current;
 	int apple_1_0a_charger_current;
 	int apple_2_1a_charger_current;
-	int usb_unlimited_current;
 	int ta_ac_charger_current;
 	int pd_charger_current;
 
@@ -430,10 +454,9 @@ struct charger_manager {
 	struct sock *daemo_nl_sk;
 	u_int g_scd_pid;
 	struct scd_cmd_param_t_1 sc_data;
-
-	bool force_disable_pp[TOTAL_CHARGER];
-	bool enable_pp[TOTAL_CHARGER];
-	struct mutex pp_lock[TOTAL_CHARGER];
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+	struct battery_temperature_step_charge_data step_info;//prize-add by wangfei  for gigast customer  requires charging to be controlled according to the battery specification 20210902
+#endif
 };
 
 /* charger related module interface */

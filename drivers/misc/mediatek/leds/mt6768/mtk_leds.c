@@ -236,13 +236,19 @@ struct cust_mt65xx_led *get_cust_led_dtsi(void)
 
 		switch (pled_dtsi[i].mode) {
 		case MT65XX_LED_MODE_CUST_LCM:
+		//prize-add BACKLIGHT AW99703-pengzhipeng-20210712-start
 #if defined(CONFIG_BACKLIGHT_SUPPORT_LM3697)
 			pled_dtsi[i].data =
 			   (long)chargepump_set_backlight_level;
 			LEDS_DEBUG("BL set by chargepump\n");
+#elif defined(CONFIG_BACKLIGHT_SUPPORT_AW99703)
+					pled_dtsi[i].data =
+					    (long)chargepump_set_backlight_level;
+					LEDS_DEBUG("backlight set by chargepump_set_backlight_level\n");
 #else
 			pled_dtsi[i].data = (long)mtkfb_set_backlight_level;
 #endif
+		//prize-add BACKLIGHT AW99703-pengzhipeng-20210712-end
 			LEDS_DEBUG("kernel:the BL hw mode is LCM.\n");
 			break;
 		case MT65XX_LED_MODE_CUST_BLS_PWM:

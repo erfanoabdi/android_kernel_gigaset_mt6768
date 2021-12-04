@@ -99,9 +99,13 @@ enum {
 
 #ifdef CONFIG_USB_POWER_DELIVERY
 	TYPEC_RT_TIMER_PE_IDLE,
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 #ifdef CONFIG_TYPEC_WAIT_BC12
 	TYPEC_RT_TIMER_SINK_WAIT_BC12,
 #endif /* CONFIG_TYPEC_WAIT_BC12 */
+#endif/* CONFIG_PRIZE_ATOC_TYPEC_CHARGE */
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 #endif	/* CONFIG_USB_POWER_DELIVERY */
 	TYPEC_TIMER_ERROR_RECOVERY,
 /* TYPEC-TRY-TIMER */
@@ -121,6 +125,11 @@ enum {
 #ifdef CONFIG_TYPEC_CAP_NORP_SRC
 	TYPEC_TIMER_NORP_SRC,
 #endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
+//prize add by huarui, cc controller sgm7220, start
+#ifdef CONFIG_TCPC_SGM7220
+	TYPEC_TIMER_VBUS_CHECK,
+#endif	/* CONFIG_TCPC_SGM7220 */
+//prize add by huarui, cc controller sgm7220, end
 	PD_TIMER_NR,
 };
 

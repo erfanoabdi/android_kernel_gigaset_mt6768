@@ -624,7 +624,7 @@ static int lcm_enable(struct drm_panel *panel)
 #define HFP (24)
 #define HSA (20)
 #define HBP (20)
-#define VFP (75)
+#define VFP (80)
 #define VSA (2)
 #define VBP (12)
 #define VAC (2280)
@@ -703,7 +703,7 @@ static int lcm_setbacklight_cmdq(void *dsi, dcs_write_gce cb,
 }
 
 static struct mtk_panel_params ext_params = {
-	.pll_clk = 522,
+	.pll_clk = 523,
 	.vfp_low_power = 112,
 	.cust_esd_check = 0,
 	.esd_check_enable = 1,

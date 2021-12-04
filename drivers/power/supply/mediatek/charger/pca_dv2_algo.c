@@ -23,7 +23,11 @@
 #include <linux/wait.h>
 #include <mt-plat/prop_chgalgo_class.h>
 #include <mt-plat/mtk_battery.h>
-
+//add by liaojie 20210305  for sc8551 30w start
+#if defined(CONFIG_CHARGER_SC8551)
+#include "sc8551.h"
+#endif
+//add by liaojie 20210305  for sc8551 30w end
 #define PCA_DV2_ALGO_VERSION	"1.0.14_G"
 #define MS_TO_NS(msec) ((msec) * 1000 * 1000)
 #define MIN(A, B) (((A) < (B)) ? (A) : (B))
@@ -35,11 +39,23 @@
 #define DV2_TA_WDT_MIN		(10000)	/* ms */
 #define DV2_TA_GAP_VMIN		(200)	/* mV */
 #define DV2_DVCHG_VBUSALM_GAP	(100)	/* mV */
-#define DV2_DVCHG_CONVERT_RATIO	(210)
+//add by liaojie 20210305  for sc8551 30w start
+#if defined(CONFIG_CHARGER_SC8551)
+#define DV2_DVCHG_CONVERT_RATIO	SC8551_DV2_DVCHG_CONVERT_RATIO  /*define in sc8551.h*/
+#else
+#define DV2_DVCHG_CONVERT_RATIO (210)	
+#endif
+//add by liaojie 20210305  for sc8551 30w end
 #define DV2_VBUSOVP_RATIO	(110)
 #define DV2_IBUSOCP_RATIO	(110)
 #define DV2_VBATOVP_RATIO	(110)
-#define DV2_IBATOCP_RATIO	(110)
+//add by liaojie 20210305  for sc8551 30w start
+#if defined(CONFIG_CHARGER_SC8551)
+#define DV2_IBATOCP_RATIO	SC8551_DV2_IBATOCP_RATIO  /*define in sc8551.h*/
+#else
+#define DV2_IBATOCP_RATIO   (110)	
+#endif
+//add by liaojie 20210305  for sc8551 30w end
 #define DV2_ITAOCP_RATIO	(110)
 #define DV2_IBUSUCPF_RECHECK	(250)	/* mA */
 #define DV2_VBUS_CALI_THRESHOLD	(150)	/* mV */

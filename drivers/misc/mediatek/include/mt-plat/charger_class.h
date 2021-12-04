@@ -137,6 +137,9 @@ struct charger_ops {
 	int (*enable_otg)(struct charger_device *dev, bool en);
 	int (*enable_discharge)(struct charger_device *dev, bool en);
 	int (*set_boost_current_limit)(struct charger_device *dev, u32 uA);
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+	int (*set_boost_voltage_limit)(struct charger_device *dev, u32 mV);
+#endif
 
 	/* charger type detection */
 	int (*enable_chg_type_det)(struct charger_device *dev, bool en);
@@ -264,6 +267,10 @@ extern int charger_dev_enable_discharge(
 	struct charger_device *charger_dev, bool en);
 extern int charger_dev_set_boost_current_limit(
 	struct charger_device *charger_dev, u32 uA);
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+extern int charger_dev_set_boost_voltage_limit(
+	struct charger_device *charger_dev, u32 mV);
+#endif	
 extern int charger_dev_get_zcv(
 	struct charger_device *charger_dev, u32 *uV);
 extern int charger_dev_run_aicl(

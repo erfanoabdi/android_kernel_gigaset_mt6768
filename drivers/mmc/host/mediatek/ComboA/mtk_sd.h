@@ -427,6 +427,8 @@ struct msdc_host {
 
 	struct clk              *clk_ctl;
 	struct clk              *aes_clk_ctl;
+	/* src hclk for clk source of MSDC register */
+	struct clk              *src_hclk_ctl;
 	struct clk              *hclk_ctl;
 	/* pclk for msdc register access */
 	struct clk              *pclk_ctl;
@@ -450,6 +452,7 @@ struct msdc_host {
 	u64                     stop_dma_time;
 	/* flag to record if eMMC will enter hs400 mode */
 	bool                    hs400_mode;
+	atomic_t                dma_status;
 #ifdef CONFIG_MTK_EMMC_HW_CQ
 	struct cmdq_host *cq_host;
 #endif

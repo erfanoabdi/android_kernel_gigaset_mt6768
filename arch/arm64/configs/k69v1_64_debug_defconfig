@@ -97,10 +97,15 @@ CONFIG_MTK_IMGSENSOR=y
 CONFIG_MTK_JPEG=y
 CONFIG_MTK_SMI_EXT=y
 CONFIG_MTK_LCM=y
-CONFIG_CUSTOM_KERNEL_LCM="hx83112b_fhdp_dsi_cmd_auo_rt5081 otm1911a_fhdp_dsi_vdo_truly_rt5081"
+#prize liaoxingen modify start
+CONFIG_CUSTOM_KERNEL_LCM="ft8756_fhdp_dsi_vdo_tcl"
+#prize liaoxingen modify end
 CONFIG_MTK_FB=y
 CONFIG_MTK_LCM_PHYSICAL_ROTATION="0"
-CONFIG_LCM_HEIGHT="2160"
+#prize liaoxingen modify start
+CONFIG_LCM_HEIGHT="2400"
+CONFIG_LCM_WIDTH="1080"
+#prize liaoxingen modify end 
 CONFIG_MTK_AAL_SUPPORT=y
 CONFIG_MTK_CAM_SECURITY_SUPPORT=y
 CONFIG_MTK_CAM_GENIEZONE_SUPPORT=y
@@ -423,4 +428,14 @@ CONFIG_KGDB=y
 CONFIG_KGDB_KDB=y
 CONFIG_STATIC_USERMODEHELPER_PATH="/system_ext/bin/aee_core_forwarder"
 CONFIG_CRYPTO_TWOFISH=y
+#prize modify by wuhui for aw88194 new driver 20210623 start
+CONFIG_SND_SMARTPA_AW881XX_V1_3_0=y
+#CONFIG_SND_SMARTPA_AW88194A_NEW=y
+#prize modify by wuhui for aw88194 new driver 20210623 end
 # CONFIG_CRYPTO_HW is not set
+#prize add by wangfei for set max backlight 20210707 start
+CONFIG_LIGHTNESS_MAPPING_VALUE=255
+#prize add by wangfei for set max backlight 20210707 end
+#prize add by wangfei for gigast 20210902 start
+CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST=y
+#prize add by wangfei for gigast 20210902 end

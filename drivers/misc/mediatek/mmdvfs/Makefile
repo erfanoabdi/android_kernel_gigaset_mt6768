@@ -32,6 +32,7 @@ SUPPORT_USE_DDR_TYPE := true
 SUPPORT_MMP := true
 FORCE_STEP0 := false
 BUILD_MMDVFS := true
+ccflags-y += -DAUTOK_FORCE_LOW
 else ifneq (,$(filter $(CONFIG_MTK_PLATFORM), "mt6765"))
 SUPPORT_MMP := true
 FORCE_STEP0 := false

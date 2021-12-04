@@ -29,9 +29,11 @@
 
 #ifdef CONFIG_USB_POWER_DELIVERY
 #include "pd_core.h"
-#ifdef CONFIG_TYPEC_WAIT_BC12
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 #include <mt-plat/charger_type.h>
-#endif /* CONFIG_TYPEC_WAIT_BC12 */
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 #endif
 
 /* The switch of log message */
@@ -493,9 +495,13 @@ struct tcpc_device {
 	uint8_t charging_status;
 	int bat_soc;
 #endif /* CONFIG_USB_PD_REV30 */
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 #ifdef CONFIG_TYPEC_WAIT_BC12
 	uint8_t sink_wait_bc12_count;
 #endif /* CONFIG_TYPEC_WAIT_BC12 */
+#endif/* CONFIG_PRIZE_ATOC_TYPEC_CHARGE */
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 #endif /* CONFIG_USB_POWER_DELIVERY */
 	u8 vbus_level:2;
 	bool vbus_safe0v;

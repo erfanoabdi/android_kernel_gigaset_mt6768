@@ -64,9 +64,20 @@ static struct apdo_pps_range apdo_pps_tbl[] = {
 
 static inline int check_typec_attached_snk(struct tcpc_device *tcpc)
 {
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
+	int typec_state = tcpm_inquire_typec_attach_state(tcpc);
+	
+    PCA_DBG("check_typec_attached_snk typec_state = %d  TYPEC_ATTACHED_DBGACC_SNK =%d  TYPEC_ATTACHED_SNK =%d\n", typec_state,TYPEC_ATTACHED_DBGACC_SNK,TYPEC_ATTACHED_SNK);
+	if ((typec_state != TYPEC_ATTACHED_SNK) && (typec_state != TYPEC_ATTACHED_DBGACC_SNK))
+		return -EINVAL;
+	return 0;
+#else
 	if (tcpm_inquire_typec_attach_state(tcpc) != TYPEC_ATTACHED_SNK)
 		return -EINVAL;
 	return 0;
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 }
 
 static int pca_pps_enable_charging(struct prop_chgalgo_device *pca, bool en,

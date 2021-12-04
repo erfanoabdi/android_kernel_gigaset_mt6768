@@ -3,8 +3,8 @@
  * Copyright (c) 2019 MediaTek Inc.
  */
 
-#ifndef _MTK_SECURE_API_H_
-#define _MTK_SECURE_API_H_
+#ifndef _MTK_SIP_SVC_H_
+#define _MTK_SIP_SVC_H_
 
 #include <linux/kernel.h>
 
@@ -51,4 +51,4 @@
 	(0x82000523 | MTK_SIP_SMC_AARCH_BIT)
 
 #endif
-/* _MTK_SECURE_API_H_ */
+/* _MTK_SIP_SVC_H_ */

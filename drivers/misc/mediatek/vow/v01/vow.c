@@ -138,6 +138,7 @@ static int vow_service_SearchSpeakerModelWithUuid(int uuid);
 static int vow_service_SearchSpeakerModelWithId(int id);
 static DEFINE_MUTEX(vow_vmalloc_lock);
 
+
 /*****************************************************************************
  * VOW SERVICES
  *****************************************************************************/
@@ -575,6 +576,9 @@ static void vow_service_Init(void)
 #ifdef CONFIG_MTK_VOW_DUAL_MIC_SUPPORT
 		vowserv.interleave_pcmdata_ptr = NULL;
 #endif
+		//set default value to platform identifier and version
+		memset(vowserv.google_engine_arch, 0, VOW_ENGINE_INFO_LENGTH_BYTE);
+		sprintf(vowserv.google_engine_arch, "dd906fa0-d329-3961-8b53-5e2072ca1ff6");
 		vowserv.google_engine_version = DEFAULT_GOOGLE_ENGINE_VER;
 		memset(vowserv.alexa_engine_version, 0, VOW_ENGINE_INFO_LENGTH_BYTE);
 	} else {
@@ -618,33 +622,41 @@ static void vow_service_Init(void)
 #endif  /* #ifdef CONFIG_MTK_TINYSYS_SCP_SUPPORT */
 }
 
-int vow_service_GetParameter(unsigned long arg)
+static int vow_service_GetParameter(unsigned long arg)
 {
-	if (copy_from_user((void *)(&vowserv.vow_info_apuser[0]),
+	unsigned long vow_info_ap[MAX_VOW_INFO_LEN];
+
+	if (copy_from_user((void *)(&vow_info_ap[0]),
 			   (const void __user *)(arg),
-			   sizeof(vowserv.vow_info_apuser))) {
+			   sizeof(vow_info_ap))) {
 		VOWDRV_DEBUG("vow get parameter fail\n");
 		return -EFAULT;
 	}
-	VOWDRV_DEBUG("vow get parameter: %lu %lu %lu %lu %lu %lu %lu\n",
+	if (vow_info_ap[3] > VOW_MODEL_SIZE ||
+	    vow_info_ap[3] < VOW_MODEL_SIZE_THRES) {
+		VOWDRV_DEBUG("vow Modle Size is incorrect %d\n",
+			     vow_info_ap[3]);
+		return -EFAULT;
+	}
+	memcpy(vowserv.vow_info_apuser, vow_info_ap,
+	       sizeof(vow_info_ap));
+	VOWDRV_DEBUG(
+	"vow get parameter: id %lu, keyword %lu, mdl_ptr 0x%x, mdl_sz %lu\n",
 		     vowserv.vow_info_apuser[0],
 		     vowserv.vow_info_apuser[1],
 		     vowserv.vow_info_apuser[2],
-		     vowserv.vow_info_apuser[3],
+		     vowserv.vow_info_apuser[3]);
+	VOWDRV_DEBUG(
+	"vow get parameter: return size addr 0x%x, uuid %d, data 0x%x\n",
 		     vowserv.vow_info_apuser[4],
 		     vowserv.vow_info_apuser[5],
 		     vowserv.vow_info_apuser[6]);
-
 	return 0;
 }
 
 #ifdef CONFIG_MTK_TINYSYS_SCP_SUPPORT
 static int vow_service_CopyModel(int slot)
 {
-	if (vowserv.vow_info_apuser[3] > VOW_MODEL_SIZE) {
-		VOWDRV_DEBUG("vow DMA Size Too Large\n");
-		return -EFAULT;
-	}
 	if (copy_from_user((void *)(vowserv.vow_speaker_model[slot].model_ptr),
 			   (const void __user *)(vowserv.vow_info_apuser[2]),
 			   vowserv.vow_info_apuser[3])) {
@@ -817,7 +829,9 @@ static bool vow_service_SetSpeakerModel(unsigned long arg)
 	if (I == -1)
 		return false;
 
-	vow_service_GetParameter(arg);
+	if (vow_service_GetParameter(arg) != 0)
+		return false;
+
 #ifdef CONFIG_MTK_TINYSYS_SCP_SUPPORT
 	vowserv.vow_speaker_model[I].model_ptr =
 	   (void *)(scp_get_reserve_mem_virt(VOW_MEM_ID))
@@ -974,23 +988,52 @@ static bool vow_service_SetModelStatus(bool enable, unsigned long arg)
 	return ret;
 }
 
-static bool vow_service_SetVBufAddr(unsigned long arg)
+static bool vow_service_SetApAddr(unsigned long arg)
 {
-	vow_service_GetParameter(arg);
+	unsigned long vow_info[MAX_VOW_INFO_LEN];
 
-	VOWDRV_DEBUG("vow SetVBufAddr:addr_%x, size_%x\n",
-		 (unsigned int)vowserv.vow_info_apuser[2],
-		 (unsigned int)vowserv.vow_info_apuser[3]);
+	if (copy_from_user((void *)(&vow_info[0]), (const void __user *)(arg),
+			   sizeof(vow_info))) {
+		VOWDRV_DEBUG("vow check parameter fail\n");
+		return false;
+	}
 
 	/* add return condition */
-	if ((vowserv.vow_info_apuser[2] == 0) ||
-	    (vowserv.vow_info_apuser[3] != VOW_VBUF_LENGTH) ||
-	    (vowserv.vow_info_apuser[4] == 0))
+	if ((vow_info[2] == 0) || (vow_info[3] != VOW_VBUF_LENGTH) ||
+	    (vow_info[4] == 0)) {
+		VOWDRV_DEBUG("vow SetVBufAddr:addr_%x, size_%x, addr_%x\n",
+		 (unsigned int)vow_info[2],
+		 (unsigned int)vow_info[3],
+		 (unsigned int)vow_info[4]);
 		return false;
+	}
 
-	vowserv.voicedata_user_addr = vowserv.vow_info_apuser[2];
-	vowserv.voicedata_user_size = vowserv.vow_info_apuser[3];
-	vowserv.voicedata_user_return_size_addr = vowserv.vow_info_apuser[4];
+	vowserv.voicedata_user_addr = vow_info[2];
+	vowserv.voicedata_user_size = vow_info[3];
+	vowserv.voicedata_user_return_size_addr = vow_info[4];
+
+	return true;
+}
+
+static bool vow_service_SetVBufAddr(unsigned long arg)
+{
+	unsigned long vow_info[MAX_VOW_INFO_LEN];
+
+	if (copy_from_user((void *)(&vow_info[0]), (const void __user *)(arg),
+			   sizeof(vowserv.vow_info_apuser))) {
+		VOWDRV_DEBUG("vow check parameter fail\n");
+		return false;
+	}
+
+	/* add return condition */
+	if ((vow_info[2] == 0) || (vow_info[3] != VOW_VBUF_LENGTH) ||
+	    (vow_info[4] == 0)) {
+		VOWDRV_DEBUG("vow SetVBufAddr:addr_%x, size_%x, addr_%x\n",
+		 (unsigned int)vow_info[2],
+		 (unsigned int)vow_info[3],
+		 (unsigned int)vow_info[4]);
+		return false;
+	}
 
 	mutex_lock(&vow_vmalloc_lock);
 	if (vowserv.voicedata_kernel_ptr != NULL) {
@@ -998,15 +1041,13 @@ static bool vow_service_SetVBufAddr(unsigned long arg)
 		vowserv.voicedata_kernel_ptr = NULL;
 	}
 
-	if (vowserv.voicedata_user_size > 0) {
-		vowserv.voicedata_kernel_ptr =
-		    vmalloc(vowserv.voicedata_user_size);
-		mutex_unlock(&vow_vmalloc_lock);
-		return true;
-	} else {
+	if (vow_info[3] != VOW_VBUF_LENGTH) {
 		mutex_unlock(&vow_vmalloc_lock);
 		return false;
 	}
+	vowserv.voicedata_kernel_ptr = vmalloc(vow_info[3]);
+	mutex_unlock(&vow_vmalloc_lock);
+	return true;
 }
 
 static bool vow_service_Enable(void)
@@ -2580,14 +2621,6 @@ static long VowDrv_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
 			VOWDRV_DEBUG("VOW_SET_CONTROL Reset");
 			vow_service_reset();
 			break;
-		case VOWControlCmd_ReadVoiceData:
-			if ((vowserv.recording_flag == true)
-			 && (vowserv.firstRead == true)) {
-				vowserv.firstRead = false;
-				VowDrv_SetFlag(VOW_FLAG_DEBUG, true);
-			}
-			vow_service_ReadVoiceData();
-			break;
 		case VOWControlCmd_EnableDebug:
 			VOWDRV_DEBUG("VOW_SET_CONTROL EnableDebug");
 			vowserv.voicedata_idx = 0;
@@ -2632,6 +2665,16 @@ static long VowDrv_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
 				     arg);
 			break;
 		}
+		break;
+	case VOW_READ_VOICE_DATA:
+		if (!vow_service_SetApAddr(arg))
+			ret = -EFAULT;
+		if ((vowserv.recording_flag == true)
+		    && (vowserv.firstRead == true)) {
+			vowserv.firstRead = false;
+			VowDrv_SetFlag(VOW_FLAG_DEBUG, true);
+		}
+		vow_service_ReadVoiceData();
 		break;
 	case VOW_SET_SPEAKER_MODEL:
 		VOWDRV_DEBUG("VOW_SET_SPEAKER_MODEL(%lu)", arg);
@@ -2785,6 +2828,7 @@ static long VowDrv_compat_ioctl(struct file *fp,
 		ret = fp->f_op->unlocked_ioctl(fp, cmd, (unsigned long)data);
 	}
 		break;
+	case VOW_READ_VOICE_DATA:
 	case VOW_SET_SPEAKER_MODEL:
 	case VOW_SET_APREG_INFO: {
 		struct vow_model_info_kernel_t __user *data32;

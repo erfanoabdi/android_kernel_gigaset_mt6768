@@ -45,6 +45,10 @@ struct mt6360_ldo_platform_data {
 	struct resource *irq_res;
 	int irq_res_cnt;
 	u32 sdcard_det_en;
+	u32 sdcard_hlact;
+//prize added by huarui, 6360 sdcard detect level select, 20190121-start
+	u32 sdcard_det_level;
+//prize added by huarui, 6360 sdcard detect level select, 20190121-end
 };
 
 struct mt6360_ldo_info {

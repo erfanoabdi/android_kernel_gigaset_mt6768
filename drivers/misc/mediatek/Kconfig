@@ -93,7 +93,6 @@ config MTK_LDVT
 	  Platform support.
 	  Say Y here if you are doing LDVT
 	  If unsure, say N
-
 endif
 
 menu "Memory"
@@ -193,6 +192,14 @@ config MTK_DRM_KEY_MNG_SUPPORT
 	  used by DRM/widevine to install and runtime read of keybox.
 	  relative options including: MTK_SEC_VIDEO_PATH_SUPPORT and
 	  MTK_PERSIST_PARTITION_SUPPORT.
+
+config MTK_MT6382_BDG
+	bool "Support Bridge IC 6382"
+	help
+	  This config decide if device with BridgeIC 6382
+	  BridgeIC 6382 can support VESA-1.2 DSC, compressing display framedata
+	  Normal project will disable it first
+	  If you are not sure about this, do not set it to y
 
 source "drivers/misc/mediatek/cameraisp/Kconfig"
 source "drivers/misc/mediatek/cam_cal/Kconfig"
@@ -348,15 +355,6 @@ config MTK_SKB_OWNER
 	  belong to which process. Add RTT information per TCP session,
 	  which helps identify network latency between client and server.
 
-config MTK_CORE_CTL
-	bool "MTK Core Control with CPU Isolation"
-	help
-	  This config is for the core control policy with CPU isolation.
-	  The core control online and offline CPU cores based on task
-	  utilizations from scheduler information automatically.
-	  If you are not sure about whether to enable it or not,
-	  please set n.
-
 source "drivers/misc/mediatek/task_turbo/Kconfig"
 endmenu # PPT
 
@@ -449,8 +447,26 @@ source "drivers/misc/mediatek/mlog/Kconfig"
 source "drivers/misc/mediatek/cache-auditor/Kconfig"
 source "drivers/misc/mediatek/mcupm/Kconfig"
 source "drivers/misc/mediatek/udi/Kconfig"
+#prize added by chenjiaxi, prize_dual_camera driver, 20190111-start
+source "drivers/misc/mediatek/prize_dual_camera/Kconfig"
+#prize added by chenjiaxi, prize_dual_camera driver, 20190111-end
 source "drivers/misc/mediatek/hdmi/Kconfig"
 source "drivers/misc/mediatek/otp/Kconfig"
+#prize-add-pengzhipeng-20201225-start
+source "drivers/misc/mediatek/hardware_info/Kconfig"
+#prize-add-pengzhipeng-20201225-end
+
+#prize add by wangyongsheng 20210104------start
+source "drivers/misc/mediatek/uhf/Kconfig"
+#prize add by wangyongsheng 20210104------end
+
+#prize add by lipengpeng, prize drv build support 20210220 start
+source "drivers/misc/mediatek/prize/Kconfig"
+#prize add by lipengpeng, prize drv build support 20210220 end
+#prize add by liaojie, prize_exergen build support 20210128 start
+source "drivers/misc/mediatek/prize_exergen/Kconfig"
+#prize add by liaojie, prize_exergen build support 20210128 end
+
 
 endmenu    # Misc
 

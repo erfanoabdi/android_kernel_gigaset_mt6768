@@ -21,6 +21,10 @@ obj-$(CONFIG_MTK_LCM) += mt65xx_lcm_list.o        \
                          lcm_i2c.o                \
                          lcm_pmic.o               \
                          lcm_util.o
+						 
+# begin, prize-lifenfen-20181206, add for lcm gpio pinctl
+obj-$(CONFIG_MTK_LCM) += lcm_dispsys_gpio.o
+# end, prize-lifenfen-20181206, add for lcm gpio pinctl
 
 LCM_LISTS := $(subst ",,$(CONFIG_CUSTOM_KERNEL_LCM))
 obj-$(CONFIG_MTK_LCM) += $(foreach LCM,$(LCM_LISTS),$(LCM)/)

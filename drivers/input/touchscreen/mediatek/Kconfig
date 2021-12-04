@@ -136,7 +136,32 @@ config TOUCHSCREEN_MTK_GT5688
 	  module will be called.
 
 source "drivers/input/touchscreen/mediatek/GT5688/Kconfig"
+
+config TOUCHSCREEN_HIMAX_CHIPSET
+	bool "hxchipset for Mediatek package"
+	default n
+	help
+	  Say Y here if you have hxchipset touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+
 source "drivers/input/touchscreen/mediatek/hxchipset/Kconfig"
+
+config TOUCHSCREEN_HIMAX_CHIPSET_8789P1_8185P3
+	bool "hxchipset for Mediatek 8789p1 and 8185p3 package"
+	default n
+	help
+	  Say Y here if you have hxchipset touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+
+source "drivers/input/touchscreen/mediatek/hxchipset_8789p1_8185p3/Kconfig"
 
 config TOUCHSCREEN_MTK_GT911
 	bool "GT911 for Mediatek package"
@@ -156,6 +181,37 @@ config TOUCHSCREEN_MTK_FOCALTECH_FHD
 	  Say Y here if you have Focaltech touch panel.
 	  If unsure, say N.
 
+#prize-add HX83112-pengguangyi-20190119-start
+
+config TOUCHSCREEN_MTK_HX83112
+	bool "HX83112 for Mediatek package"
+	default n
+	help
+	  Say Y here if you have HX83112 touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+
+source "drivers/input/touchscreen/mediatek/HX83112/Kconfig"
+#prize-add HX83112-pengguangyi-20190119-end
+
+#prize-add synaptics-anhengxuan-20210825-start
+
+config TOUCHSCREEN_SYNAPTICS_TCM
+	bool "synaptics for Mediatek package"
+	default n
+	help
+	  Say Y here if you have SYNAPTICS touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+
+source "drivers/input/touchscreen/mediatek/synaptics_tcm/Kconfig"
+#prize-add synaptics-anhengxuan-20210825-end
 config TOUCHSCREEN_MTK_GT9157
 	bool "GT9157 for Mediatek package"
 	help

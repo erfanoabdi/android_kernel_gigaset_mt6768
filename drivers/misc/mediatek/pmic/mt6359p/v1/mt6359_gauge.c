@@ -2110,6 +2110,7 @@ static int fgauge_set_zcv_interrupt_threshold(
 	return 0;
 }
 
+
 void reset_zcv_int(struct gauge_device *gauge_dev)
 {
 	struct timespec time, time_now, end_time;
@@ -2123,7 +2124,7 @@ void reset_zcv_int(struct gauge_device *gauge_dev)
 	msleep(30);
 
 	get_monotonic_boottime(&time_now);
-	time.tv_sec = (g_fg_zcv_det_iv + 1) * 3 * 60 + 5;
+	time.tv_sec = (g_fg_zcv_det_iv + 1) * 3 * 60 + 60;
 	time.tv_nsec = 0;
 
 	end_time = timespec_add(time_now, time);

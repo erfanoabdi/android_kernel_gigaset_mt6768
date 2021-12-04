@@ -12,6 +12,7 @@
  */
 #include <linux/seq_file.h>
 #include <linux/proc_fs.h>
+#include <linux/cpumask.h>
 #include "mtk_perfmgr_internal.h"
 #include "load_track.h"
 #include "uload_ind.h"
@@ -38,9 +39,13 @@ static int polling_sec;
 static int polling_ms;
 static bool debug_enable;
 static int over_threshold; /*threshold value for sent uevent*/
+static int background_overThrhld; /*background cpus threshold value for sent uevent*/
 static int under_threshold; /*threshold value for sent uevent*/
 static bool uevent_enable; /*sent uevent switch*/
 static int curr_cpu_loading; /*cat curr cpu loading node*/
+static int background_cpus; /*background cpus' scope, for example 10 means from cpu0 to cpu1*/
+static struct cpumask *bg_cpu_mask; /*background cpus' mask*/
+static int nr_cpus;/*cpu numbers*/
 static int state;
 
 #define show_debug(fmt, x...) \
@@ -79,6 +84,9 @@ static void init_cpu_loading_value(void)
 	polling_sec = 10;
 	polling_ms = 10000;
 	over_threshold = 85;
+	background_overThrhld = 100;
+	background_cpus = 0;
+	nr_cpus = num_possible_cpus();
 	under_threshold = 20;
 	uevent_enable = 1;
 	debug_enable = 0;
@@ -128,23 +136,27 @@ static bool sentuevent(const char *src)
 
 #endif
 /*update info*/
-static void calculat_loading_callback(int loading)
+static void calculat_loading_callback(int loading, int mask_loading)
 {
 
 	cl_lock(__func__);
 
 	show_debug("update cpu_loading");
 	perfmgr_trace_log("cpu_loading",
-			"loading:%d curr_cpu_loading:%d previous state:%d",
-			loading, curr_cpu_loading, state);
+			"loading:%d mask_loading:%d curr_cpu_loading:%d previous state:%d",
+			loading, mask_loading, curr_cpu_loading, state);
 
-	show_debug("loading:%d curr_cpu_loading:%d previous state:%d\n",
-			loading, curr_cpu_loading, state);
+	show_debug("loading:%d mask_loading:%d curr_cpu_loading:%d previous state:%d\n",
+			loading, mask_loading, curr_cpu_loading, state);
 	if (loading > over_threshold) {
 		state = ULOAD_STATE_HIGH;
 		sentuevent("over=1");
 	} else if (loading > under_threshold) {
 		state = ULOAD_STATE_MID;
+		if (background_cpus != 0
+				&& mask_loading >= background_overThrhld) {
+			sentuevent("bg_over=1");
+		}
 	} else {
 		state = ULOAD_STATE_LOW;
 		sentuevent("lower=2");
@@ -159,12 +171,25 @@ static void start_calculate_loading(void)
 {
 	int ret_reg;
 	int poll_ms;
+	unsigned int i, start, end;
 
 	poll_ms = polling_ms;
 
 	cl_unlock(__func__);
+	if (background_cpus != 0) {
+		bg_cpu_mask = kzalloc(nr_cpus, GFP_KERNEL);
+		cpumask_clear(bg_cpu_mask);
 
-	ret_reg = reg_loading_tracking(calculat_loading_callback, poll_ms);
+		start = background_cpus%10;
+		end = background_cpus/10;
+		for (i = start; i <= end; i++)
+			cpumask_set_cpu(i, bg_cpu_mask);
+
+		ret_reg = reg_loading_tracking(calculat_loading_callback, poll_ms, bg_cpu_mask);
+	} else {
+		ret_reg = reg_loading_tracking(calculat_loading_callback, poll_ms,
+				cpu_possible_mask);
+	}
 
 	show_debug("ret_reg:%d\n", ret_reg);
 
@@ -180,7 +205,6 @@ static void start_calculate_loading(void)
 static void stop_calculate_loading(void)
 {
 	int ret_unreg;
-
 	cl_unlock(__func__);
 	ret_unreg = unreg_loading_tracking(calculat_loading_callback);
 
@@ -372,6 +396,78 @@ static ssize_t perfmgr_overThrhld_proc_write(
 	return cnt;
 }
 
+static int perfmgr_background_cpus_proc_show(struct seq_file *m, void *v)
+{
+	cl_lock(__func__);
+	seq_printf(m, "%d\n", background_cpus);
+	cl_unlock(__func__);
+	return 0;
+}
+
+static ssize_t perfmgr_background_cpus_proc_write(
+		struct file *filp, const char *ubuf,
+		size_t cnt, loff_t *data)
+{
+	int val, ret;
+
+	ret = kstrtoint_from_user(ubuf, cnt, 10, &val);
+
+	if (ret != 0)
+		return ret;
+
+	if (val < 10 || val > 65)
+		return -EINVAL;
+
+	cl_lock(__func__);
+
+	background_cpus = val;
+	pr_debug("c background_cpus :%d\n", background_cpus);
+	if (onoff) {
+		stop_calculate_loading();
+		start_calculate_loading();
+	}
+	cl_unlock(__func__);
+
+	return cnt;
+
+}
+
+static int perfmgr_background_overThrhld_proc_show(struct seq_file *m, void *v)
+{
+	cl_lock(__func__);
+	seq_printf(m, "%d\n", background_overThrhld);
+	cl_unlock(__func__);
+	return 0;
+}
+
+static ssize_t perfmgr_background_overThrhld_proc_write(
+		struct file *filp, const char *ubuf,
+		size_t cnt, loff_t *data)
+{
+	int val, ret;
+
+	ret = kstrtoint_from_user(ubuf, cnt, 10, &val);
+
+	if (ret != 0)
+		return ret;
+
+	if (val < 0 || val > 100)
+		return -EINVAL;
+
+	cl_lock(__func__);
+
+	background_overThrhld = val;
+	pr_debug("c background_overThrhld :%d\n", background_overThrhld);
+	if (onoff) {
+		stop_calculate_loading();
+		start_calculate_loading();
+	}
+	cl_unlock(__func__);
+
+	return cnt;
+
+}
+
 static int perfmgr_uevent_enable_proc_show(
 		struct seq_file *m, void *v)
 {
@@ -456,6 +552,8 @@ PROC_FOPS_RW(poltime_secs);
 PROC_FOPS_RW(poltime_nsecs);
 PROC_FOPS_RW(onoff);
 PROC_FOPS_RW(overThrhld);
+PROC_FOPS_RW(background_cpus);
+PROC_FOPS_RW(background_overThrhld);
 PROC_FOPS_RW(underThrhld);
 PROC_FOPS_RW(uevent_enable);
 PROC_FOPS_RW(debug_enable);
@@ -503,6 +601,8 @@ int init_uload_ind(struct proc_dir_entry *parent)
 		PROC_ENTRY(poltime_nsecs),
 		PROC_ENTRY(onoff),
 		PROC_ENTRY(overThrhld),
+		PROC_ENTRY(background_cpus),
+		PROC_ENTRY(background_overThrhld),
 		PROC_ENTRY(underThrhld),
 		PROC_ENTRY(uevent_enable),
 		PROC_ENTRY(curr_cpu_loading),

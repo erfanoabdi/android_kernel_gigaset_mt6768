@@ -12,7 +12,17 @@
  */
 
 #include "gpio.h"
+//prize add by zhuzhengjiang for mipi switch 20200904 start
+#ifdef MIPI_SWITCH
 
+struct pinctrl		 *ppinctrl_cam;
+// mipi switch
+struct pinctrl_state *ppinctrl_cam_mipi_sel_h;
+struct pinctrl_state *ppinctrl_cam_mipi_sel_l;
+struct pinctrl_state *ppinctrl_cam_mipi_en_h;
+struct pinctrl_state *ppinctrl_cam_mipi_en_l;
+#endif
+//prize add by zhuzhengjiang for mipi switch 20200904 end
 struct GPIO_PINCTRL gpio_pinctrl_list_cam[GPIO_CTRL_STATE_MAX_NUM_CAM] = {
 	/* Main */
 	{"pnd1"},
@@ -93,6 +103,15 @@ static enum IMGSENSOR_RETURN gpio_init(void *pinstance)
 		pr_err("%s : Cannot find camera pinctrl!", __func__);
 		return IMGSENSOR_RETURN_ERROR;
 	}
+//prize add by zhuzhengjiang for mipi switch 20200904 start
+#ifdef MIPI_SWITCH
+	ppinctrl_cam = pgpio->ppinctrl;
+	ppinctrl_cam_mipi_sel_h = pinctrl_lookup_state(pgpio->ppinctrl,"cam_mipi_switch_sel_1");
+	ppinctrl_cam_mipi_sel_l = pinctrl_lookup_state(pgpio->ppinctrl,"cam_mipi_switch_sel_0");
+	ppinctrl_cam_mipi_en_h  = pinctrl_lookup_state(pgpio->ppinctrl,"cam_mipi_switch_en_1");
+	ppinctrl_cam_mipi_en_l  = pinctrl_lookup_state(pgpio->ppinctrl,"cam_mipi_switch_en_0");
+#endif
+//prize add by zhuzhengjiang for mipi switch 20200904 end
 	for (j = IMGSENSOR_SENSOR_IDX_MIN_NUM;
 	j < IMGSENSOR_SENSOR_IDX_MAX_NUM;
 	j++) {

@@ -1115,6 +1115,25 @@ config TOUCHSCREEN_ST1232
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called st1232_ts.
+#prize-add-pengzhipeng-20191029-start
+config TOUCHSCREEN_NT36xxx_HOSTDL_SPI
+	bool "Novatek NT36xxx host download SPI driver"
+	default n
+	help
+	  Say Y here if you have a Novatek NT36xxx no flash touchscreen connected
+	  to your system by SPI bus.
+
+	  If unsure, say N.
+#prize-add-pengzhipeng-20191029-end
+
+#prize-add-zhaopengge-20210622-start
+config TOUCHSCREEN_FTS_V3_3
+    bool "Focaltech Touchscreen"
+    default n
+    help
+      Say Y here if you have Focaltech touch panel.
+      If unsure, say N.
+#prize-add-zhaopengge-20210622-end
 
 config TOUCHSCREEN_STMFTS
 	tristate "STMicroelectronics STMFTS touchscreen"
@@ -1247,12 +1266,75 @@ config TOUCHSCREEN_ROHM_BU21023
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called bu21023_ts.
-
+ 
 config TOUCHSCREEN_MTK_TOUCH
        string "Touch IC name for Mediatek package"
        help
          Set touch IC name if you have touch panel.
 
          To compile this dirver for used touch IC.
+	 
+config TOUCHSCREEN_CHIPONE
+	tristate "Chipone TDDI touchscreen for Mediatek package"
+	depends on I2C
+	default n
+	help
+	  Say y here if you have chipone TDDI touch panel.
 
+	  If unsure, say N.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called chipone-tddi.	 
+
+config TOUCHSCREEN_MTK_8789P1_8185P3
+       bool "8789p1_8185p3 for Mediatek package"
+	default n
+	help
+	  Say Y here if you have hxchipset touch panel.
+
+	  If unsure, say N.
+
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.
+config PRIZE_SMART_COVER_COMMON_NODE
+    bool "prize smart cover common node"
+    default n
+    help
+      Say Y here if you use smart cover common node.
+      If unsure, say N.
+      To compile this dirver as a module, choose M here: the
+      module will be called.
+source "drivers/input/touchscreen/touch_8789p1_8185p3/Kconfig"
+
+config PRIZE_LCM_POWEROFF_AFTER_TP
+	bool "support LCM bias off after touchpanel power down"
+	help
+		Say Y if using TDDI(Touch and Display Driver Integration).
+#prize added by huarui, add tp driver, 20190327-end
 endif
+#prize-add-Omnivision TCM-pzp-20210606-start
+config TOUCHSCREEN_OMNIVISION_TCM
+	bool "Omnivision TCM touchscreen"
+	default n
+	help
+	  Say Y here if you have a Omnivision TCM touchscreen connected
+	  to your system.
+
+	  If unsure, say N.
+#prize-add-Omnivision TCM-pzp-20210606-end
+#prize-add-hxchipset spi-pzp-20210713-start
+config TOUCHSCREEN_HIMAX_IC_HX83112_SPI
+       bool "HIMAX chipset HX83112 function"
+		help
+		This enables support for HIMAX CHIPSET of HX83112.
+
+source "drivers/input/touchscreen/hxchipset_spi/Kconfig"
+
+#prize-add-hxchipset spi-pzp-20210713-end
+#prize-add-ili9882spi-tangcong-20210513-start
+config TOUCHSCREEN_MTK_ILI9882N
+	bool "TOUCHSCREEN_MTK_ILI9882N"
+	default n
+	help
+		ILI9881 driver
+#prize-add-ili9882spi-tangcong-20210513-end

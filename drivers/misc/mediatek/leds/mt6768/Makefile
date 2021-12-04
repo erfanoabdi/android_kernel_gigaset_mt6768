@@ -13,4 +13,7 @@
 
 obj-$(CONFIG_MTK_LEDS) := mtk_leds.o
 
+# prize wyq 20191015 add for aw99703 backlight led-start
+obj-$(CONFIG_BACKLIGHT_SUPPORT_AW99703) += leds_aw99703.o
+# prize wyq 20191015 add for aw99703 backlight led-end
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/video/include

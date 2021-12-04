@@ -1414,6 +1414,26 @@ static int mt6360_set_otg_current_limit(struct charger_device *chg_dev,
 					  i << MT6360_SHFT_OTG_OC);
 }
 
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+//prize add by lipengpeng 20210320 start 
+static int mt6360_set_otg_voltage_limit(struct charger_device *chg_dev,
+						u32 mV)
+{
+	struct mt6360_pmu_chg_info *mpci = charger_get_data(chg_dev);
+
+printk("lpp----otg voltage limit=%d\n",mV);
+if(mV >=5400){
+	// return mt6360_pmu_reg_update_bits(mpci->mpi,MT6360_PMU_CHG_CTRL5,0xFF,0x7B);  //5.4V
+	   return mt6360_pmu_reg_write(mpci->mpi, MT6360_PMU_CHG_CTRL5, 0x9F);
+ }else{
+	// return mt6360_pmu_reg_update_bits(mpci->mpi,MT6360_PMU_CHG_CTRL5,0xFF,0x67);  //5.05V
+	  return mt6360_pmu_reg_write(mpci->mpi, MT6360_PMU_CHG_CTRL5, 0x67);
+ }
+ 
+}
+//prize add by lipengpeng 20210320 end 
+#endif
+
 static int mt6360_enable_otg(struct charger_device *chg_dev, bool en)
 {
 	struct mt6360_pmu_chg_info *mpci = charger_get_data(chg_dev);
@@ -1475,12 +1495,25 @@ out:
 	mt6360_enable_hidden_mode(mpci->chg_dev, false);
 	return ret;
 }
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+//prize add by lipengpeng 20210320 start 
+extern int revere_mode;
+//prize add by lipengpeng 20210320 end 
+#endif
 
 static int mt6360_enable_chg_type_det(struct charger_device *chg_dev, bool en)
 {
 	int ret = 0;
 #if defined(CONFIG_MT6360_PMU_CHARGER_TYPE_DETECT) && defined(CONFIG_TCPC_CLASS)
 	struct mt6360_pmu_chg_info *mpci = charger_get_data(chg_dev);
+	
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+//prize add by lipengpeng 20210320 start 
+    if(1==revere_mode && en==true){
+		en=false;
+	}
+//prize add by lipengpeng 20210320 end 
+#endif
 
 	dev_info(mpci->dev, "%s\n", __func__);
 	mutex_lock(&mpci->chgdet_lock);
@@ -1916,6 +1949,11 @@ static const struct charger_ops mt6360_chg_ops = {
 	/* OTG */
 	.enable_otg = mt6360_enable_otg,
 	.set_boost_current_limit = mt6360_set_otg_current_limit,
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+//prize add by lipengpeng 20210320 start 
+	.set_boost_voltage_limit = mt6360_set_otg_voltage_limit,
+//prize add by lipengpeng 20210320 end
+#endif
 	.enable_discharge = mt6360_enable_discharge,
 	/* Charger type detection */
 	.enable_chg_type_det = mt6360_enable_chg_type_det,

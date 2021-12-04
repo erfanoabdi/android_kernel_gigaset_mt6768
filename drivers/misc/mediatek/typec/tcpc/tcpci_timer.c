@@ -139,6 +139,8 @@ static inline void tcpc_set_timer_tick(struct tcpc_device *tcpc, int nr)
 	spin_unlock_irqrestore(&tcpc->timer_tick_lock, flags);
 }
 
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 #if TCPC_TIMER_DBG_EN || TCPC_TIMER_INFO_EN
 static const char *const tcpc_timer_name[] = {
 #ifdef CONFIG_USB_POWER_DELIVERY
@@ -235,6 +237,109 @@ static const char *const tcpc_timer_name[] = {
 #endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
 };
 #endif /* TCPC_TIMER_DBG_EN || TCPC_TIMER_INFO_EN */
+#else
+#if TCPC_TIMER_DBG_EN || TCPC_TIMER_INFO_EN
+static const char *const tcpc_timer_name[] = {
+#ifdef CONFIG_USB_POWER_DELIVERY
+	"PD_TIMER_DISCOVER_ID",
+	"PD_TIMER_BIST_CONT_MODE",
+	"PD_TIMER_HARD_RESET_COMPLETE",
+	"PD_TIMER_NO_RESPONSE",
+	"PD_TIMER_PS_HARD_RESET",
+	"PD_TIMER_PS_SOURCE_OFF",
+	"PD_TIMER_PS_SOURCE_ON",
+	"PD_TIMER_PS_TRANSITION",
+	"PD_TIMER_SENDER_RESPONSE",
+	"PD_TIMER_SINK_ACTIVITY",
+	"PD_TIMER_SINK_REQUEST",
+	"PD_TIMER_SINK_WAIT_CAP",
+	"PD_TIMER_SOURCE_ACTIVITY",
+	"PD_TIMER_SOURCE_CAPABILITY",
+	"PD_TIMER_SOURCE_START",
+	"PD_TIMER_VCONN_ON",
+#ifdef CONFIG_USB_PD_VCONN_STABLE_DELAY
+	"PD_TIMER_VCONN_STABLE",
+#endif	/* CONFIG_USB_PD_VCONN_STABLE_DELAY */
+	"PD_TIMER_VDM_MODE_ENTRY",
+	"PD_TIMER_VDM_MODE_EXIT",
+	"PD_TIMER_VDM_RESPONSE",
+	"PD_TIMER_SOURCE_TRANSITION",
+	"PD_TIMER_SRC_RECOVER",
+#ifdef CONFIG_USB_PD_REV30
+	"PD_TIMER_CK_NO_SUPPORT",
+#ifdef CONFIG_USB_PD_REV30_COLLISION_AVOID
+	"PD_TIMER_SINK_TX",
+#endif	/* CONFIG_USB_PD_REV30_COLLISION_AVOID */
+#ifdef CONFIG_USB_PD_REV30_PPS_SOURCE
+	"PD_TIMER_SOURCE_PPS_TIMEOUT",
+#endif	/* CONFIG_USB_PD_REV30_PPS_SOURCE */
+#endif	/* CONFIG_USB_PD_REV30 */
+
+/* PD_TIMER (out of spec ) */
+	"PD_TIMER_VSAFE0V_DELAY",
+	"PD_TIMER_VSAFE0V_TOUT",
+	"PD_TIMER_DISCARD",
+	"PD_TIMER_VBUS_STABLE",
+	"PD_TIMER_VBUS_PRESENT",
+	"PD_TIMER_UVDM_RESPONSE",
+	"PD_TIMER_DFP_FLOW_DELAY",
+	"PD_TIMER_UFP_FLOW_DELAY",
+	"PD_TIMER_VCONN_READY",
+	"PD_PE_VDM_POSTPONE",
+
+#ifdef CONFIG_USB_PD_REV30
+#ifdef CONFIG_USB_PD_REV30_COLLISION_AVOID
+	"PD_TIMER_DEFERRED_EVT",
+#endif	/* CONFIG_USB_PD_REV30_COLLISION_AVOID */
+#ifdef CONFIG_USB_PD_REV30_SNK_FLOW_DELAY_STARTUP
+	"PD_TIMER_SNK_FLOW_DELAY",
+#endif	/* CONFIG_USB_PD_REV30_SNK_FLOW_DELAY_STARTUP */
+#endif	/* CONFIG_USB_PD_REV30 */
+
+	"PD_TIMER_PE_IDLE_TOUT",
+#endif /* CONFIG_USB_POWER_DELIVERY */
+
+/* TYPEC_RT_TIMER (out of spec) */
+	"TYPEC_RT_TIMER_SAFE0V_DELAY",
+	"TYPEC_RT_TIMER_SAFE0V_TOUT",
+	"TYPEC_RT_TIMER_ROLE_SWAP_START",
+	"TYPEC_RT_TIMER_ROLE_SWAP_STOP",
+	"TYPEC_RT_TIMER_STATE_CHANGE",
+	"TYPEC_RT_TIMER_NOT_LEGACY",
+	"TYPEC_RT_TIMER_LEGACY_STABLE",
+	"TYPEC_RT_TIMER_LEGACY_RECYCLE",
+	"TYPEC_RT_TIMER_AUTO_DISCHARGE",
+	"TYPEC_RT_TIMER_LOW_POWER_MODE",
+#ifdef CONFIG_USB_POWER_DELIVERY
+	"TYPEC_RT_TIMER_PE_IDLE",
+#endif	/* CONFIG_USB_POWER_DELIVERY */
+	"TYPEC_TIMER_ERROR_RECOVERY",
+/* TYPEC-TRY-TIMER */
+	"TYPEC_TRY_TIMER_DRP_TRY",
+	"TYPEC_TRY_TIMER_DRP_TRYWAIT",
+/* TYPEC-DEBOUNCE-TIMER */
+	"TYPEC_TIMER_CCDEBOUNCE",
+	"TYPEC_TIMER_PDDEBOUNCE",
+#ifdef CONFIG_COMPATIBLE_APPLE_TA
+	"TYPEC_TIMER_APPLE_CC_OPEN",
+#endif /* CONFIG_COMPATIBLE_APPLE_TA */
+	"TYPEC_TIMER_TRYCCDEBOUNCE",
+	"TYPEC_TIMER_SRCDISCONNECT",
+	"TYPEC_TIMER_DRP_SRC_TOGGLE",
+#ifdef CONFIG_TYPEC_CAP_NORP_SRC
+	"TYPEC_TIMER_NORP_SRC",
+#endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
+//prize add by huarui, cc controller sgm7220, start
+#ifdef CONFIG_TCPC_SGM7220
+	"TYPEC_TIMER_VBUS_CHECK",
+#endif	/* CONFIG_TCPC_SGM7220 */
+//prize add by huarui, cc controller sgm7220, end
+};
+#endif /* TCPC_TIMER_DBG_EN || TCPC_TIMER_INFO_EN */
+
+#endif  /* CONFIG_PRIZE_ATOC_TYPEC_CHARGE */
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+
 /* CONFIG_USB_PD_SAFE0V_DELAY */
 #ifdef CONFIG_TCPC_VSAFE0V_DETECT
 #define PD_TIMER_VSAFE0V_DLY_TOUT		50
@@ -354,9 +459,14 @@ DECL_TCPC_TIMEOUT(TYPEC_RT_TIMER_LOW_POWER_MODE, 500),
 
 #ifdef CONFIG_USB_POWER_DELIVERY
 DECL_TCPC_TIMEOUT(TYPEC_RT_TIMER_PE_IDLE, 1),
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 #ifdef CONFIG_TYPEC_WAIT_BC12
 DECL_TCPC_TIMEOUT(TYPEC_RT_TIMER_SINK_WAIT_BC12, 50),
 #endif /* CONFIG_TYPEC_WAIT_BC12 */
+#endif /* CONFIG_PRIZE_ATOC_TYPEC_CHARGE */
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
+
 #endif	/* CONFIG_USB_POWER_DELIVERY */
 DECL_TCPC_TIMEOUT_RANGE(TYPEC_TIMER_ERROR_RECOVERY, 25, 25),
 
@@ -376,6 +486,11 @@ DECL_TCPC_TIMEOUT(TYPEC_TIMER_DRP_SRC_TOGGLE, 60),
 #ifdef CONFIG_TYPEC_CAP_NORP_SRC
 DECL_TCPC_TIMEOUT(TYPEC_TIMER_NORP_SRC, 300),
 #endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
+//prize add by huarui, cc controller sgm7220, start
+#ifdef CONFIG_TCPC_SGM7220
+DECL_TCPC_TIMEOUT(TYPEC_TIMER_VBUS_CHECK, 200),
+#endif	/* CONFIG_TCPC_SGM7220 */
+//prize add by huarui, cc controller sgm7220, end
 };
 
 typedef enum hrtimer_restart (*tcpc_hrtimer_call)(struct hrtimer *timer);
@@ -968,6 +1083,8 @@ static enum hrtimer_restart tcpc_timer_rt_pe_idle(struct hrtimer *timer)
 	return HRTIMER_NORESTART;
 }
 
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 #ifdef CONFIG_TYPEC_WAIT_BC12
 static enum hrtimer_restart tcpc_timer_rt_sink_wait_bc12(struct hrtimer *timer)
 {
@@ -979,6 +1096,8 @@ static enum hrtimer_restart tcpc_timer_rt_sink_wait_bc12(struct hrtimer *timer)
 	return HRTIMER_NORESTART;
 }
 #endif /* CONFIG_TYPEC_WAIT_BC12 */
+#endif /* CONFIG_PRIZE_ATOC_TYPEC_CHARGE */
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 #endif	/* CONFIG_USB_POWER_DELIVERY */
 
 /* TYPEC-TRY-TIMER */
@@ -1114,6 +1233,20 @@ static enum hrtimer_restart tcpc_timer_norp_src(struct hrtimer *timer)
 }
 #endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
 
+//prize add by huarui, cc controller sgm7220, start
+#ifdef CONFIG_TCPC_SGM7220
+static enum hrtimer_restart tcpc_timer_vbus_check(struct hrtimer *timer)
+{
+	int index = TYPEC_TIMER_VBUS_CHECK;
+	struct tcpc_device *tcpc_dev =
+		container_of(timer, struct tcpc_device, tcpc_timer[index]);
+
+	TCPC_TIMER_TRIGGER();
+	return HRTIMER_NORESTART;
+}
+#endif	/* CONFIG_TCPC_SGM7220 */
+//prize add by huarui, cc controller sgm7220, end
+
 static tcpc_hrtimer_call tcpc_timer_call[PD_TIMER_NR] = {
 #ifdef CONFIG_USB_POWER_DELIVERY
 	tcpc_timer_discover_id,
@@ -1187,9 +1320,12 @@ static tcpc_hrtimer_call tcpc_timer_call[PD_TIMER_NR] = {
 	tcpc_timer_rt_low_power_mode,
 #ifdef CONFIG_USB_POWER_DELIVERY
 	tcpc_timer_rt_pe_idle,
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE	
 #ifdef CONFIG_TYPEC_WAIT_BC12
 	tcpc_timer_rt_sink_wait_bc12,
 #endif /* CONFIG_TYPEC_WAIT_BC12 */
+#endif /* CONFIG_PRIZE_ATOC_TYPEC_CHARGE */
 #endif	/* CONFIG_USB_POWER_DELIVERY */
 	tcpc_timer_error_recovery,
 /* TYPEC-TRY-TIMER */
@@ -1207,6 +1343,11 @@ static tcpc_hrtimer_call tcpc_timer_call[PD_TIMER_NR] = {
 #ifdef CONFIG_TYPEC_CAP_NORP_SRC
 	tcpc_timer_norp_src,
 #endif
+//prize add by huarui, cc controller sgm7220, start
+#ifdef CONFIG_TCPC_SGM7220
+	tcpc_timer_vbus_check,
+#endif
+//prize add by huarui, cc controller sgm7220, end
 };
 
 /*

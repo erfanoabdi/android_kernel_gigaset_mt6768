@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
+# SPDX-License-Identifier: GPL-2.0
 #
 # Makefile for the touchscreen drivers.
 #
@@ -52,6 +53,7 @@ obj-$(CONFIG_TOUCHSCREEN_MC13783)	+= mc13783_ts.o
 obj-$(CONFIG_TOUCHSCREEN_MCS5000)	+= mcs5000_ts.o
 obj-$(CONFIG_TOUCHSCREEN_MELFAS_MIP4)	+= melfas_mip4.o
 obj-$(CONFIG_TOUCHSCREEN_MTK)		+= mediatek/
+obj-$(CONFIG_TOUCHSCREEN_MTK_8789P1_8185P3)		+= touch_8789p1_8185p3/
 obj-$(CONFIG_TOUCHSCREEN_MIGOR)		+= migor_ts.o
 obj-$(CONFIG_TOUCHSCREEN_MMS114)	+= mms114.o
 obj-$(CONFIG_TOUCHSCREEN_MTOUCH)	+= mtouch.o
@@ -105,6 +107,27 @@ obj-$(CONFIG_TOUCHSCREEN_ZET6223)	+= zet6223.o
 obj-$(CONFIG_TOUCHSCREEN_ZFORCE)	+= zforce_ts.o
 obj-$(CONFIG_TOUCHSCREEN_COLIBRI_VF50)	+= colibri-vf50-ts.o
 obj-$(CONFIG_TOUCHSCREEN_ROHM_BU21023)	+= rohm_bu21023.o
+#prize-add-tangcong-20210301-start
+obj-$(CONFIG_TOUCHSCREEN_CHIPONE) += chipone-tddi/
+#prize-add-tangcong-20210301-end
+#prize-add-pengzhipeng-20191029-start
+obj-$(CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI) +=  NVT_Touch_HostDL/
+#prize-add-Omnivision TCM-pzp-20210606-start
+obj-$(CONFIG_TOUCHSCREEN_OMNIVISION_TCM) += omnivision_tcm/
+#prize-add-Omnivision TCM-pzp-20210606-end
+#prize-add-hxchipset spi-pzp-20210713-start
+obj-$(CONFIG_TOUCHSCREEN_HIMAX_IC_HX83112_SPI) += hxchipset_spi/
+#prize-add-hxchipset spi-pzp-20210713-end
+#prize-add-pengzhipeng-20191029-end
+#prize-add ILI9881-tangcong-20210513-start
+obj-$(CONFIG_TOUCHSCREEN_MTK_ILI9882N)	+=  ILI9882/
+#prize-add ILI9881-tangcong-20210513-end
 TOUCH_LISTS := $(subst ",,$(CONFIG_TOUCHSCREEN_MTK_TOUCH))
 obj-y += $(foreach TOUCH,$(TOUCH_LISTS),$(TOUCH)/)
+
+#prize add by zhaopengge 20210201 -------start
+obj-$(CONFIG_TOUCHSCREEN_FTS_V3_3)	+=  focaltech_touch_v3_3/
+#prize add by zhaopengge 20210201 -------end
+
+
 

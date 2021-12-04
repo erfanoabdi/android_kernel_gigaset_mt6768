@@ -29,6 +29,9 @@
 #define MTK_EINT_DBNC_RST_BIT		  (0x1 << 1)
 #define MTK_EINT_DBNC_SET_EN		  (0x1 << 0)
 
+static struct wakeup_source *eint_irq_lock;
+#define __irqd_to_state(d) ACCESS_PRIVATE((d)->common, state_use_accessors)
+
 static const struct mtk_eint_regs mtk_generic_eint_regs = {
 	.stat      = 0x000,
 	.ack       = 0x040,
@@ -319,12 +322,23 @@ static void mtk_eint_irq_release_resources(struct irq_data *d)
 	gpiochip_unlock_as_irq(gpio_c, gpio_n);
 }
 
+static void mtk_eint_mask_ack(struct irq_data *d)
+{
+	mtk_eint_mask(d);
+	mtk_eint_ack(d);
+
+	if ((d->irq == 172) && (__irqd_to_state(d) & IRQD_WAKEUP_STATE))
+		__pm_wakeup_event(eint_irq_lock, jiffies_to_msecs(1 * HZ));
+
+}
+
 static struct irq_chip mtk_eint_irq_chip = {
 	.name = "mt-eint",
 	.irq_disable = mtk_eint_mask,
 	.irq_mask = mtk_eint_mask,
 	.irq_unmask = mtk_eint_unmask,
 	.irq_ack = mtk_eint_ack,
+	.irq_mask_ack = mtk_eint_mask_ack,
 	.irq_set_type = mtk_eint_set_type,
 	.irq_set_wake = mtk_eint_irq_set_wake,
 	.irq_request_resources = mtk_eint_irq_request_resources,
@@ -611,6 +625,8 @@ int mtk_eint_do_init(struct mtk_eint *eint)
 	g_eint = eint;
 
 	register_syscore_ops(&mtk_eint_syscore_ops);
+
+	eint_irq_lock = wakeup_source_register(eint->dev, "eint_irq_lock");
 
 	return 0;
 }

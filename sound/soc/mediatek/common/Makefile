@@ -41,3 +41,9 @@ endif
 ifeq ($(CONFIG_SND_SOC_AW87339),y)
 subdir-ccflags-y += -I$(srctree)/sound/soc/codecs/aw87339/$(MTK_PROJECT)/
 endif
+
+# prize added by chenjiaxi, add aw87519, 20200918-start
+ifeq ($(CONFIG_SND_SOC_AW87519),y)
+ccflags-y += -I$(srctree)/sound/soc/codecs/aw87519/
+endif
+# prize added by chenjiaxi, add aw87519, 20200918-end

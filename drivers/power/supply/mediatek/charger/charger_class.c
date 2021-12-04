@@ -648,6 +648,19 @@ int charger_dev_set_boost_current_limit(struct charger_device *chg_dev, u32 uA)
 }
 EXPORT_SYMBOL(charger_dev_set_boost_current_limit);
 
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+//prize add by lipengpeng 20210320 start
+int charger_dev_set_boost_voltage_limit(struct charger_device *chg_dev, u32 mV)
+{
+	if (chg_dev != NULL && chg_dev->ops != NULL &&
+	    chg_dev->ops->set_boost_voltage_limit)
+		return chg_dev->ops->set_boost_voltage_limit(chg_dev, mV);
+
+	return -ENOTSUPP;
+}
+EXPORT_SYMBOL(charger_dev_set_boost_voltage_limit); 
+//prize add by lipengpeng 20210320 end 
+#endif
 int charger_dev_get_zcv(struct charger_device *chg_dev, u32 *uV)
 {
 	if (chg_dev != NULL && chg_dev->ops != NULL && chg_dev->ops->get_zcv)

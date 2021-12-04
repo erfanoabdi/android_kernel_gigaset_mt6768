@@ -139,7 +139,7 @@ static inline int moveAF(unsigned long a_u4Position)
 		LOG_INF("set I2C failed when moving the motor\n");
 		ret = -1;
 	}
-
+	
 	return ret;
 }
 
@@ -199,13 +199,19 @@ long DW9714AF_Ioctl(struct file *a_pstFile, unsigned int a_u4Command,
 /* Q1 : Try release multiple times. */
 int DW9714AF_Release(struct inode *a_pstInode, struct file *a_pstFile)
 {
+	// prize modify by linchong 20211009 start
+	unsigned long currPosition = g_u4CurrPosition;
 	LOG_INF("Start\n");
-
 	if (*g_pAF_Opened == 2) {
 		LOG_INF("Wait\n");
-		s4AF_WriteReg(0x80); /* Power down mode */
+		while(currPosition > 50) {
+			currPosition -= 50;
+			s4AF_WriteReg(currPosition);
+			mdelay(5);
+		}
+	//	s4AF_WriteReg(0x80); /* Power down mode */
 	}
-
+	// prize modify by linchong 20211009 end
 	if (*g_pAF_Opened) {
 		LOG_INF("Free\n");
 

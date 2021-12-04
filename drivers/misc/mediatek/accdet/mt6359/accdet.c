@@ -1823,6 +1823,11 @@ cur_AB = pmic_read(PMIC_ACCDET_MEM_IN_ADDR) >> ACCDET_STATE_MEM_IN_OFFSET;
 }
 #endif /* end of #if PMIC_ACCDET_KERNEL */
 
+//prize added by huarui, headset support, 20190111-start
+#if defined(CONFIG_PRIZE_SWITCH_SGM3798_SUPPORT)
+extern int typec_accdet_mic_detect(void);
+#endif
+//prize added by huarui, headset support, 20190111-end
 #if PMIC_ACCDET_KERNEL
 static void eint_work_callback(struct work_struct *work)
 #else
@@ -1848,6 +1853,11 @@ static void eint_work_callback(void)
 
 		pr_info("%s VUSB LP dis done\n", __func__);
 		enable_accdet(0);
+//prize added by huarui, headset support, 20190111-start
+	#if defined(CONFIG_PRIZE_SWITCH_SGM3798_SUPPORT)
+		typec_accdet_mic_detect();
+	#endif
+//prize added by huarui, headset support, 20190111-end
 	} else {
 		pr_info("accdet cur:plug-out, cur_eint_state = %d\n",
 			cur_eint_state);
@@ -3479,3 +3489,25 @@ long mt_accdet_unlocked_ioctl(struct file *file, unsigned int cmd,
 	}
 	return 0;
 }
+
+
+//prize added by huarui, headset support, 20190111-start
+#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+void accdet_eint_func_extern(int state)
+{
+	int ret = 0;
+
+	if (state == EINT_PIN_PLUG_OUT){	//OUT=0 IN=1
+		cur_eint_state = EINT_PIN_PLUG_OUT;
+		mod_timer(&micbias_timer, jiffies + MICBIAS_DISABLE_TIMER);
+	}else{
+		cur_eint_state = EINT_PIN_PLUG_IN;
+	}
+
+	pr_info("accdet %s(), cur_eint_state=%d\n", __func__, cur_eint_state);
+	ret = queue_work(eint_workqueue, &eint_work);
+	return;
+}
+EXPORT_SYMBOL(accdet_eint_func_extern);
+#endif
+//prize added by huarui, headset support, 20190111-end

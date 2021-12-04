@@ -145,7 +145,13 @@ int disable_shutdown_cond(int shutdown_cond)
 	}
 	return 0;
 }
-
+/* begin, prize-lifenfen-20181207, add fuel gauge cw2015 */
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+extern int g_cw2015_capacity;
+extern int g_cw2015_vol;
+extern int cw2015_exit_flag;
+#endif
+/* end, prize-lifenfen-20181207, add fuel gauge cw2015 */
 int set_shutdown_cond(int shutdown_cond)
 {
 	int now_current;
@@ -174,7 +180,12 @@ int set_shutdown_cond(int shutdown_cond)
 		shutdown_cond, enable_lbat_shutdown,
 		now_is_kpoc, now_current, now_is_charging,
 		shutdown_cond_flag, vbat);
-
+	//prize-0% solution can also use mobile phone-pengzhipeng-20210303-start	
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+	if (g_cw2015_capacity > 1)
+		return 0;
+#endif
+	//prize-0% solution can also use mobile phone-pengzhipeng-20210303-end	
 	if (shutdown_cond_flag == 1)
 		return 0;
 
@@ -206,7 +217,7 @@ int set_shutdown_cond(int shutdown_cond)
 						SOC_ZERO_PERCENT]);
 					bm_err("[%s]soc_zero_percent shutdown\n",
 						__func__);
-					notify_fg_shutdown();
+					//notify_fg_shutdown();
 				}
 			}
 			mutex_unlock(&sdc.lock);
@@ -223,7 +234,7 @@ int set_shutdown_cond(int shutdown_cond)
 					&sdc.pre_time[UISOC_ONE_PERCENT]);
 					bm_err("[%s]uisoc 1 percent shutdown\n",
 						__func__);
-					notify_fg_shutdown();
+					//notify_fg_shutdown();
 				}
 			}
 			mutex_unlock(&sdc.lock);
@@ -311,7 +322,7 @@ static int shutdown_event_handler(struct shutdown_controller *sdd)
 			if (duraction.tv_sec >= SHUTDOWN_TIME) {
 				bm_err("soc zero shutdown\n");
 				mutex_lock(&pm_mutex);
-				kernel_power_off();
+				//kernel_power_off();
 				mutex_unlock(&pm_mutex);
 				return next_waketime(polling);
 
@@ -335,7 +346,7 @@ static int shutdown_event_handler(struct shutdown_controller *sdd)
 			if (duraction.tv_sec >= SHUTDOWN_TIME) {
 				bm_err("uisoc one percent shutdown\n");
 				mutex_lock(&pm_mutex);
-				kernel_power_off();
+				//kernel_power_off();
 				mutex_unlock(&pm_mutex);
 				return next_waketime(polling);
 			}
@@ -357,7 +368,7 @@ static int shutdown_event_handler(struct shutdown_controller *sdd)
 		if (duraction.tv_sec >= SHUTDOWN_TIME) {
 			bm_err("dlpt shutdown\n");
 			mutex_lock(&pm_mutex);
-			kernel_power_off();
+			//kernel_power_off();
 			mutex_unlock(&pm_mutex);
 			return next_waketime(polling);
 		}
@@ -397,19 +408,19 @@ static int shutdown_event_handler(struct shutdown_controller *sdd)
 					if (tmp >= LOW_TEMP_THRESHOLD) {
 						down_to_low_bat = 1;
 						bm_err("normal tmp, battery voltage is low shutdown\n");
-						notify_fg_shutdown();
+						//notify_fg_shutdown();
 					} else if (sdd->avgvbat <=
 						LOW_TMP_BAT_VOLTAGE_LOW_BOUND) {
 						down_to_low_bat = 1;
 						bm_err("cold tmp, battery voltage is low shutdown\n");
-						notify_fg_shutdown();
+						//notify_fg_shutdown();
 					} else
 						bm_err("low temp disable low battery sd\n");
 				} else {
 					down_to_low_bat = 1;
 					bm_err("[%s]avg vbat is low to shutdown\n",
 						__func__);
-					notify_fg_shutdown();
+					//notify_fg_shutdown();
 				}
 			}
 
@@ -426,7 +437,7 @@ static int shutdown_event_handler(struct shutdown_controller *sdd)
 					bm_err("low bat shutdown, over %d second\n",
 						SHUTDOWN_TIME);
 					mutex_lock(&pm_mutex);
-					kernel_power_off();
+					//kernel_power_off();
 					mutex_unlock(&pm_mutex);
 					return next_waketime(polling);
 				}
@@ -539,7 +550,12 @@ int mtk_power_misc_psy_event(
 			psy, POWER_SUPPLY_PROP_TEMP, &val);
 		if (!ret) {
 			tmp = val.intval / 10;
-			if (tmp >= BATTERY_SHUTDOWN_TEMPERATURE) {
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+			if (tmp >= BATTERY_SHUTDOWN_TEMPERATURE || tmp < BATTERY_SHUTDOWN_LOW_TEMPERATURE) {
+#else
+			    if (tmp >= BATTERY_SHUTDOWN_TEMPERATURE) {
+#endif
+
 				bm_err(
 					"battery temperature >= %d,shutdown",
 					tmp);

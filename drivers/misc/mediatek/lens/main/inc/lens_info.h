@@ -18,7 +18,7 @@
 #include "lens_list.h"
 #include <linux/ioctl.h>
 
-#define MAX_NUM_OF_LENS 32
+#define MAX_NUM_OF_LENS 64
 
 #define AF_MAGIC 'A'
 
@@ -29,6 +29,15 @@
 #endif
 
 /* AFDRV_XXXX be the same as AF_DRVNAME in (*af).c */
+//prize add by linchong 20210416 start
+#define AFDRV_AW86014AF "AW86014AF"
+//prize add by linchong 20210416 end
+//prize add by yantaotao 20210510 start
+#define AFDRV_AW8601CSR "AW8601CSR"
+//prize add by yantaotao 20210510 end
+/*prize  add  for FP5516WEAF by zhuzhengjiang    20210621-start*/
+#define AFDRV_FP5516WEAF "FP5516WEAF"
+/*prize  add  for FP5516WEAF by zhuzhengjiang    20210621-end*/
 #define AFDRV_AD5820AF "AD5820AF"
 #define AFDRV_AD5823 "AD5823"
 #define AFDRV_AD5823AF "AD5823AF"
@@ -56,6 +65,9 @@
 #define AFDRV_GAF002AF "GAF002AF"
 #define AFDRV_GAF008AF "GAF008AF"
 #define AFDRV_GT9764AF "GT9764AF"
+// prize add by linchong 20210630 start
+#define AFDRV_GT9767AF "GT9767AF"
+// prize add by linchong 20210630 end
 #define AFDRV_LC898122AF "LC898122AF"
 #define AFDRV_LC898212AF "LC898212AF"
 #define AFDRV_LC898212XDAF "LC898212XDAF"
@@ -68,9 +80,11 @@
 #define AFDRV_LC898217AFC "LC898217AFC"
 #define AFDRV_LC898229AF "LC898229AF"
 #define AFDRV_MT9P017AF "MT9P017AF"
+#define AFDRV_OV5645AF "OV5645AF"
 #define AFDRV_OV8825AF "OV8825AF"
 #define AFDRV_WV511AAF "WV511AAF"
 #define AFDRV_DW9718TAF "DW9718TAF"
+#define AFDRV_GT9772AF "GT9772AF"
 
 #define CONVERT_CCU_TIMESTAMP 0x1000
 

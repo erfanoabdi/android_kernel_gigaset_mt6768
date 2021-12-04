@@ -1,0 +1,6 @@
+char Cust_emmc_support[][50]={
+{"YH : H9HQ16AECMMDAR"},
+{"VM : KM2V8001CM_B707"},
+{"VN : KM2V7001CM_B706"},
+{"TE : MT29VZZZBD9FQKPR_046W_G9J"},
+};

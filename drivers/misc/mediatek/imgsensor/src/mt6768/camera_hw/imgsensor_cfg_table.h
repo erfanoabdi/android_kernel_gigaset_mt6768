@@ -21,7 +21,7 @@
 
 
 #define IMGSENSOR_HW_POWER_INFO_MAX	12
-#define IMGSENSOR_HW_SENSOR_MAX_NUM	8
+#define IMGSENSOR_HW_SENSOR_MAX_NUM	12      /* prize liaoxingen modify max sensors 20200914 */
 
 enum IMGSENSOR_HW_PIN {
 	IMGSENSOR_HW_PIN_NONE = 0,

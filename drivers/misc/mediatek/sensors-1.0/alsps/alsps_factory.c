@@ -380,3 +380,19 @@ int alsps_factory_device_deregister(struct alsps_factory_public *dev)
 	misc_deregister(&alsps_factory_device);
 	return 0;
 }
+//prize-add psrawdata note-pengzhipeng-20210303-start
+int prize_ps_get_raw_data(void)
+{
+	int err = 0;
+	int data = 0;
+
+	if (alsps_factory.fops != NULL && alsps_factory.fops->als_get_raw_data != NULL) {
+		err = alsps_factory.fops->ps_get_raw_data(&data);
+		if (err < 0) {
+			pr_err("ALSPS_GET_ALS_RAW_DATA read data fail!\n");
+			return -EINVAL;
+		}
+	}
+	return data;
+}
+//prize-add psrawdata note-pengzhipeng-20210303-start

@@ -47,7 +47,6 @@
 #include <mach/upmu_hw.h>
 #include <mt-plat/mtk_boot.h>
 #include <mt-plat/charger_type.h>
-#include <mt-plat/mtk_charger.h>
 #include <pmic.h>
 #include <tcpm.h>
 
@@ -237,7 +236,6 @@ static int mt_charger_set_property(struct power_supply *psy,
 	info = mtk_chg->extcon_info;
 #endif
 
-	cti = mtk_chg->cti;
 	switch (psp) {
 	case POWER_SUPPLY_PROP_ONLINE:
 		mtk_chg->chg_online = val->intval;
@@ -245,12 +243,6 @@ static int mt_charger_set_property(struct power_supply *psy,
 		return 0;
 	case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		mtk_chg->chg_type = val->intval;
-		if (mtk_chg->chg_type != CHARGER_UNKNOWN)
-			charger_manager_force_disable_power_path(
-				cti->chg_consumer, MAIN_CHARGER, false);
-		else if (!cti->tcpc_kpoc)
-			charger_manager_force_disable_power_path(
-				cti->chg_consumer, MAIN_CHARGER, true);
 		break;
 	default:
 		return -EINVAL;
@@ -258,6 +250,7 @@ static int mt_charger_set_property(struct power_supply *psy,
 
 	dump_charger_name(mtk_chg->chg_type);
 
+	cti = mtk_chg->cti;
 	if (!cti->ignore_usb) {
 		/* usb */
 		if ((mtk_chg->chg_type == STANDARD_HOST) ||
@@ -356,10 +349,27 @@ static void tcpc_power_off_work_handler(struct work_struct *work)
 	pr_info("%s\n", __func__);
 	kernel_power_off();
 }
-
+//prize add by lipengpeng 20210320 starrt 
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+extern int revere_mode;
+#endif
+//prize add by lipengpeng 20210320 starrt 
 static void charger_in_work_handler(struct work_struct *work)
 {
+//prize add by lipengpeng 20210320 starrt 
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)	
+	printk("lpp--111-revere_mode=%d\n",revere_mode);
+	if(0==revere_mode){
+#endif
+//prize add by lipengpeng 20210320 starrt 
 	mtk_charger_int_handler();
+//prize add by lipengpeng 20210320 starrt 
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+	}else{
+		printk("lpp---revere mode stop charging det\n");
+	}
+#endif
+//prize add by lipengpeng 20210320 starrt 
 	fg_charger_in_handler();
 }
 
@@ -388,13 +398,25 @@ static int pd_tcp_notifier_call(struct notifier_block *pnb,
 		if (noti->typec_state.old_state == TYPEC_UNATTACHED &&
 		    (noti->typec_state.new_state == TYPEC_ATTACHED_SNK ||
 		    noti->typec_state.new_state == TYPEC_ATTACHED_CUSTOM_SRC ||
-		    noti->typec_state.new_state == TYPEC_ATTACHED_NORP_SRC)) {
+		    noti->typec_state.new_state == TYPEC_ATTACHED_NORP_SRC
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
+			|| noti->typec_state.new_state == TYPEC_ATTACHED_DBGACC_SNK
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+           )) {
 			pr_info("%s USB Plug in, pol = %d\n", __func__,
 					noti->typec_state.polarity);
 			plug_in_out_handler(cti, true, false);
 		} else if ((noti->typec_state.old_state == TYPEC_ATTACHED_SNK ||
 		    noti->typec_state.old_state == TYPEC_ATTACHED_CUSTOM_SRC ||
-			noti->typec_state.old_state == TYPEC_ATTACHED_NORP_SRC)
+			noti->typec_state.old_state == TYPEC_ATTACHED_NORP_SRC
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE			
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+			||noti->typec_state.old_state == TYPEC_ATTACHED_DBGACC_SNK
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#endif
+			)
 			&& noti->typec_state.new_state == TYPEC_UNATTACHED) {
 			if (cti->tcpc_kpoc) {
 				vbus = battery_get_vbus();

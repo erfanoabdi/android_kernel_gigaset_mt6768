@@ -5,6 +5,9 @@
 
 obj-$(CONFIG_NFC_FDP)		+= fdp/
 obj-$(CONFIG_NFC_PN544)		+= pn544/
+#prize-add nfc-pengzhipeng-20201016-start
+obj-$(CONFIG_MANUFACTOR_NFC_NXP533)		+= nxp533/
+#prize-add nfc-pengzhipeng-20201016-start
 obj-$(CONFIG_NFC_MICROREAD)	+= microread/
 obj-$(CONFIG_NFC_PN533)		+= pn533/
 obj-$(CONFIG_NFC_MEI_PHY)	+= mei_phy.o

@@ -15,6 +15,13 @@
 #include <mt-plat/mtk_boot.h>
 #include <mtk_gauge_class.h>
 #include <mtk_battery_internal.h>
+/* prize liaoxingen modify fuel gauge cw2015 start */
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+extern int g_cw2015_capacity;
+extern int g_cw2015_vol;
+extern int cw2015_exit_flag;
+#endif
+/* prize liaoxingen modify fuel gauge cw2015 end */
 
 
 #if (CONFIG_MTK_GAUGE_VERSION != 30)
@@ -74,7 +81,16 @@ signed int battery_get_bat_avg_current(void)
 
 signed int battery_get_bat_voltage(void)
 {
+/* prize liaoxingen modify fuel gauge cw2015 start*/
+	#if defined(CONFIG_MTK_CW2015_SUPPORT)
+	if(cw2015_exit_flag==1)
+		return g_cw2015_vol;
+	else
+		return pmic_get_battery_voltage();
+	#else
 	return pmic_get_battery_voltage();
+	#endif
+/* prize liaoxingen modify fuel gauge cw2015 end*/
 }
 
 signed int battery_get_bat_current(void)
@@ -95,14 +111,22 @@ signed int battery_get_bat_current_mA(void)
 
 signed int battery_get_soc(void)
 {
-	if (get_mtk_battery() != NULL)
-		return get_mtk_battery()->soc;
+/* prize liaoxingen modify fuel gauge cw2015 start*/
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+	if(cw2015_exit_flag==1)
+		return g_cw2015_capacity;
 	else
-		return 50;
+		return get_mtk_battery()->soc;
+#else
+	return get_mtk_battery()->soc;
+#endif
+/* prize liaoxingen modify fuel gauge cw2015 end*/
 }
 
 signed int battery_get_uisoc(void)
 {
+/* prize liaoxingen modify return real uisoc in meta and factory mode for battery test before delivery start */
+#if 0
 	int boot_mode = get_boot_mode();
 
 	if ((boot_mode == META_BOOT) ||
@@ -110,11 +134,19 @@ signed int battery_get_uisoc(void)
 		(boot_mode == FACTORY_BOOT) ||
 		(boot_mode == ATE_FACTORY_BOOT))
 		return 75;
+#endif
+/* prize liaoxingen return real uisoc in meta and factory mode for battery test before delivery end */
 
-	if (get_mtk_battery() != NULL)
-		return get_mtk_battery()->ui_soc;
+/* prize liaoxingen modify fuel gauge cw2015 start*/
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+	if(cw2015_exit_flag==1)
+		return g_cw2015_capacity;
 	else
-		return 50;
+		return get_mtk_battery()->ui_soc;
+#else
+	return get_mtk_battery()->ui_soc;
+#endif
+/* prize liaoxingen modify fuel gauge cw2015 end*/
 }
 
 signed int battery_get_bat_temperature(void)

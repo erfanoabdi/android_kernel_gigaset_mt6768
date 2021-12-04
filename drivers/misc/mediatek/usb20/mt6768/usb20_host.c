@@ -160,7 +160,7 @@ static void _set_vbus(int is_on)
 #ifdef CONFIG_MTK_CHARGER
 #if CONFIG_MTK_GAUGE_VERSION == 30
 		charger_dev_enable_otg(primary_charger, true);
-		charger_dev_set_boost_current_limit(primary_charger, 1500000);
+		charger_dev_set_boost_current_limit(primary_charger, 1100000); /* prize modify by liaoxingen for k66601q mmx customer need 20201012 */
 #else
 		set_chr_enable_otg(0x1);
 		set_chr_boost_current_limit(1500);

@@ -34,7 +34,15 @@ endif
 ifeq ($(CONFIG_MTK_LENS_USE_MODULE), y)
 
 MAIN_CFILES += main_lens.c
-
+# prize add by linchong 20210630 start
+MAIN_CFILES += common/gt9767af/GT9767AF.c
+# prize add by linchong 20210630 end
+#prize add by linchong 20210416 start
+MAIN_CFILES += common/aw86014af/AW86014AF.c
+#prize add by linchong 20210416 end
+#prize add by yantaotao 20210510 start
+MAIN_CFILES += common/aw8601csr/AW8601CSR.c
+#prize add by yantaotao 20210510 end
 MAIN_CFILES  += common/bu64253gwzaf/BU64253GWZAF.c
 MAIN_CFILES  += common/fp5510e2af/FP5510E2AF.c
 MAIN_CFILES  += common/bu6424af/BU6424AF.c
@@ -62,6 +70,7 @@ MAIN_CFILES  += common/lc898217afc/LC898217AFC.c
 MAIN_CFILES  += common/lc898122af/LC898122AF.c
 MAIN_CFILES  += common/lc898122af/OisCmd.c
 MAIN_CFILES  += common/lc898122af/OisIni.c
+MAIN_CFILES  += common/ov5645af/OV5645AF.c
 MAIN_CFILES  += common/ad5820af/AD5820AF.c
 MAIN_CFILES  += common/wv511aaf/WV511AAF.c
 MAIN_CFILES  += common/ak7371af/AK7371AF.c
@@ -83,6 +92,15 @@ mainaf-objs := $(MAIN_CFILES:.c=.o)
 else
 
 obj-y  += main_lens.o
+#prize add by linchong 20210416 start
+obj-y  += common/aw86014af/
+#prize add by linchong 20210416 end
+#prize add by yantaotao 20210510 start
+obj-y  += common/aw8601csr/
+#prize add by yantaotao 20210510 end
+#/*prize  add  for FP5516WEAF by zhuzhengjiang    20210621-start*/
+obj-y  += common/fp5516weaf/
+#/*prize  add  for FP5516WEAF by zhuzhengjiang    20210621-end*/
 obj-y  += common/fp5510e2af/
 obj-y  += common/bu6424af/
 obj-y  += common/bu6429af/
@@ -97,6 +115,9 @@ obj-y  += common/dw9719taf/
 obj-y  += common/dw9763af/
 obj-y  += common/dw9839af/
 obj-y  += common/gt9764af/
+# prize add by linchong 20210630 start
+obj-y  += common/gt9767af/
+# prize add by linchong 20210630 end
 obj-y  += common/lc898212af/
 obj-y  += common/lc898212xdaf/
 obj-y  += common/lc898214af/
@@ -106,8 +127,10 @@ obj-y  += common/lc898217afb/
 obj-y  += common/lc898217afc/
 obj-y  += common/lc898229af/
 obj-y  += common/lc898122af/
+obj-y += common/ov5645af/
 obj-y  += common/wv511aaf/
 obj-y  += common/ak7371af/
+obj-y  += common/gt9772af/
 ifeq ($(CONFIG_MTK_LENS_BU63165AF_SUPPORT), y)
   obj-y  += common/bu63165af/
 else

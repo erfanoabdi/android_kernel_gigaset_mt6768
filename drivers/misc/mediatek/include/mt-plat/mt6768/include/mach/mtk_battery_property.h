@@ -18,7 +18,7 @@
 #define DIFFERENCE_FULLOCV_ITH	200	/* mA */
 #define MTK_CHR_EXIST 1
 #define KEEP_100_PERCENT 1
-#define R_FG_VALUE	5				/* mOhm */
+#define R_FG_VALUE	10				/* mOhm, prize liaoxingen current display inaccurate question (MTK CASE ALPS05352350)*/
 #define EMBEDDED_SEL 0
 #define PMIC_SHUTDOWN_CURRENT 20	/* 0.01 mA */
 #define FG_METER_RESISTANCE	100

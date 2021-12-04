@@ -126,7 +126,7 @@ config MTK_LENS_AK7345AF_SUPPORT
 	  This config is used to enable the corresponding
 	  lens driver for the camera sensor module
 	  Set as y if the driver is used in this project
-
+#prize add by liaojie for patch MTK_PATCH:t-alps-release-q0.mp1-V6 20191218-start
 config MTK_LENS_DW9800WAF_SUPPORT
 	bool "DW9800WAF Lens Driver"
 	default n
@@ -135,7 +135,7 @@ config MTK_LENS_DW9800WAF_SUPPORT
 	  This config is used to enable the corresponding
 	  lens driver for the camera sensor module
 	  Set as y if the driver is used in this project
-
+#prize add by liaojie for patch MTK_PATCH:t-alps-release-q0.mp1-V6 20191218-end
 config MTK_LENS_DW9718AF_SUPPORT
 	bool "DW9718AF Lens Driver"
 	default n
@@ -297,3 +297,33 @@ config MTK_LENS_WV511AAF_SUPPORT
 	  This config is used to enable the corresponding
 	  lens driver for the camera sensor module
 	  Set as y if the driver is used in this project
+#/*prize  add  for main af by zhuzhengjiang    20191018-start*/
+config MTK_LENS_DW9800WAF_SUPPORT
+	bool "DW9800WAF Lens Driver"
+	default n
+	help
+	  DW9800WAF Lens Driver
+	  This config is used to enable the corresponding
+	  lens driver for the camera sensor module
+	  Set as y if the driver is used in this project
+#/*prize  add  for main af by zhuzhengjiang    20191018-end*/
+#/*prize  add  for DW9714KAF by zhuzhengjiang    20210604-start*/
+config MTK_LENS_DW9714KAF_SUPPORT
+	bool "DW9714KAF Lens Driver"
+	default n
+	help
+	  DW9714KAF Lens Driver
+	  This config is used to enable the corresponding
+	  lens driver for the camera sensor module
+	  Set as y if the driver is used in this project
+#/*prize  add  forDW9714KAF by zhuzhengjiang    20210604-end*/
+#/*prize  add  for FP5516WE by zhuzhengjiang    20210621-start*/
+config MTK_LENS_FP5516WEAF_SUPPORT
+	bool "FP5516WEAF Lens Driver"
+	default n
+	help
+	  FP5516WEAF Lens Driver
+	  This config is used to enable the corresponding
+	  lens driver for the camera sensor module
+	  Set as y if the driver is used in this project
+#/*prize  add  for FP5516WEAF by zhuzhengjiang    20210621-end*/

@@ -18,6 +18,11 @@
 #include <linux/platform_device.h>
 #include <linux/regulator/consumer.h>
 
+//prize-add prize-wangyunqing-20181110-start
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+#include "../../hardware_info/hardware_info.h"
+#endif
+//prize-add prize-wangyunqing-20181110-end
 #ifndef ARY_SIZE
 #define ARY_SIZE(x) (sizeof((x)) / sizeof((x[0])))
 #endif
@@ -208,8 +213,10 @@ enum LCM_LANE_NUM {
 
 enum LCM_DSI_FORMAT {
 	LCM_DSI_FORMAT_RGB565 = 0,
-	LCM_DSI_FORMAT_RGB666 = 1,
-	LCM_DSI_FORMAT_RGB888 = 2
+	LCM_DSI_FORMAT_RGB666_LOOSELY = 1,
+	LCM_DSI_FORMAT_RGB666 = 2,
+	LCM_DSI_FORMAT_RGB888 = 3,
+	LCM_DSI_FORMAT_RGB101010 = 4,
 };
 
 
@@ -534,6 +541,12 @@ struct dynamic_fps_info {
 	/*unsigned int idle_check_interval;*//*ms*/
 };
 
+struct vsync_trigger_time {
+	unsigned int fps;
+	unsigned int trigger_after_te;
+	unsigned int config_expense_time;
+};
+
 
 /*DynFPS*/
 enum DynFPS_LEVEL {
@@ -677,6 +690,8 @@ struct LCM_DSI_PARAMS {
 	unsigned int cont_clock;
 	unsigned int ufoe_enable;
 	unsigned int dsc_enable;
+	unsigned int bdg_dsc_enable;
+	unsigned int bdg_ssc_disable;
 	struct LCM_UFOE_CONFIG_PARAMS ufoe_params;
 	struct LCM_DSC_CONFIG_PARAMS dsc_params;
 	unsigned int edp_panel;
@@ -738,6 +753,7 @@ struct LCM_DSI_PARAMS {
 	/*for ARR*/
 	unsigned int dynamic_fps_levels;
 	struct dynamic_fps_info dynamic_fps_table[DYNAMIC_FPS_LEVELS];
+	struct vsync_trigger_time vsync_after_te[DFPS_LEVELS];
 
 #ifdef CONFIG_MTK_HIGH_FRAME_RATE
 	/****DynFPS start****/
@@ -793,6 +809,9 @@ struct LCM_PARAMS {
 	unsigned int min_luminance;
 	unsigned int average_luminance;
 	unsigned int max_luminance;
+
+	unsigned int hbm_en_time;
+	unsigned int hbm_dis_time;
 
 #ifdef CONFIG_MTK_HIGH_FRAME_RATE
 	enum LCM_Send_Cmd_Mode sendmode;
@@ -977,6 +996,11 @@ enum LCM_DRV_IOCTL_CMD {
 
 struct LCM_DRIVER {
 	const char *name;
+//prize-add prize-wangyunqing-20181110-start	
+    #if defined(CONFIG_PRIZE_HARDWARE_INFO)
+	struct hardware_info lcm_info;
+    #endif
+//prize-add prize-wangyunqing-20181110-end
 	void (*set_util_funcs)(const struct LCM_UTIL_FUNCS *util);
 	void (*get_params)(struct LCM_PARAMS *params);
 
@@ -1031,6 +1055,16 @@ struct LCM_DRIVER {
 
 	void (*aod)(int enter);
 
+
+	bool (*get_hbm_state)(void);
+	bool (*get_hbm_wait)(void);
+	bool (*set_hbm_wait)(bool wait);
+	bool (*set_hbm_cmdq)(bool en, void *qhandle);
+//prize added by huarui, add tp driver, 20190327-start
+#if defined(CONFIG_PRIZE_LCM_POWEROFF_AFTER_TP)
+	void (*poweroff_ext)(void);
+#endif
+//prize added by huarui, add tp driver, 20190327-end
 	/* /////////////DynFPS///////////////////////////// */
 	void (*dfps_send_lcm_cmd)(void *cmdq_handle,
 		unsigned int from_level, unsigned int to_level, struct LCM_PARAMS *params);
@@ -1052,5 +1086,21 @@ extern int display_bias_disable(void);
 extern int display_bias_regulator_init(void);
 
 
+//prize
+extern int display_bias_enable_v(unsigned int mv);
+extern int display_bias_vpos_enable(int enable);
+extern int display_bias_vneg_enable(int enable);
+extern int display_bias_vpos_set(int mv);
+extern int display_bias_vneg_set(int mv);
+extern int display_ldo18_enable(int enable);
+extern int display_ldo28_enable(int enable);
+/* begin, prize-lifenfen-20181206, add for lcm gpio pinctl control */
+#define LCM_RESET_PIN_NO         0
+#define LCM_POWER_DP_NO          1             //2.8V
+#define LCM_POWER_DM_NO          2             //1.8V
+#define LCM_POWER_ENP_NO         3
+#define LCM_POWER_ENN_NO         4
 
+int mt_dsi_pinctrl_set(unsigned int pin , unsigned int level);
+/* end, prize-lifenfen-20181206, add for lcm gpio pinctl control */
 #endif /* __LCM_DRV_H__ */

@@ -128,6 +128,9 @@ if BLOCK
 menu "DOS/FAT/NT Filesystems"
 
 source "fs/fat/Kconfig"
+#prize addd by zhaopengge 20210122-----start
+source "fs/exfat/Kconfig"
+#prize addd by zhaopengge 20210122-----end
 source "fs/ntfs/Kconfig"
 
 endmenu

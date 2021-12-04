@@ -24,6 +24,12 @@
 #include <hwmsensor.h>
 #include <SCP_sensorHub.h>
 #include "SCP_power_monitor.h"
+/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)                                                                                                                                                                                                                                
+#include "../../../hardware_info/hardware_info.h"
+extern struct hardware_info current_barosensor_info;
+#endif
+/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 
 /* trace */
 enum BAR_TRC {
@@ -173,14 +179,33 @@ static ssize_t test_cali_store(struct device_driver *ddri, const char *buf,
 		barohub_factory_enable_calibration();
 	return count;
 }
+//prize-add read cali data Function interface-pengzhipeng-20210908-start
+static int32_t baro_cali_data[2] = {0};
+
+static ssize_t read_cali_data_show(struct device_driver *ddri, char *buf)
+{
+
+	ssize_t res = 0;
+
+	
+	res = snprintf(buf, PAGE_SIZE, "%d %d\n", baro_cali_data[0],baro_cali_data[1]);
+	return res < PAGE_SIZE ? res : -EINVAL;
+}
+//prize-add read cali data Function interface-pengzhipeng-20210908-end
 static DRIVER_ATTR_RO(sensordata);
 static DRIVER_ATTR_RW(trace);
 static DRIVER_ATTR_WO(test_cali);
+//prize-add read cali data Function interface-pengzhipeng-20210908-start
+static DRIVER_ATTR_RO(read_cali_data);
+//prize-add read cali data Function interface-pengzhipeng-20210908-end
 
 static struct driver_attribute *barohub_attr_list[] = {
 	&driver_attr_sensordata,	/* dump sensor data */
 	&driver_attr_trace,	/* trace log */
 	&driver_attr_test_cali, /* enable cali */
+//prize-add read cali data Function interface-pengzhipeng-20210908-start
+	&driver_attr_read_cali_data, /* enable cali */
+//prize-add read cali data Function interface-pengzhipeng-20210908-end
 };
 
 static int barohub_create_attr(struct device_driver *driver)
@@ -202,6 +227,7 @@ static int barohub_create_attr(struct device_driver *driver)
 	return err;
 }
 
+
 static int barohub_delete_attr(struct device_driver *driver)
 {
 	int idx = 0, err = 0;
@@ -221,13 +247,39 @@ static void scp_init_work_done(struct work_struct *work)
 	int err = 0;
 	int32_t cfg_data[2] = {0};
 	struct barohub_ipi_data *obj = obj_ipi_data;
+	/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)                                                                                                                                                                                                                      
+	struct sensor_hardware_info_t deviceinfo;
+#endif
+	pr_info("%s first_ready_after_boot = %d +\n", __func__, atomic_read(&obj->first_ready_after_boot));
+	/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 
 	if (atomic_read(&obj->scp_init_done) == 0) {
 		pr_debug("scp is not ready to send cmd\n");
 		return;
 	}
-	if (atomic_xchg(&obj->first_ready_after_boot, 1) == 0)
+	if (atomic_xchg(&obj->first_ready_after_boot, 1) == 0) {
+		/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)
+				err = sensorHub_get_hardware_info(ID_PRESSURE, &deviceinfo);
+				if (err < 0)
+					pr_err("sensorHub_get_hardware_info ID_MAGNETIC fail\n");
+				else
+				{	
+            #if defined(CONFIG_PRIZE_HARDWARE_INFO)
+					strlcpy(current_barosensor_info.chip, deviceinfo.chip, sizeof(current_barosensor_info.chip));
+					strlcpy(current_barosensor_info.vendor, deviceinfo.vendor, sizeof(current_barosensor_info.vendor));
+					strlcpy(current_barosensor_info.id, deviceinfo.id, sizeof(current_barosensor_info.id));
+					strlcpy(current_barosensor_info.more, deviceinfo.more, sizeof(current_barosensor_info.more));
+            #endif
+					pr_info("sensorHub_get_hardware_info ID_PRESSURE ok\n");
+				}	
+#endif
+				pr_info("%s first_ready_after_boot = %d -\n", __func__, atomic_read(&obj->first_ready_after_boot));
+		/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
+
 		return;
+	}
 	spin_lock(&calibration_lock);
 	cfg_data[0] = obj->config_data[0];
 	cfg_data[1] = obj->config_data[1];
@@ -255,6 +307,10 @@ static int baro_recv_data(struct data_unit_t *event, void *reserved)
 		cali_data[1] = event->data[1];
 		err = baro_cali_report(cali_data);
 		spin_lock(&calibration_lock);
+//prize-add read cali data Function interface-pengzhipeng-20210908-start
+		baro_cali_data[0] = event->data[0];
+		baro_cali_data[1] = event->data[1];
+//prize-add read cali data Function interface-pengzhipeng-20210908-end
 		obj->config_data[0] = event->data[0];
 		obj->config_data[1] = event->data[1];
 		spin_unlock(&calibration_lock);
@@ -411,11 +467,12 @@ static int barohub_flush(void)
 
 static int barohub_set_cali(uint8_t *data, uint8_t count)
 {
+	int32_t *buf = (int32_t *)data;
 	struct barohub_ipi_data *obj = obj_ipi_data;
 
 	spin_lock(&calibration_lock);
-	obj->config_data[0] = data[0];
-	obj->config_data[1] = data[1];
+	obj->config_data[0] = buf[0];
+	obj->config_data[1] = buf[1];
 	spin_unlock(&calibration_lock);
 
 	return sensor_cfg_to_hub(ID_PRESSURE, data, count);

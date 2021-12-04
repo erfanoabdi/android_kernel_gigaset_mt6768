@@ -722,6 +722,13 @@ static inline uint8_t pe_get_startup_state(
 
 	switch (pd_event->msg_sec) {
 	case TYPEC_ATTACHED_SNK:
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
+#ifdef CONFIG_USB_PD_CUSTOM_DBGACC
+	case TYPEC_ATTACHED_DBGACC_SNK:
+#endif
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 		startup_state = PE_SNK_STARTUP;
 		break;
 
@@ -730,12 +737,16 @@ static inline uint8_t pe_get_startup_state(
 		startup_state = PE_SRC_STARTUP;
 		break;
 
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifndef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 #ifdef CONFIG_USB_PD_CUSTOM_DBGACC
 	case TYPEC_ATTACHED_DBGACC_SNK:
 		pd_port->custom_dbgacc = true;
 		startup_state = PE_DBG_READY;
 		break;
 #endif	/* CONFIG_USB_PD_CUSTOM_DBGACC */
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 	}
 
 	/* At least > 2 for Ellisys VNDI PR_SWAP */

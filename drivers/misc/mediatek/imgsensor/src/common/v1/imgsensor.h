@@ -29,7 +29,11 @@ struct IMGSENSOR {
 	struct IMGSENSOR_HW     hw;
 	struct IMGSENSOR_CLK    clk;
 	struct IMGSENSOR_SENSOR sensor[IMGSENSOR_SENSOR_IDX_MAX_NUM];
-	atomic_t imgsensor_open_cnt;
+	/*prize add by zhuzhengjiang for open camera failed 20210506 start*/	
+	//atomic_t imgsensor_open_cnt;
+	struct mutex imgsensor_clk_mutex;
+	int imgsensor_open_cnt_mux;
+	/*prize add by zhuzhengjiang for open camera failed 20210506 end*/
 	enum IMGSENSOR_RETURN (*imgsensor_oc_irq_enable)
 			(enum IMGSENSOR_SENSOR_IDX sensor_idx, bool enable);
 

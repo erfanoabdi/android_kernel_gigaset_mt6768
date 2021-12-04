@@ -30,6 +30,16 @@ config BACKLIGHT_SUPPORT_LM3697
 	  Set y to support.
 	  Set n to disable.
 	  Charge pump driver for external backlight.
+# prize wyq 20191015 add for aw99703 backlight led-start	  
+config BACKLIGHT_SUPPORT_AW99703
+	bool "AWNIC(AW99703) Support"
+	default n
+	---help---
+	  LED driver for AWNIC(aw99703) support.
+	  Set y to support.
+	  Set n to disable.
+	  Charge pump driver for external backlight.
+# prize wyq 20191015 add for aw99703 backlight led-end
 
 config LEDS_MTK_DISP
 	tristate "Mediatek display LED support"

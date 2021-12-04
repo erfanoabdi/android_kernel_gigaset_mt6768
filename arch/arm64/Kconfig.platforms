@@ -218,6 +218,7 @@ config MACH_MT6771
 	select MTK_DRAMC
 	select CPU_IDLE
 	select MTK_BASE_POWER
+	select MTK_SWPM if !FPGA_EARLY_PORTING
 	select MTK_GIC_V3_EXT
 	select MTK_LM_MODE if !MTK_GMO_RAM_OPTIMIZE
 	select MTK_SYSIRQ
@@ -486,6 +487,7 @@ config MACH_MT6885
 	select HW_RANDOM
 	select HW_RANDOM_MT67XX
 	select ARM64_ERRATUM_1542418
+	select ARM64_ERRATUM_1800710
 	select MTK_CPU_KORO
         help
 	  This enables support for MediaTek MT6885
@@ -619,6 +621,7 @@ config MACH_MT6833
 	select MTK_CACHE_PARITY_CHECK
 	select HW_RANDOM
 	select HW_RANDOM_MT67XX
+	select MTK_PID_MAP
 	help
 	  This enables support for MediaTek MT6833
 	  Support for aarch64 Architecture
@@ -689,6 +692,7 @@ config MACH_MT6853
 	select MTK_UNIFIED_DEBUG_INTERFACE
 	select MTK_CPU_KORO
 	select MTK_DRAMC_WA
+	select MTK_PID_MAP
 	help
 	  This enables support for MediaTek MT6853
 	  Support for aarch64 Architecture
@@ -721,7 +725,7 @@ config MACH_MT6893
 	select CRYPTO_SHA2_ARM64_CE
 	select CRYPTO_AES_ARM64_CE_BLK
 	select MTK_ES_REG
-	select MTK_CQDMA
+	select MEDIATEK_CQDMA
 	select MTK_DBGTOP
 	select MTK_BOUNCING_CHECK if MTK_AEE_FEATURE
 	select MTK_TIMER_SYSTIMER
@@ -730,7 +734,6 @@ config MACH_MT6893
 	select MTK_LPM
 	select MTK_LOW_POWER_MODULE
 	select MTK_LPM_MT6885
-	select MTK_SWPM if !FPGA_EARLY_PORTING
 	select COMMON_CLK_MT6885
 	select DEVAPC_MT6885
 	select DEVMPU_MT6885

@@ -66,6 +66,12 @@
 #include "mtk_switch_charging.h"
 #include "mtk_intf.h"
 
+//start add by sunshuai for Bright screen current limit  20181130
+#if defined(CONFIG_PRIZE_CHARGE_CTRL_POLICY)
+extern int g_charge_is_screen_on;
+#endif
+//end add by sunshuai for Bright screen current limit   20181130
+
 static int _uA_to_mA(int uA)
 {
 	if (uA == -1)
@@ -143,15 +149,10 @@ static void swchg_select_charging_current_limit(struct charger_manager *info)
 	}
 
 	if (info->usb_unlimited) {
-		if (pdata->input_current_limit_by_aicl != -1) {
-			pdata->input_current_limit =
-				pdata->input_current_limit_by_aicl;
-		} else {
-			pdata->input_current_limit =
-				info->data.usb_unlimited_current;
-		}
+		pdata->input_current_limit = 2000000;
+
 		pdata->charging_current_limit =
-			info->data.ac_charger_current;
+					info->data.ac_charger_current;
 		goto done;
 	}
 
@@ -249,6 +250,20 @@ static void swchg_select_charging_current_limit(struct charger_manager *info)
 				info->data.apple_2_1a_charger_current;
 	}
 
+//start add by sunshuai for Bright screen current limit  20181130
+#if defined(CONFIG_PRIZE_CHARGE_CTRL_POLICY)
+    if (g_charge_is_screen_on){
+		if (pdata->charging_current_limit > 1250000){
+			pdata->charging_current_limit = 1250000;
+		}
+		if (pdata->input_current_limit > 1250000){
+			pdata->input_current_limit = 1250000;
+		}
+	}
+	printk("PRIZE charge current %d:%d\n",pdata->input_current_limit,pdata->charging_current_limit);
+#endif
+//end add by sunshuai for Bright screen current limit	   20181130
+
 	if (info->enable_sw_jeita) {
 		if (IS_ENABLED(CONFIG_USBIF_COMPLIANCE)
 		    && info->chr_type == STANDARD_HOST)
@@ -270,6 +285,9 @@ static void swchg_select_charging_current_limit(struct charger_manager *info)
 					pdata->thermal_input_current_limit;
 	}
 
+/* begin, prize-lifenfen-20181217, add for input current regulation */
+#ifndef CONFIG_PRIZE_CONSTANT_AICR_SUPPORT
+/* end, prize-lifenfen-20181217, add for input current regulation */
 	if (pdata->input_current_limit_by_aicl != -1 &&
 	    !mtk_pe20_get_is_connect(info) && !mtk_pe_get_is_connect(info) &&
 	    !mtk_is_TA_support_pd_pps(info)) {
@@ -278,6 +296,9 @@ static void swchg_select_charging_current_limit(struct charger_manager *info)
 			pdata->input_current_limit =
 					pdata->input_current_limit_by_aicl;
 	}
+/* begin, prize-lifenfen-20181217, add for input current regulation */
+#endif
+/* end, prize-lifenfen-20181217, add for input current regulation */
 done:
 	ret = charger_dev_get_min_charging_current(info->chg1_dev, &ichg1_min);
 	if (ret != -ENOTSUPP && pdata->charging_current_limit < ichg1_min)

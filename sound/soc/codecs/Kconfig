@@ -223,6 +223,11 @@ config SND_SOC_ALL_CODECS
 	select SND_SOC_RT5509 if I2C
 	select SND_SOC_MT6660 if I2C
 	select SND_SOC_TFA9874 if I2C
+# prize modified by lifenfen, add awinic smartpa aw8898 or aw881xx, 20200103 begin
+	select SND_SOC_AW8898 if I2C
+	select SND_SMARTPA_AW881XX if I2C
+	select SND_SMARTPA_AW88194A if I2C
+# prize modified by lifenfen, add awinic smartpa aw8898 or aw881xx, 20200103 end
         help
           Normally ASoC codec drivers are only built if a machine driver which
           uses them is also built since they are only usable with a machine
@@ -1239,4 +1244,92 @@ config SND_SOC_RT5509
 	depends on I2C
 	select RT_REGMAP
 
+# prize modified by lifenfen, add awinic smartpa aw8898, 20200103 begin
+config SND_SOC_AW8898
+        tristate "SoC Audio for awinic aw8898 series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw8898 series Smart PA.
+# prize modified by lifenfen, add awinic smartpa aw8898, 20200103 end
+
+# prize modified by wyq, add awinic smartpa aw881xx, 20200103 begin
+config SND_SMARTPA_AW881XX
+        tristate "SoC Audio for awinic aw881xx series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+# prize modified by wyq, add awinic smartpa aw881xx, 20200103 end
+# prize add by liaoxingen, awinic aw881xx, 20200601 start
+config SND_SMARTPA_AW88194A_NEW
+        tristate "SoC Audio for awinic aw881a series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+# prize add by liaoxingen, awinic aw881xx, 20200601 end 
+
+# prize modified by xuxiaoming, add awinic smartpa aw88194a, 20200116 begin
+config SND_SMARTPA_AW88194A
+        tristate "SoC Audio for awinic aw881xx series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+# prize xuxiaoming, add awinic smartpa aw88194a, 20200116 end
+
+# prize add by huarui, add smartpa, 20200103 begin
+config SND_SOC_AW881XX_STEREO
+        tristate "SoC Audio for awinic aw881xx series"
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+# prize add by huarui, add smartpa, 20200103 end
+
+# prize add by huarui, add foursemi smartpa fs1894u, 20200103 begin
+config SND_SOC_FS16XX
+        tristate "SoC Audio for awinic fs1894u series"
+        depends on I2C
+        default n
+        help
+          This option enables support for fs1894u series Smart PA.
+# prize add by huarui, add foursemi smartpa fs1894u, 20200103 end
+
+# prize added by chenjiaxi, add aw87519, 20200918-start
+config SND_SOC_AW87519
+        tristate "SoC Audio for aw87519 series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw87519 PA.
+# prize added by chenjiaxi, add aw87519, 20200918-end
+
+# prize add by huarui, add smartpa, 20200103 begin
+config SND_SOC_AW87XXX
+	tristate "SoC Audio for awinic AW87XXX Smart K PA"
+	depends on I2C
+	help
+	  This option enables support for AW87XXX Smart K PA.
+# prize add by huarui, add smartpa, 20200103 end
+
+#prize add by lipengpeng 20210330 start
+config SND_SMARTPA_AW881XX_V2
+        tristate "SoC Audio for awinic aw881a series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+	   
+#prize add by lipengpeng 20210330 end 
+
+#prize add by wuhui 20210623 start
+config SND_SMARTPA_AW881XX_V1_3_0
+        tristate "SoC Audio for awinic aw881xx series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+	   
+#prize add by wuhui 20210623 end
 endmenu

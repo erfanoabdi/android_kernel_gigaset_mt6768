@@ -19,6 +19,12 @@
 #include "mag.h"
 #include <SCP_sensorHub.h>
 #include "SCP_power_monitor.h"
+/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+#include "../../../hardware_info/hardware_info.h"
+extern struct hardware_info current_msensor_info;
+#endif
+/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 
 #define MAGHUB_DEV_NAME         "mag_hub"
 #define DRIVER_VERSION          "1.0.1"
@@ -266,12 +272,36 @@ static void scp_init_work_done(struct work_struct *work)
 	struct maghub_ipi_data *obj = mag_ipi_data;
 	int err = 0;
 	struct mag_libinfo_t mag_libinfo;
+	/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+	#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)
+	struct sensor_hardware_info_t deviceinfo;
+	#endif
+	pr_info("%s first_ready_after_boot = %d +\n", __func__, atomic_read(&obj->first_ready_after_boot));
+	/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 
 	if (atomic_read(&obj->scp_init_done) == 0) {
 		pr_err("scp is not ready to send cmd\n");
 		return;
 	}
 	if (atomic_xchg(&obj->first_ready_after_boot, 1) == 0) {
+/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)
+		err = sensorHub_get_hardware_info(ID_MAGNETIC, &deviceinfo);
+		if (err < 0)
+			pr_err("sensorHub_get_hardware_info ID_MAGNETIC fail\n");
+		else
+		{
+			#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+			strlcpy(current_msensor_info.chip, deviceinfo.chip, sizeof(current_msensor_info.chip));
+			strlcpy(current_msensor_info.vendor, deviceinfo.vendor, sizeof(current_msensor_info.vendor));
+			strlcpy(current_msensor_info.id, deviceinfo.id, sizeof(current_msensor_info.id));
+			strlcpy(current_msensor_info.more, deviceinfo.more, sizeof(current_msensor_info.more));
+			#endif
+			pr_info("sensorHub_get_hardware_info ID_MAGNETIC ok\n");
+		}
+#endif
+		pr_info("%s first_ready_after_boot = %d -\n", __func__, atomic_read(&obj->first_ready_after_boot));
+/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 		err = sensor_set_cmd_to_hub(ID_MAGNETIC,
 			CUST_ACTION_GET_SENSOR_INFO, &obj->mag_info);
 		if (err < 0) {

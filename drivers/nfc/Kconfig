@@ -50,6 +50,9 @@ config NFC_PORT100
 
 source "drivers/nfc/fdp/Kconfig"
 source "drivers/nfc/pn544/Kconfig"
+#prize-add nfc-pengzhipeng-20201016-start
+source "drivers/nfc/nxp533/Kconfig"
+#prize-add nfc-pengzhipeng-20201016-end
 source "drivers/nfc/pn533/Kconfig"
 source "drivers/nfc/microread/Kconfig"
 source "drivers/nfc/nfcmrvl/Kconfig"

@@ -729,8 +729,14 @@ static inline const char *rt9465_get_irq_name(struct rt9465_info *info,
 	return "not found";
 }
 
-static inline void rt9465_irq_unmask(struct rt9465_info *info,
-	unsigned int irqnum)
+static inline void rt9465_irq_mask(struct rt9465_info *info, int irqnum)
+{
+	dev_dbg(info->dev, "%s: irq = %d, %s\n", __func__, irqnum,
+		rt9465_get_irq_name(info, irqnum));
+	rt9465_irqmask[irqnum / 8] |= (1 << (irqnum % 8));
+}
+
+static inline void rt9465_irq_unmask(struct rt9465_info *info, int irqnum)
 {
 	dev_dbg(info->dev, "%s: irq = %d, %s\n", __func__, irqnum,
 		rt9465_get_irq_name(info, irqnum));
@@ -850,9 +856,7 @@ static int rt9465_register_irq(struct rt9465_info *info)
 	/* request gpio */
 	len = strlen(info->desc->chg_dev_name);
 	name = devm_kzalloc(info->dev, len + 10, GFP_KERNEL);
-	ret = snprintf(name, len + 10, "%s_irq_gpio", info->desc->chg_dev_name);
-	if (ret >= (len + 10))
-		chr_info("%s: name truncated\n", __func__);
+	snprintf(name,  len + 10, "%s_irq_gpio", info->desc->chg_dev_name);
 	ret = devm_gpio_request_one(info->dev, info->intr_gpio, GPIOF_IN, name);
 	if (ret < 0) {
 		chr_err("%s: gpio request fail\n", __func__);
@@ -1565,6 +1569,9 @@ static struct charger_ops rt9465_chg_ops = {
 /* ========================= */
 /* I2C driver function       */
 /* ========================= */
+//add by mahuiyin 20190410 start
+extern int is_chg2_exist;
+//add by mahuiyin 20190410 end
 
 static int rt9465_probe(struct i2c_client *i2c,
 	const struct i2c_device_id *dev_id)
@@ -1617,6 +1624,11 @@ static int rt9465_probe(struct i2c_client *i2c,
 
 	chr_info("%s: successfully\n", __func__);
 
+
+
+//add by mahuiyin 20190410 start
+	is_chg2_exist = 1;
+//add by mahuiyin 20190410 end	
 	return ret;
 
 err_register_irq:
@@ -1631,6 +1643,9 @@ err_parse_dt:
 	mutex_destroy(&info->gpio_access_lock);
 	mutex_destroy(&info->irq_access_lock);
 	mutex_destroy(&info->hidden_mode_lock);
+//add by mahuiyin 20190410 start
+	is_chg2_exist = 0;
+//add by mahuiyin 20190410 end
 	return ret;
 }
 

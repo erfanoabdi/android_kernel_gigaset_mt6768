@@ -179,4 +179,78 @@ config MTK_FLASHLIGHT_DLPT
 	  Dynamic low power throttling is a mechanism to monitor
 	  the current of battary dynamicly. It will start by request
 	  and notice user by kernel notifier.
+#/*zhengjiang.zhu@prize.Camera.Driver  20200116  start for sub_flash_aw36402*/
+config MTK_FLASHLIGHT_AW36402_GPIO
+	tristate "Mediatek flashlight aw36402 gpio driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+	  This is flashlight aw36402 gpio driver for camera.
 
+	  Say Y here if you want a aw36402 driver IC with GPIO interface.
+	  Select this only if your board has this IC.
+
+	  Say M here if you want to compile this driver as a module.
+#/*zhengjiang.zhu@prize.Camera.Driver  20200116  end for sub_flash_aw36402*/
+#/*zhengjiang.zhu@prize.Camera.Driver  20200904  start for flash_aw36518*/
+config MTK_FLASHLIGHT_AW36518
+	tristate "Mediatek flashlight isink driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+		This is flashlight isink gpio driver for camera.
+#/*zhengjiang.zhu@prize.Camera.Driver  20200116  end for sub_flash_aw36402*/
+#/*prize add by zhuzhengjiang for IR FLASH aw3651 start*/
+config MTK_FLASHLIGHT_IR_AW36515
+	tristate "Mediatek flashlight aw gpio driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+		This is flashlight aw gpio driver for camera.
+#/*prize add by zhuzhengjiang for IR FLASH aw3651 end*/
+#prize add by lipengpeng 20210208 start 
+config MTK_FLASHLIGHT_SGM37895
+	tristate "Mediatek flashlight isink driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+		This is flashlight isink gpio driver for camera.
+config MTK_FLASHLIGHT_SGM37895A
+	tristate "Mediatek flashlight isink driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+		This is flashlight isink gpio driver for camera.
+#prize add by lipengpeng 20210208 end
+#prize add by huarui 20210208 start 
+config MTK_FLASHLIGHT_SGM3758
+	tristate "Mediatek flashlight isink driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+		This is flashlight isink gpio driver for camera.
+
+config MTK_FLASHLIGHT_AW3641
+	tristate "Mediatek flashlight isink driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+		This is flashlight isink gpio driver for camera.
+#prize add by huarui 20210208 end 
+
+#prize add by lipengpeng 20210701 start 
+
+config MTK_FLASHLIGHT_AW36515
+	tristate "Mediatek flashlight aw gpio driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+		This is flashlight aw gpio driver for camera.
+
+config MTK_FLASHLIGHT_AW36413
+	tristate "Mediatek flashlight aw gpio driver"
+	depends on MTK_FLASHLIGHT
+	default n
+	help
+		This is flashlight aw gpio driver for camera.
+#prize add by lipengpeng 20210701 start 

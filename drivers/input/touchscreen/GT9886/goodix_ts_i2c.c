@@ -28,6 +28,13 @@
 #include <linux/uaccess.h>
 #include <linux/miscdevice.h>
 
+/* begin, prize-lifenfen-20180104, add for touchpanel hardware info */
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+#include "../../../misc/mediatek/hardware_info/hardware_info.h"
+extern struct hardware_info current_tp_info;
+int current_tp_length = 0;
+#endif
+/* end, prize-lifenfen-20180104, add for touchpanel hardware info */
 #define TS_DT_COMPATIBLE "goodix,gt9886"
 #define TS_DRIVER_NAME "GT9886"
 #define I2C_MAX_TRANSFER_SIZE	256
@@ -1047,6 +1054,15 @@ static int goodix_read_version(struct goodix_ts_device *dev,
 	}
 
 	version->valid = true;
+/* begin, prize-lifenfen-20180104, add for touchpanel hardware info */
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+	current_tp_length = snprintf(current_tp_info.chip, sizeof(current_tp_info.chip), "GT%s\n  FW:%02x.%02x.%02x", version->pid,
+		version->vid[0], version->vid[1], version->vid[2]);
+    sprintf(current_tp_info.id,"%02x",version->sensor_id);
+    strcpy(current_tp_info.vendor,"Goodix");
+	sprintf(current_tp_info.more,"touchpanel");
+#endif
+/* end, prize-lifenfen-20180104, add for touchpanel hardware info */
 
 	ts_info("PID:%s,SensorID:%d, VID:%*ph",
 				version->pid,

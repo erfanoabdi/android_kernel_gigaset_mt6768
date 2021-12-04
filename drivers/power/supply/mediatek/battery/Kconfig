@@ -35,3 +35,60 @@ config MTK_ADDITIONAL_BATTERY_TABLE
 	  Table number is five.
 	  Set No to disable the fifth battery table
 	  Table number is four.
+
+# begin, prize-lifenfen-20181207, add fuel gauge cw2015
+config MTK_CW2015_SUPPORT
+	bool "Charger Driver for CW2015 fg"
+	default n
+	help
+	  Say Y to enable
+	  CW2015 driver.
+	  It depends on config MTK_SMART_BATTERY
+	  and config MTK_SWCHR_SUPPORT.
+# end, prize-lifenfen-20181207, add fuel gauge cw2015
+
+# begin, prize-pengzhipeng-20210707, add fuel gauge cw2017
+config MTK_CW2017_SUPPORT
+	bool "Charger Driver for CW2017 fg"
+	default n
+	help
+	  Say Y to enable
+	  CW2017 driver.
+	  It depends on config MTK_SMART_BATTERY
+	  and config MTK_SWCHR_SUPPORT.
+	  
+config MTK_CW2017_SUPPORT_OF
+	bool "Charger Driver for CW2015 fg"
+	default n
+	select MTK_CW2017_SUPPORT
+	help
+	  Say Y to enable CW2017 driver.
+
+config MTK_CW2017_BATTERY_ID_AUXADC
+	bool "2017 fuel gauge compatible with multiple batteries"
+	default n
+	help
+	  Say Y to enable
+	  Enable 2017 Multi-Battery Solution.
+	  It depends on config MTK_CW2015_SUPPORT
+	  and config MTK_CW2017_SUPPORT_OF.
+# end, prize-pengzhipeng-20210707, add fuel gauge cw2017
+
+#prize added by huarui, cw2015 support, 20190111-start
+config MTK_CW2015_SUPPORT_OF
+	bool "Charger Driver for CW2015 fg"
+	default n
+	select MTK_CW2015_SUPPORT
+	help
+	  Say Y to enable CW2015 driver.
+#prize added by huarui, cw2015 support, 20190111-end
+# prize-add-sunshuai-2015 Multi-Battery Solution-20200222-start
+config MTK_CW2015_BATTERY_ID_AUXADC
+	bool "2015 fuel gauge compatible with multiple batteries"
+	default n
+	help
+	  Say Y to enable
+	  Enable 2015 Multi-Battery Solution.
+	  It depends on config MTK_CW2015_SUPPORT
+	  and config MTK_CW2015_SUPPORT_OF.
+# prize-add-sunshuai-2015 Multi-Battery Solution-20200222-end

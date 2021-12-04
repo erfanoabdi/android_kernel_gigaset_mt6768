@@ -170,6 +170,10 @@ enum rt9471_reg_addr {
 #define RT9471_ST_VBUSGD_MASK		BIT(7)
 #define RT9471_ST_CHGRDY_SHIFT		6
 #define RT9471_ST_CHGRDY_MASK		BIT(6)
+#define RT9471_ST_IEOC_SHIFT		5
+#define RT9471_ST_IEOC_MASK		BIT(5)
+#define RT9471_ST_BGCHG_SHIFT		4
+#define RT9471_ST_BGCHG_MASK		BIT(4)
 #define RT9471_ST_CHGDONE_SHIFT		3
 #define RT9471_ST_CHGDONE_MASK		BIT(3)
 #define RT9471_ST_BC12_DONE_SHIFT	0
@@ -204,4 +208,13 @@ enum rt9471_reg_addr {
 #define RT9471_REG_OTG_RES_COMP_SHIFT	4
 #define RT9471_REG_OTG_RES_COMP_MASK	0x30
 
+#define RT9471_INFO(chip, format, args...)  \
+dev_info(chip->dev, "%s:" format, chip->desc->chg_name, ##args)
+
+#define RT9471_NOTICE(chip, format, args...)  \
+dev_notice(chip->dev, "%s:" format, chip->desc->chg_name, ##args)
+
+
+#define RT9471_DBG(chip, format, args...)  \
+dev_dbg(chip->dev, "%s:" format, chip->desc->chg_name, ##args)
 #endif /* __RT9471_CHARGER_H */

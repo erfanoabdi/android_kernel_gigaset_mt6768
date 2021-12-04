@@ -25,6 +25,9 @@ obj-$(CONFIG_INPUT_JOYSTICK)	+= joystick/
 obj-$(CONFIG_INPUT_TABLET)	+= tablet/
 obj-$(CONFIG_INPUT_TOUCHSCREEN)	+= touchscreen/
 obj-$(CONFIG_INPUT_MISC)	+= misc/
+# prize-add-pengzhipeng-20201210-start
+obj-$(CONFIG_MTK_FINGERPRINT_SUPPORT)  += fingerprint/
+# prize-add-pengzhipeng-20201210-end
 
 obj-$(CONFIG_INPUT_APMPOWER)	+= apm-power.o
 obj-$(CONFIG_INPUT_KEYRESET)	+= keyreset.o

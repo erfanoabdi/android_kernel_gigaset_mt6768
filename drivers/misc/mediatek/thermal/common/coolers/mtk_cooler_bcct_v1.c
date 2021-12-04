@@ -568,8 +568,15 @@ static int mtk_cooler_bcct_register_ltf(void)
 	chrlmt_register(&cl_bcct_chrlmt_handle);
 
 #if (MAX_NUM_INSTANCE_MTK_COOLER_BCCT == 3)
+/* Prize HanJiuping modified 20210909 for kpoc wireless charge thermal control start */
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+	MTK_CL_BCCT_SET_LIMIT(1000, cl_bcct_state[0]);
+	MTK_CL_BCCT_SET_LIMIT(600, cl_bcct_state[1]);
+#else /*!CONFIG_PRIZE_MT5725_SUPPORT_15W*/
 	MTK_CL_BCCT_SET_LIMIT(1000, cl_bcct_state[0]);
 	MTK_CL_BCCT_SET_LIMIT(500, cl_bcct_state[1]);
+#endif /*CONFIG_PRIZE_MT5725_SUPPORT_15W*/
+/* Prize HanJiuping modified 20210909 for kpoc wireless charge thermal control end */
 	MTK_CL_BCCT_SET_LIMIT(0, cl_bcct_state[2]);
 #endif
 

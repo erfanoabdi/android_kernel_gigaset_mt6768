@@ -29,6 +29,7 @@ MODULE_LICENSE("GPL");
 
 static struct kmem_cache *fuse_inode_cachep;
 struct list_head fuse_conn_list;
+static int g_fuse_passthrough_enable;
 DEFINE_MUTEX(fuse_mutex);
 
 static int set_global_limit(const char *val, const struct kernel_param *kp);
@@ -604,6 +605,7 @@ void fuse_conn_init(struct fuse_conn *fc)
 {
 	memset(fc, 0, sizeof(*fc));
 	spin_lock_init(&fc->lock);
+	spin_lock_init(&fc->passthrough_req_lock);
 	init_rwsem(&fc->killsb);
 	refcount_set(&fc->count, 1);
 	atomic_set(&fc->dev_count, 1);
@@ -613,6 +615,7 @@ void fuse_conn_init(struct fuse_conn *fc)
 	INIT_LIST_HEAD(&fc->bg_queue);
 	INIT_LIST_HEAD(&fc->entry);
 	INIT_LIST_HEAD(&fc->devices);
+	idr_init(&fc->passthrough_req);
 	atomic_set(&fc->num_waiting, 0);
 	fc->max_background = FUSE_DEFAULT_MAX_BACKGROUND;
 	fc->congestion_threshold = FUSE_DEFAULT_CONGESTION_THRESHOLD;
@@ -921,6 +924,12 @@ static void process_init_reply(struct fuse_conn *fc, struct fuse_req *req)
 				fc->posix_acl = 1;
 				fc->sb->s_xattr = fuse_acl_xattr_handlers;
 			}
+			if (arg->flags & FUSE_PASSTHROUGH || g_fuse_passthrough_enable == 1) {
+				fc->passthrough = 1;
+				/* Prevent further stacking */
+				fc->sb->s_stack_depth =
+					FILESYSTEM_MAX_STACK_DEPTH;
+			}
 		} else {
 			ra_pages = fc->max_read / PAGE_SIZE;
 			fc->no_lock = 1;
@@ -951,7 +960,8 @@ static void fuse_send_init(struct fuse_conn *fc, struct fuse_req *req)
 		FUSE_FLOCK_LOCKS | FUSE_HAS_IOCTL_DIR | FUSE_AUTO_INVAL_DATA |
 		FUSE_DO_READDIRPLUS | FUSE_READDIRPLUS_AUTO | FUSE_ASYNC_DIO |
 		FUSE_WRITEBACK_CACHE | FUSE_NO_OPEN_SUPPORT |
-		FUSE_PARALLEL_DIROPS | FUSE_HANDLE_KILLPRIV | FUSE_POSIX_ACL;
+		FUSE_PARALLEL_DIROPS | FUSE_HANDLE_KILLPRIV | FUSE_POSIX_ACL |
+		FUSE_PASSTHROUGH;
 	req->in.h.opcode = FUSE_INIT;
 	req->in.numargs = 1;
 	req->in.args[0].size = sizeof(*arg);
@@ -967,9 +977,21 @@ static void fuse_send_init(struct fuse_conn *fc, struct fuse_req *req)
 	fuse_request_send_background(fc, req);
 }
 
+static int free_fuse_passthrough(int id, void *p, void *data)
+{
+	struct fuse_passthrough *passthrough = (struct fuse_passthrough *)p;
+
+	fuse_passthrough_release(passthrough);
+	kfree(p);
+
+	return 0;
+}
+
 static void fuse_free_conn(struct fuse_conn *fc)
 {
 	WARN_ON(!list_empty(&fc->devices));
+	idr_for_each(&fc->passthrough_req, free_fuse_passthrough, NULL);
+	idr_destroy(&fc->passthrough_req);
 	kfree_rcu(fc, rcu);
 }
 
@@ -1317,6 +1339,58 @@ static void fuse_fs_cleanup(void)
 	kmem_cache_destroy(fuse_inode_cachep);
 }
 
+static ssize_t passthrough_enable_show(struct kobject *kobj,
+									struct kobj_attribute *attr,
+									char *buf)
+{
+
+	struct fuse_conn *fc;
+	char *tmp = buf;
+	int count = PAGE_SIZE;
+	int n;
+
+	// append the global config for fuse passthrough
+	n = snprintf(tmp, count, "global -- %d\n", g_fuse_passthrough_enable);
+	tmp += n;
+	count -= n;
+
+	mutex_lock(&fuse_mutex);
+	// append the config of fuse connection everyone
+	list_for_each_entry(fc, &fuse_conn_list, entry) {
+		if (fc == NULL)
+			continue;
+
+		n = snprintf(tmp, count, "%u:%u -- %d\n",
+				MAJOR(fc->dev), MINOR(fc->dev), fc->passthrough);
+		tmp += n;
+		count -= n;
+		if (count <= 0)
+			break;
+	}
+	mutex_unlock(&fuse_mutex);
+	return PAGE_SIZE - count;
+
+}
+
+static ssize_t passthrough_enable_store(struct kobject *kobj,
+									struct kobj_attribute *attr,
+									const char *buf,
+									size_t count)
+{
+	int value = 1;
+	struct fuse_conn *fc;
+
+	if (kstrtoint(buf, 0, &value))
+		return -EINVAL;
+
+	if (value < 0 || value > 1)
+		return -EINVAL;
+
+	g_fuse_passthrough_enable = value;
+	return count;
+}
+
+static struct kobj_attribute passthrough_attr = __ATTR_RW(passthrough_enable);
 static struct kobject *fuse_kobj;
 
 static int fuse_sysfs_init(void)
@@ -1333,6 +1407,7 @@ static int fuse_sysfs_init(void)
 	if (err)
 		goto out_fuse_unregister;
 
+	sysfs_create_file(fuse_kobj, &passthrough_attr.attr);
 	return 0;
 
  out_fuse_unregister:

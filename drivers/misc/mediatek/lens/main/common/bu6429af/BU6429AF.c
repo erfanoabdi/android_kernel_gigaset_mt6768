@@ -36,59 +36,103 @@
 #endif
 
 /* if use ISRC mode, should modify variables in init_setting */
-#define USE_ISRC_MODE_IMX386_SENSOR
+
 
 static struct i2c_client *g_pstAF_I2Cclient;
 static int *g_pAF_Opened;
 static spinlock_t *g_pAF_SpinLock;
+static long g_i4MotorStatus;
+static long g_i4Dir;
+static int g_sr = 3;
 
 static unsigned long g_u4AF_INF;
 static unsigned long g_u4AF_MACRO = 1023;
+static unsigned long g_u4TargetPosition;
 static unsigned long g_u4CurrPosition;
-
-#if 0
+//prize-camera  add for remove motor crash noise by zhuzhengjiang 20191101-begin
+static unsigned long AFInf_u4CurrPosition = 0;
+//prize-camera  add for remove motor crash noise by zhuzhengjiang 20191101-end
 static int s4AF_ReadReg(unsigned short *a_pu2Result)
 {
 	int i4RetValue = 0;
 	char pBuff[2];
 
-	g_pstAF_I2Cclient->addr = AF_I2C_SLAVE_ADDR;
-
-	g_pstAF_I2Cclient->addr = g_pstAF_I2Cclient->addr >> 1;
-
 	i4RetValue = i2c_master_recv(g_pstAF_I2Cclient, pBuff, 2);
 
 	if (i4RetValue < 0) {
-		LOG_INF("I2C read - send failed!!\n");
+		LOG_INF("I2C read failed!!\n");
 		return -1;
 	}
 
-	*a_pu2Result = (((u16)pBuff[0]) << 2) + (pBuff[1]);
+	*a_pu2Result = (((u16) pBuff[0]) << 2) + (pBuff[1]);
 
 	return 0;
 }
-#endif
 
 static int s4AF_WriteReg(u16 a_u2Data)
 {
 	int i4RetValue = 0;
 
-	char puSendCmd[2] = {(char)(((a_u2Data >> 8) & 0x03) | 0xC4),
-			     (char)(a_u2Data & 0xFF)};
+	char puSendCmd[3] = { 0x03, (char)(a_u2Data >> 8), (char)(a_u2Data & 0xFF) };
 
 	g_pstAF_I2Cclient->addr = AF_I2C_SLAVE_ADDR;
 
 	g_pstAF_I2Cclient->addr = g_pstAF_I2Cclient->addr >> 1;
 
-	i4RetValue = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 2);
+	i4RetValue = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 3);
 
 	if (i4RetValue < 0) {
-		LOG_INF("I2C write failed!!\n");
+		LOG_INF("I2C send failed!!\n");
 		return -1;
 	}
 
 	return 0;
 }
+
+static int gt9767_init(void)
+{
+	int i4RetValue = 0;
+	char puSendCmd[3];
+   
+	printk("[GT9767AF] gt9767_init - beg\n");
+	puSendCmd[0] = 0x02;
+	puSendCmd[1] = 0x02;
+	i4RetValue = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 2);
+	if (i4RetValue < 0)
+	{
+	   printk("bu6429 101 [GT9767AF] I2C send failed!! \n");
+	}
+	mdelay(5);
+	puSendCmd[0] = 0x06;
+	puSendCmd[1] = 0x41;   //ZVDD mode
+	i4RetValue = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 2);
+	if (i4RetValue < 0)
+	{
+	   printk("bu6429 109 [GT9767AF] I2C send failed!! \n");
+	}
+	puSendCmd[0] = 0x07;
+	puSendCmd[1] = 0x39;   //ZVDD mode
+	i4RetValue = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 2);
+	if (i4RetValue < 0)
+	{
+	   printk("bu6429 116 [GT9767AF] I2C send failed!! \n");
+	}
+	
+	
+	/*puSendCmd[0] = 0x03;
+	puSendCmd[1] = 0x00; //T_SRC[4:0]=00000(default)
+	puSendCmd[2] = 0x19;
+	i4RetValue = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 3);
+	if (i4RetValue < 0)
+	{
+	   printk("[GT9800AF] I2C send failed!! \n");
+	}*/
+	
+	LOG_INF("[GT9767AF] GT9767AF SRC Init End!! \n");
+   
+	return i4RetValue;
+}
+
 
 static inline int getAFInfo(__user struct stAF_MotorInfo *pstMotorInfo)
 {
@@ -99,68 +143,93 @@ static inline int getAFInfo(__user struct stAF_MotorInfo *pstMotorInfo)
 	stMotorInfo.u4CurrentPosition = g_u4CurrPosition;
 	stMotorInfo.bIsSupportSR = 1;
 
-	stMotorInfo.bIsMotorMoving = 1;
+	if (g_i4MotorStatus == 1)
+		stMotorInfo.bIsMotorMoving = 1;
+	else
+		stMotorInfo.bIsMotorMoving = 0;
 
 	if (*g_pAF_Opened >= 1)
 		stMotorInfo.bIsMotorOpen = 1;
 	else
 		stMotorInfo.bIsMotorOpen = 0;
 
-	if (copy_to_user(pstMotorInfo, &stMotorInfo,
-			 sizeof(struct stAF_MotorInfo)))
+	if (copy_to_user(pstMotorInfo, &stMotorInfo, sizeof(struct stAF_MotorInfo)))
 		LOG_INF("copy to user failed when getting motor information\n");
 
 	return 0;
 }
 
-/* initAF include driver initialization and standby mode */
-static int initAF(void)
+static inline int moveAF(unsigned long a_u4Position)
 {
-	LOG_INF("+\n");
+	int ret = 0;
+
+	if ((a_u4Position > g_u4AF_MACRO) || (a_u4Position < g_u4AF_INF)) {
+		printk("out of range\n");
+		return -EINVAL;
+	}
 
 	if (*g_pAF_Opened == 1) {
+		unsigned short InitPos;
+		//prize-camera  add for remove motor crash noise by zhuzhengjiang 20191101-begin
+		AFInf_u4CurrPosition = a_u4Position;
+		//prize-camera  add for remove motor crash noise by zhuzhengjiang 20191101-end
+		gt9767_init();
 
-#ifdef USE_ISRC_MODE_IMX386_SENSOR
-		int ret = 0;
-		char puSendCmd[2];
 
-		puSendCmd[0] = (char)(0xD0);
-		puSendCmd[1] = (char)(0xC8);
-		ret = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 2);
+		ret = s4AF_ReadReg(&InitPos);
 
-		puSendCmd[0] = (char)(0xC8);
-		puSendCmd[1] = (char)(0x01);
-		ret = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 2);
+		if (ret == 0) {
+			spin_lock(g_pAF_SpinLock);
+			g_u4CurrPosition = (unsigned long)InitPos;
+			spin_unlock(g_pAF_SpinLock);
 
-		puSendCmd[0] = (char)(0xC6);
-		puSendCmd[1] = (char)(0x00);
-		ret = i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 2);
-#endif
+		} else {
+			spin_lock(g_pAF_SpinLock);
+			g_u4CurrPosition = 0;
+			spin_unlock(g_pAF_SpinLock);
+		}
 
 		spin_lock(g_pAF_SpinLock);
 		*g_pAF_Opened = 2;
 		spin_unlock(g_pAF_SpinLock);
 	}
 
-	LOG_INF("-\n");
-
-	return 0;
-}
-
-/* moveAF only use to control moving the motor */
-static inline int moveAF(unsigned long a_u4Position)
-{
-	int ret = 0;
-
-	if (s4AF_WriteReg((unsigned short)a_u4Position) == 0) {
-		g_u4CurrPosition = a_u4Position;
-		ret = 0;
+	if (g_u4CurrPosition < a_u4Position) {
+		spin_lock(g_pAF_SpinLock);
+		g_i4Dir = 1;
+		spin_unlock(g_pAF_SpinLock);
+	} else if (g_u4CurrPosition > a_u4Position) {
+		spin_lock(g_pAF_SpinLock);
+		g_i4Dir = -1;
+		spin_unlock(g_pAF_SpinLock);
 	} else {
-		LOG_INF("set I2C failed when moving the motor\n");
-		ret = -1;
+		return 0;
 	}
 
-	return ret;
+	spin_lock(g_pAF_SpinLock);
+	g_u4TargetPosition = a_u4Position;
+	spin_unlock(g_pAF_SpinLock);
+
+	/* LOG_INF("move [curr] %d [target] %d\n", g_u4CurrPosition, g_u4TargetPosition); */
+
+	spin_lock(g_pAF_SpinLock);
+	g_sr = 3;
+	g_i4MotorStatus = 0;
+	spin_unlock(g_pAF_SpinLock);
+
+	if (s4AF_WriteReg((unsigned short)g_u4TargetPosition) == 0) {
+		spin_lock(g_pAF_SpinLock);
+		g_u4CurrPosition = (unsigned long)g_u4TargetPosition;
+		spin_unlock(g_pAF_SpinLock);
+	} else {
+		printk("set I2C failed when moving the motor\n");
+
+		spin_lock(g_pAF_SpinLock);
+		g_i4MotorStatus = -1;
+		spin_unlock(g_pAF_SpinLock);
+	}
+
+	return 0;
 }
 
 static inline int setAFInf(unsigned long a_u4Position)
@@ -180,15 +249,13 @@ static inline int setAFMacro(unsigned long a_u4Position)
 }
 
 /* ////////////////////////////////////////////////////////////// */
-long BU6429AF_Ioctl(struct file *a_pstFile, unsigned int a_u4Command,
-		    unsigned long a_u4Param)
+long BU6429AF_Ioctl(struct file *a_pstFile, unsigned int a_u4Command, unsigned long a_u4Param)
 {
 	long i4RetValue = 0;
 
 	switch (a_u4Command) {
 	case AFIOC_G_MOTORINFO:
-		i4RetValue =
-			getAFInfo((__user struct stAF_MotorInfo *)(a_u4Param));
+		i4RetValue = getAFInfo((__user struct stAF_MotorInfo *) (a_u4Param));
 		break;
 
 	case AFIOC_T_MOVETO:
@@ -219,15 +286,19 @@ long BU6429AF_Ioctl(struct file *a_pstFile, unsigned int a_u4Command,
 /* Q1 : Try release multiple times. */
 int BU6429AF_Release(struct inode *a_pstInode, struct file *a_pstFile)
 {
-	LOG_INF("Start\n");
+	printk("Start\n");
 
 	if (*g_pAF_Opened == 2) {
-		char puSendCmd[2];
-
-		puSendCmd[0] = (char)(0x00);
-		puSendCmd[1] = (char)(0x00);
-		i2c_master_send(g_pstAF_I2Cclient, puSendCmd, 2);
+		//prize-camera  add for remove motor crash noise by zhuzhengjiang 20191101-begin
+		#if 0
 		LOG_INF("Wait\n");
+		s4AF_WriteReg(200);
+		msleep(20);
+		s4AF_WriteReg(100);
+		msleep(20);
+		#endif
+		s4AF_WriteReg(AFInf_u4CurrPosition);
+		//prize-camera  add for remove motor crash noise by zhuzhengjiang 20191101-end
 	}
 
 	if (*g_pAF_Opened) {
@@ -243,14 +314,11 @@ int BU6429AF_Release(struct inode *a_pstInode, struct file *a_pstFile)
 	return 0;
 }
 
-int BU6429AF_SetI2Cclient(struct i2c_client *pstAF_I2Cclient,
-			  spinlock_t *pAF_SpinLock, int *pAF_Opened)
+int BU6429AF_SetI2Cclient(struct i2c_client *pstAF_I2Cclient, spinlock_t *pAF_SpinLock, int *pAF_Opened)
 {
 	g_pstAF_I2Cclient = pstAF_I2Cclient;
 	g_pAF_SpinLock = pAF_SpinLock;
 	g_pAF_Opened = pAF_Opened;
-
-	initAF();
 
 	return 1;
 }

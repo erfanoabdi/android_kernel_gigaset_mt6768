@@ -25,7 +25,13 @@
 
 static const char *const mt6768_spk_type_str[] = {MTK_SPK_NOT_SMARTPA_STR,
 						  MTK_SPK_RICHTEK_RT5509_STR,
-						  MTK_SPK_MEDIATEK_MT6660_STR};
+						  MTK_SPK_MEDIATEK_MT6660_STR
+						  , MTK_SPK_NXP_TFA98XX_STR
+						  /* prize modified by wyq, add awinic smartpa aw881xx, 20200103 begin */
+						  , MTK_SPK_AWINIC_AW8898_STR
+						  , MTK_SPK_AWINIC_AW881XX_STR
+						  /* prize modified by wyq, add awinic smartpa aw881xx, 20200103 end */
+						  };
 static const char *const mt6768_spk_i2s_type_str[] = {MTK_SPK_I2S_0_STR,
 						      MTK_SPK_I2S_1_STR,
 						      MTK_SPK_I2S_2_STR,
@@ -568,8 +574,13 @@ static struct snd_soc_dai_link mt6768_mt6358_dai_links[] = {
 	{
 		.name = "I2S1",
 		.cpu_dai_name = "I2S1",
+	#ifdef CONFIG_SND_SMARTPA_AW881XX_V1_3_0
+		.codec_dai_name = "aw881xx-aif-7-34",
+		.codec_name = "aw881xx_smartpa.7-0034",
+	#else
 		.codec_dai_name = "snd-soc-dummy-dai",
 		.codec_name = "snd-soc-dummy",
+	#endif
 		.no_pcm = 1,
 		.dpcm_playback = 1,
 		.ignore_suspend = 1,
@@ -578,8 +589,13 @@ static struct snd_soc_dai_link mt6768_mt6358_dai_links[] = {
 	{
 		.name = "I2S2",
 		.cpu_dai_name = "I2S2",
+	#ifdef CONFIG_SND_SMARTPA_AW881XX_V1_3_0
+		.codec_dai_name = "aw881xx-aif-7-34",
+		.codec_name = "aw881xx_smartpa.7-0034",
+	#else
 		.codec_dai_name = "snd-soc-dummy-dai",
 		.codec_name = "snd-soc-dummy",
+	#endif
 		.no_pcm = 1,
 		.dpcm_capture = 1,
 		.ignore_suspend = 1,
@@ -772,46 +788,15 @@ static struct snd_soc_card mt6768_mt6358_soc_card = {
 static int mt6768_mt6358_dev_probe(struct platform_device *pdev)
 {
 	struct snd_soc_card *card = &mt6768_mt6358_soc_card;
-	struct device_node *platform_node, *codec_node, *spk_node = NULL;
-	struct snd_soc_dai_link *spk_out_dai_link, *spk_iv_dai_link = NULL;
-	int ret = 0;
-	int i = 0;
-	int spk_out_dai_link_idx, spk_iv_dai_link_idx = 0;
+	struct device_node *platform_node, *codec_node;
+	int ret;
+	int i;
 
-	ret = mtk_spk_update_info(card, pdev,
-				  &spk_out_dai_link_idx, &spk_iv_dai_link_idx,
-				  &mt6768_mt6358_i2s_ops);
+	ret = mtk_spk_update_dai_link(card, pdev, &mt6768_mt6358_i2s_ops);
 	if (ret) {
-		dev_err(&pdev->dev, "%s(), mtk_spk_update_info error\n",
+		dev_err(&pdev->dev, "%s(), mtk_spk_update_dai_link error\n",
 			__func__);
 		return -EINVAL;
-	}
-
-	spk_out_dai_link = &mt6768_mt6358_dai_links[spk_out_dai_link_idx];
-	spk_iv_dai_link = &mt6768_mt6358_dai_links[spk_iv_dai_link_idx];
-	if (!spk_out_dai_link->codec_dai_name &&
-	    !spk_iv_dai_link->codec_dai_name) {
-		spk_node = of_get_child_by_name(pdev->dev.of_node,
-					"mediatek,speaker-codec");
-		if (!spk_node) {
-			dev_err(&pdev->dev,
-				"spk_codec of_get_child_by_name fail\n");
-			return -EINVAL;
-		}
-		ret = snd_soc_of_get_dai_link_codecs(
-				&pdev->dev, spk_node, spk_out_dai_link);
-		if (ret < 0) {
-			dev_err(&pdev->dev,
-				"i2s out get_dai_link_codecs fail\n");
-			return -EINVAL;
-		}
-		ret = snd_soc_of_get_dai_link_codecs(
-				&pdev->dev, spk_node, spk_iv_dai_link);
-		if (ret < 0) {
-			dev_err(&pdev->dev,
-				"i2s in get_dai_link_codecs fail\n");
-			return -EINVAL;
-		}
 	}
 
 	platform_node = of_parse_phandle(pdev->dev.of_node,
@@ -834,9 +819,7 @@ static int mt6768_mt6358_dev_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 	for (i = 0; i < card->num_links; i++) {
-		if (mt6768_mt6358_dai_links[i].codec_name ||
-		    i == spk_out_dai_link_idx ||
-		    i == spk_iv_dai_link_idx)
+		if (mt6768_mt6358_dai_links[i].codec_name)
 			continue;
 		mt6768_mt6358_dai_links[i].codec_of_node = codec_node;
 	}

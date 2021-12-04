@@ -64,7 +64,7 @@
 
 struct ccmni_ctl_block *ccmni_ctl_blk[MAX_MD_NUM];
 
-/* Time in nano seconds. This number must be less than a second. */
+/* Time in ns. This number must be less than 500ms. */
 #ifdef ENABLE_WQ_GRO
 long int gro_flush_timer __read_mostly = 2000000L;
 #else
@@ -158,25 +158,34 @@ static inline int is_ack_skb(int md_id, struct sk_buff *skb)
 				sizeof(struct ipv6hdr),
 				&nexthdr, &frag_off);
 
-			tcph = (struct tcphdr *)(skb->data + l4_off);
-			if (nexthdr == IPPROTO_TCP &&
-				!tcph->syn && !tcph->fin &&
-			    !tcph->rst &&
-				((total_len - l4_off) == (tcph->doff << 2)))
-				ret = 1;
+			if (nexthdr == IPPROTO_TCP) {
+				tcph = (struct tcphdr *)(skb->data + l4_off);
+
+				if (tcph->syn)
+					ret = 1;
+				else if (!tcph->fin && !tcph->rst &&
+					((total_len - l4_off) ==
+						(tcph->doff << 2)))
+					ret = 1;
+			}
 		}
 	} else if (packet_type == IPV4_VERSION) {
 		struct iphdr *iph = (struct iphdr *)skb->data;
 
 		if (ntohs(iph->tot_len) <=
 				128 - sizeof(struct ccci_header) - count) {
-			tcph = (struct tcphdr *)(skb->data + (iph->ihl << 2));
 
-			if (iph->protocol == IPPROTO_TCP && !tcph->syn &&
-				!tcph->fin && !tcph->rst &&
-				(ntohs(iph->tot_len) == (iph->ihl << 2) +
-				(tcph->doff << 2)))
-				ret = 1;
+			if (iph->protocol == IPPROTO_TCP) {
+				tcph = (struct tcphdr *)(skb->data + (iph->ihl << 2));
+
+				if (tcph->syn)
+					ret = 1;
+				else if (!tcph->fin && !tcph->rst &&
+					ntohs(iph->tot_len) ==
+					(iph->ihl << 2) + (tcph->doff << 2)) {
+					ret = 1;
+				}
+			}
 		}
 	}
 
@@ -280,16 +289,12 @@ static void ccmni_gro_flush(struct ccmni_instance *ccmni)
 	if (!gro_flush_timer)
 		return;
 
-	if (unlikely(ccmni->flush_time.tv_sec == 0)) {
+	getnstimeofday(&curr_time);
+	diff = timespec_sub(curr_time, ccmni->flush_time);
+	if ((diff.tv_sec > 0) || (diff.tv_nsec > gro_flush_timer)) {
+		napi_gro_flush(ccmni->napi, false);
+		timeout_flush_num++;
 		getnstimeofday(&ccmni->flush_time);
-	} else {
-		getnstimeofday(&(curr_time));
-		diff = timespec_sub(curr_time, ccmni->flush_time);
-		if ((diff.tv_sec > 0) || (diff.tv_nsec > gro_flush_timer)) {
-			napi_gro_flush(ccmni->napi, false);
-			timeout_flush_num++;
-			getnstimeofday(&ccmni->flush_time);
-		}
 	}
 }
 #endif
@@ -450,6 +455,9 @@ static int ccmni_open(struct net_device *dev)
 			dev->name, ccmni->md_id);
 		return -1;
 	}
+
+	if (gro_flush_timer)
+		getnstimeofday(&ccmni->flush_time);
 
 	netif_carrier_on(dev);
 

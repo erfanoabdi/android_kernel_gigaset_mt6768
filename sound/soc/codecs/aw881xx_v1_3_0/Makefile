@@ -1,0 +1,1 @@
+obj-$(CONFIG_SND_SMARTPA_AW881XX_V1_3_0) += aw881xx.o aw881xx_monitor.o aw881xx_cali.o

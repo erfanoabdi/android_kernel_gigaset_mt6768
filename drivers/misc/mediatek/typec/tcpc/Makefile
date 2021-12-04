@@ -22,3 +22,9 @@ obj-$(CONFIG_USB_POWER_DELIVERY)	+= tcpci_event.o \
 		pd_policy_engine_src.o pd_policy_engine_snk.o pd_policy_engine_ufp.o pd_policy_engine_vcs.o \
 		pd_policy_engine_dfp.o pd_policy_engine_dr.o pd_policy_engine_drs.o pd_policy_engine_prs.o \
 		pd_policy_engine_dbg.o pd_policy_engine_com.o pd_dpm_alt_mode_dc.o
+
+
+#prize add by huarui ,20210310, start
+obj-$(CONFIG_TCPC_SGM7220)		+= tcpc_sgm7220.o
+obj-$(CONFIG_TCPC_SUSB3801)		+= tcpc_wusb3801.o
+#prize add by huarui ,20210310, end

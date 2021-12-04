@@ -182,17 +182,79 @@ void mt_usbhost_disconnect(void)
 }
 EXPORT_SYMBOL_GPL(mt_usbhost_disconnect);
 
+//prize added by huarui, MT5725, 20210205-start
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+extern int set_otg_gpio(int en);
+extern int turn_off_5725(int en);
+#endif
+//prize added by huarui, MT5725, 20210205-end
 void mt_vbus_on(void)
 {
+//prize added by huarui, MT5725, 20210205-start
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+#ifdef CONFIG_PRIZE_REVERE_CHARGING_MODE
+	turn_off_5725(0); //into otg set OD5 low. add by lipengpeng 20210409 start  //GPIO88 OD5  //OD5-->  1-->high  0---> low
+#else
+	turn_off_5725(1);  //GPIO88 OD5
+#endif 
+	set_otg_gpio(1);  //OD7  87
+#endif
+//prize added by huarui, MT5725, 20210205-end
 	usb_otg_set_vbus(true);
 }
 EXPORT_SYMBOL_GPL(mt_vbus_on);
 
 void mt_vbus_off(void)
 {
+//prize added by huarui, MT5725, 20210205-start
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+	set_otg_gpio(0);//OD7
+	turn_off_5725(0);//OD5   0--->low  1--->high
+#endif
+//prize added by huarui, MT5725, 20210205-end
 	usb_otg_set_vbus(false);
 }
 EXPORT_SYMBOL_GPL(mt_vbus_off);
+
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+
+//prize add by lipengpeng 20210308 start
+void mt_vbus_revere_on(void)
+{
+	usb_otg_set_vbus(true);
+}
+EXPORT_SYMBOL_GPL(mt_vbus_revere_on);
+
+void mt_vbus_revere_off(void)
+{
+	usb_otg_set_vbus(false);
+}
+EXPORT_SYMBOL_GPL(mt_vbus_revere_off); 
+//prize add by lipengpeng 20210308 end 
+#endif
+
+//prize add by lipengpeng 20210309 start
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+void mt_vbus_reverse_on(void)
+{
+	usb_otg_set_reverse_vbus(true);
+}
+EXPORT_SYMBOL_GPL(mt_vbus_reverse_on);
+
+void mt_vbus_reverse_on_limited_current(void)
+{
+	usb_otg_set_reverse_vbus_limited_current(true);
+}
+EXPORT_SYMBOL_GPL(mt_vbus_reverse_on_limited_current);
+
+void mt_vbus_reverse_off_limited_current(void)
+{
+	usb_otg_set_reverse_vbus_limited_current(false);
+}
+EXPORT_SYMBOL_GPL(mt_vbus_reverse_off_limited_current);
+
+#endif
+//prize add by lipengpeng 20210309 end
 
 static int usb_extcon_probe(struct platform_device *pdev)
 {

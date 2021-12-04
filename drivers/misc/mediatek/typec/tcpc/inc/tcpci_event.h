@@ -62,7 +62,11 @@ extern int tcpci_event_init(struct tcpc_device *tcpc_dev);
 extern int tcpci_event_deinit(struct tcpc_device *tcpc_dev);
 extern void pd_event_buf_reset(struct tcpc_device *tcpc_dev);
 
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 bool __pd_put_cc_attached_event(struct tcpc_device *tcpc_dev, uint8_t type);
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 bool pd_put_cc_attached_event(struct tcpc_device *tcpc_dev, uint8_t type);
 void pd_put_cc_detached_event(struct tcpc_device *tcpc_dev);
 void pd_put_recv_hard_reset_event(struct tcpc_device *tcpc_dev);

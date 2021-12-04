@@ -843,6 +843,14 @@ static ssize_t ps_show_devnum(struct device *dev, struct device_attribute *attr,
 	return snprintf(buf, PAGE_SIZE, "%d\n", 0);
 }
 
+//prize-add psrawdata note-pengzhipeng-20210303-start
+int prize_ps_get_raw_data(void);
+static ssize_t ps_show_rawdata(struct device *dev, struct device_attribute *attr,
+			      char *buf)
+{
+	return snprintf(buf, PAGE_SIZE, "%d", prize_ps_get_raw_data());
+}
+//prize-add psrawdata note-pengzhipeng-20210303-end
 static ssize_t ps_store_cali(struct device *dev, struct device_attribute *attr,
 				  const char *buf, size_t count)
 {
@@ -1001,6 +1009,7 @@ DEVICE_ATTR(psbatch, 0644, ps_show_batch, ps_store_batch);
 DEVICE_ATTR(psflush, 0644, ps_show_flush, ps_store_flush);
 DEVICE_ATTR(psdevnum, 0644, ps_show_devnum, NULL);
 DEVICE_ATTR(pscali, 0644, NULL, ps_store_cali);
+DEVICE_ATTR(psrawdata, 0644, ps_show_rawdata, NULL);//prize-add psrawdata note-pengzhipeng-20210303-start
 
 static struct attribute *als_attributes[] = {
 	&dev_attr_alsactive.attr,
@@ -1017,6 +1026,7 @@ static struct attribute *ps_attributes[] = {
 	&dev_attr_psflush.attr,
 	&dev_attr_psdevnum.attr,
 	&dev_attr_pscali.attr,
+	&dev_attr_psrawdata.attr,////prize-add psrawdata note-pengzhipeng-20210303-start
 	NULL
 };
 

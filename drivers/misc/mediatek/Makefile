@@ -130,6 +130,7 @@ obj-$(CONFIG_MTK_LCM) += ext_disp/
 ifneq ($(CONFIG_CUSTOM_KERNEL_HDMI), "")
 obj-$(CONFIG_MTK_HDMI_SUPPORT) += hdmi/
 endif
+obj-$(CONFIG_MTK_MT6382_BDG) += spi_slave_drv/
 obj-$(CONFIG_MTK_FB) += video/
 obj-$(CONFIG_MTK_DYNAMIC_FPS_FRAMEWORK_SUPPORT) += dfrc/
 obj-$(CONFIG_MTK_PMIC_WRAP_HAL) += pmic_wrap/
@@ -164,13 +165,34 @@ ifneq ($(wildcard $(srctree)/drivers/misc/mediatek/met_drv/),)
 obj-y += met_drv/
 endif
 obj-y += perf/
+#prize-add-pengzhipeng-20201225-start
+obj-$(CONFIG_PRIZE_HARDWARE_INFO) += hardware_info/
+#prize-add-pengzhipeng-20201225-end
 obj-$(CONFIG_MTK_JPEG) += jpeg/
 obj-$(CONFIG_MTK_SPMTWAM) += twam/
 obj-$(CONFIG_MTK_LOW_POWER_MODULE) += lpm/
+#prize add by lipengpeng 20191224 start
+obj-$(CONFIG_NFC_CHIP_SUPPORT) += nfc/
+#prize add by lipengpeng 20191224  end
 obj-$(CONFIG_MTK_TASK_TURBO) += task_turbo/
+#prize added by chenjiaxi, prize_dual_camera driver, 20190111-start
+obj-$(CONFIG_PRIZE_DUAL_CAMERA_ENABLE) += prize_dual_camera/
+#prize added by chenjiaxi, prize_dual_camera driver, 20190111-end
 obj-$(CONFIG_MTK_UNIFIED_DEBUG_INTERFACE) += udi/
 obj-y += rps/
 obj-$(CONFIG_MTK_MDDP_SUPPORT) += mddp/
 obj-$(CONFIG_MTK_USB2JTAG_SUPPORT) += usb2jtag/
 obj-y += subpmic/
 obj-$(CONFIG_MTK_OTP) += otp/
+obj-$(CONFIG_MTK_MT6382_BDG) += hifi4dsp_spi/
+
+#prize add by wangyongsheng 20210104------start
+obj-$(CONFIG_PRIZE_UHF) += uhf/
+#prize add by wangyongsheng 20210104------end
+
+#prize add by lipengpeng, prize drv build support 20210220 start
+obj-y += prize/
+#prize add by lipengpeng, prize drv build support 20210220 end
+#prize add by huarui, prize drv build support 20200327 end
+obj-$(CONFIG_PRIZE_NEW_EXERGEN) += prize_exergen/
+#prize add by huarui, prize drv build support 20200327 end

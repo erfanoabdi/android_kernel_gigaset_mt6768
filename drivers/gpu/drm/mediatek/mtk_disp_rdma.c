@@ -263,6 +263,7 @@ static irqreturn_t mtk_disp_rdma_irq_handler(int irq, void *dev_id)
 	struct mtk_disp_rdma *priv = dev_id;
 	struct mtk_ddp_comp *rdma = &priv->ddp_comp;
 	struct mtk_drm_crtc *mtk_crtc = rdma->mtk_crtc;
+	struct mtk_crtc_state *state;
 	unsigned int val = 0;
 	unsigned int ret = 0;
 
@@ -324,8 +325,12 @@ static irqreturn_t mtk_disp_rdma_irq_handler(int irq, void *dev_id)
 		MMPathTraceDRM(rdma);
 
 		if (mtk_crtc) {
-			atomic_set(&mtk_crtc->pf_event, 1);
-			wake_up_interruptible(&mtk_crtc->present_fence_wq);
+			state = to_mtk_crtc_state(mtk_crtc->base.state);
+			if (state &&
+				!state->prop_val[CRTC_PROP_DOZE_ACTIVE]) {
+				atomic_set(&mtk_crtc->pf_event, 1);
+				wake_up_interruptible(&mtk_crtc->present_fence_wq);
+			}
 		}
 	}
 
@@ -572,7 +577,7 @@ void mtk_rdma_cal_golden_setting(struct mtk_ddp_comp *comp,
 	else
 		gs[GS_RDMA_OUTPUT_VALID_FIFO_TH] = gs[GS_RDMA_PRE_ULTRA_TH_LOW];
 	gs[GS_RDMA_FIFO_SIZE] = fifo_size;
-	gs[GS_RDMA_FIFO_UNDERFLOW_EN] = 0;
+	gs[GS_RDMA_FIFO_UNDERFLOW_EN] = 1;
 
 	/* DISP_RDMA_MEM_GMC_SETTING_2 */
 	/* do not min this value with 256 to avoid hrt fail in
@@ -652,7 +657,6 @@ static void mtk_rdma_set_ultra_l(struct mtk_ddp_comp *comp,
 	unsigned int val = 0;
 
 	if ((comp->id != DDP_COMPONENT_RDMA0)
-		&& (comp->id != DDP_COMPONENT_RDMA1)
 		&& (comp->id != DDP_COMPONENT_RDMA4)
 		&& (comp->id != DDP_COMPONENT_RDMA5)) {
 		DDPPR_ERR("unsupport golden setting, id:%d\n", comp->id);

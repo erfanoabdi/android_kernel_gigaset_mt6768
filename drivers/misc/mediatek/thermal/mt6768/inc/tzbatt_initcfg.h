@@ -18,6 +18,17 @@
 #define TZBATT_INITCFG_INTERVAL				(1)
 #define TZBATT_INITCFG_NUM_TRIPS			(3)
 
+/* Prize HanJiuping modified 20210909 for kpoc wireless charge thermal control start */
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+#define TZBATT_INITCFG_TRIP_0_TEMP          (55000)
+#define TZBATT_INITCFG_TRIP_0_COOLER            "mtk-cl-bcct02"
+
+#define TZBATT_INITCFG_TRIP_1_TEMP          (44000)
+#define TZBATT_INITCFG_TRIP_1_COOLER            "mtk-cl-bcct01"
+
+#define TZBATT_INITCFG_TRIP_2_TEMP          (36000)
+#define TZBATT_INITCFG_TRIP_2_COOLER            "mtk-cl-bcct00"
+#else /*!CONFIG_PRIZE_MT5725_SUPPORT_15W*/
 #define TZBATT_INITCFG_TRIP_0_TEMP			(49000)
 #define TZBATT_INITCFG_TRIP_0_COOLER			"mtk-cl-bcct02"
 
@@ -26,6 +37,8 @@
 
 #define TZBATT_INITCFG_TRIP_2_TEMP			(46000)
 #define TZBATT_INITCFG_TRIP_2_COOLER			"mtk-cl-bcct00"
+#endif /*CONFIG_PRIZE_MT5725_SUPPORT_15W*/
+/* Prize HanJiuping modified 20210909 for kpoc wireless charge thermal control end */
 
 #define TZBATT_INITCFG_TRIP_3_TEMP			(45000)
 #define TZBATT_INITCFG_TRIP_3_COOLER			""

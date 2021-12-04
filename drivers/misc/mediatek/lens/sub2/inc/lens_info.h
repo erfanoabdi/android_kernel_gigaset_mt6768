@@ -59,6 +59,10 @@
 #define AFDRV_MT9P017AF "MT9P017AF"
 #define AFDRV_OV8825AF "OV8825AF"
 #define AFDRV_WV511AAF "WV511AAF"
+//prize add for aw86014af zhuzhengjiang 20210722 start
+#define AFDRV_AW86014AF "AW86014AF"
+#define AFDRV_DW9718SAF "DW9718SAF"
+//prize add for aw86014af zhuzhengjiang 20210722 end
 
 /* Structures */
 struct stAF_MotorInfo {

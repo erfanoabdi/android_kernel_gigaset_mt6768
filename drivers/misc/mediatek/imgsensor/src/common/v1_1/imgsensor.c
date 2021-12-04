@@ -56,6 +56,12 @@
 #include "imgsensor_ca.h"
 #endif
 
+//prize-lixuefeng-20150512-start
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+#include "../../../hardware_info/hardware_info.h"
+extern struct hardware_info current_camera_info[5];
+#endif
+//prize-lixuefeng-20150512-end
 static DEFINE_MUTEX(gimgsensor_mutex);
 static DEFINE_MUTEX(gimgsensor_open_mutex);
 
@@ -173,20 +179,21 @@ MINT32 imgsensor_sensor_open(struct IMGSENSOR_SENSOR *psensor)
 
 		/* turn on power */
 		IMGSENSOR_PROFILE_INIT(&psensor_inst->profile_time);
-
+		imgsensor_mutex_lock(psensor_inst); // prize add by zhuzhengjiang for dual camera open failed 20210106
 		ret = imgsensor_hw_power(&pimgsensor->hw,
 				psensor,
 				IMGSENSOR_HW_POWER_STATUS_ON);
 
 		if (ret != IMGSENSOR_RETURN_SUCCESS) {
 			PK_PR_ERR("[%s]", __func__);
+			imgsensor_mutex_unlock(psensor_inst);// prize add by zhuzhengjiang for dual camera open failed 20210106
 			return ret;
 		}
 
 		IMGSENSOR_PROFILE(&psensor_inst->profile_time,
 			"kdCISModulePowerOn");
 
-		imgsensor_mutex_lock(psensor_inst);
+		//imgsensor_mutex_lock(psensor_inst);// prize remove by zhuzhengjiang for dual camera open failed 20210106
 
 		psensor_func->psensor_inst = psensor_inst;
 
@@ -546,6 +553,33 @@ static inline int imgsensor_check_is_alive(struct IMGSENSOR_SENSOR *psensor)
 	} else {
 		PK_DBG("Sensor found ID = 0x%x\n", sensorID);
 		err = ERROR_NONE;
+		//prize-lixuefeng-20150512-start
+		#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+		if(psensor->inst.sensor_idx >= 0 && psensor->inst.sensor_idx < 5)
+		{
+			if (sensorID == 0x30a) {
+				strcpy(current_camera_info[2].chip,psensor_inst->psensor_list->name);
+				sprintf(current_camera_info[2].id,"0x%04x",sensorID);
+				strcpy(current_camera_info[2].vendor,"unknow");
+
+			}else {
+				strcpy(current_camera_info[psensor->inst.sensor_idx].chip,psensor_inst->psensor_list->name);
+    			sprintf(current_camera_info[psensor->inst.sensor_idx].id,"0x%04x",sensorID);
+    			strcpy(current_camera_info[psensor->inst.sensor_idx].vendor,"unknow");
+			}
+			if (1){
+				MSDK_SENSOR_RESOLUTION_INFO_STRUCT sensorResolution;
+				imgsensor_sensor_get_resolution(psensor,&sensorResolution);
+				if (sensorID == 0x30a){
+					sprintf(current_camera_info[2].more,"%d*%d",sensorResolution.SensorFullWidth,sensorResolution.SensorFullHeight);
+
+				}else{
+					sprintf(current_camera_info[psensor->inst.sensor_idx].more,"%d*%d",sensorResolution.SensorFullWidth,sensorResolution.SensorFullHeight);
+				}
+			}
+		}
+		#endif
+		//prize-lixuefeng-20150512-end
 	}
 
 	imgsensor_hw_power(&pimgsensor->hw,
@@ -696,7 +730,7 @@ static inline int adopt_CAMERA_HW_GetInfo2(void *pBuf)
 	PK_DBG("[%s]Entry%d\n", __func__, pSensorGetInfo->SensorId);
 
 	for (i = MSDK_SCENARIO_ID_CAMERA_PREVIEW;
-			i < MSDK_SCENARIO_ID_CUSTOM15;
+			i < MSDK_SCENARIO_ID_CUSTOM5;
 			i++) {
 		imgsensor_sensor_get_info(psensor, i, &info, &config);
 

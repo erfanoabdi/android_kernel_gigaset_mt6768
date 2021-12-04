@@ -215,4 +215,9 @@ source "drivers/tee/Kconfig"
 
 source "drivers/mux/Kconfig"
 
+# prize liaoxingen 20200818, for project config-start 
+config PROJECT_KOOBEE
+    string "PROJECT KOOBEE"
+    default ""
+# prize liaoxingen 20200818, for project config-end
 endmenu

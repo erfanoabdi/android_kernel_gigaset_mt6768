@@ -34,6 +34,15 @@
 #if defined(CONFIG_SND_SOC_TAS5782M)
 #include "../../codecs/tas5782m.h"
 #endif
+//prize added by huarui, aw8898 support, 20190111-start
+#ifdef CONFIG_SND_SOC_AW8898
+#include "../../codecs/aw8898/aw8898.h"
+#endif
+#ifdef CONFIG_SND_SOC_FS16XX
+extern int fsm_i2c_probe(struct i2c_client, const struct i2c_device_id);
+extern int fsm_i2c_remove(struct i2c_client);
+#endif
+//prize added by huarui, aw8898 support, 20190111-end
 
 static unsigned int mtk_spk_type;
 static struct mtk_spk_i2c_ctrl mtk_spk_list[MTK_SPK_TYPE_NUM] = {
@@ -66,6 +75,26 @@ static struct mtk_spk_i2c_ctrl mtk_spk_list[MTK_SPK_TYPE_NUM] = {
 		.codec_name = "MT6660_MT_0",
 	},
 #endif /* CONFIG_SND_SOC_MT6660 */
+/* prize added by huarui, aw8898 support, 20190111-start */
+#ifdef CONFIG_SND_SOC_AW8898
+        [MTK_SPK_AWINIC_AW8898] = {
+                .i2c_probe = aw8898_i2c_probe,
+                .i2c_remove = aw8898_i2c_remove,
+                .codec_dai_name = "aw8898-aif",
+                .codec_name = "aw8898_smartpa",
+        },
+#endif /* CONFIG_SND_SOC_AW8898 */
+/* prize added by huarui, aw8898 support, 20190111-start */
+/* prize added by huarui, fs1894u support, 20190111-start */
+#ifdef CONFIG_SND_SOC_FS16XX
+        [MTK_SPK_FOURSEMI_FS16XX] = {
+                .i2c_probe = fsm_i2c_probe,
+                .i2c_remove = fsm_i2c_remove,
+                .codec_dai_name = "foursemi-aif",
+                .codec_name = "speaker_amp.3-0034",
+        },
+#endif
+/* prize added by huarui, fs1894u support, 20190111-start */
 };
 
 static int mtk_spk_i2c_probe(struct i2c_client *client,

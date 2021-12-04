@@ -4538,7 +4538,7 @@ static signed int ISP_WriteReg(struct ISP_REG_IO_STRUCT *pRegIo)
 	/* unsigned char* pData = NULL; */
 	struct ISP_REG_STRUCT *pData = NULL;
 
-	if (pRegIo->Count > 0xFFFFFFFF) {
+	if ((pRegIo->Count * sizeof(struct ISP_REG_STRUCT)) > 0xFFFFF000) {
 		LOG_NOTICE("pRegIo->Count error");
 		Ret = -EFAULT;
 		goto EXIT;
@@ -11636,7 +11636,10 @@ int32_t ISP_MDPDumpCallback(uint64_t engineFlag, int level)
 {
 	pr_info("ISP_MDPDumpCallback");
 
-	ISP_DumpDIPReg();
+	if (G_u4EnableClockCount > 0)
+		ISP_DumpDIPReg();
+	else
+		pr_info("G_u4EnableClockCount(%d) <= 0\n", G_u4EnableClockCount);
 
 	return 0;
 }

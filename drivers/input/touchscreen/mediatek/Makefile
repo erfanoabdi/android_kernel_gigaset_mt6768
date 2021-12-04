@@ -20,5 +20,12 @@ obj-$(CONFIG_TOUCHSCREEN_MTK_GT9XX_LM)	+=  GT9XX_LM/
 obj-$(CONFIG_TOUCHSCREEN_FT5X26)	+=  FT5X26/
 obj-$(CONFIG_TOUCHSCREEN_MTK_GT5688)	+=  GT5688/
 obj-$(CONFIG_TOUCHSCREEN_HIMAX_I2C)	+=  hxchipset/
+obj-$(CONFIG_TOUCHSCREEN_HIMAX_CHIPSET_8789P1_8185P3) += hxchipset_8789p1_8185p3/
 obj-$(CONFIG_TOUCHSCREEN_MTK_FOCALTECH_FHD)	+=  focaltech_fhd_touch/
+#prize-add HX83112-pengguangyi-20190119-start
+obj-$(CONFIG_TOUCHSCREEN_MTK_HX83112)	+=  HX83112/
+#prize-add HX83112-pengzhipeng-20190119-end
+#prize-add synaptics-anhengxuan-20210825-start
+obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_TCM)	+=  synaptics_tcm/
+#prize-add synaptics-anhengxuan-20210825-end
 obj-$(CONFIG_TOUCHSCREEN_MTK_GT9157)    +=  GT9157/

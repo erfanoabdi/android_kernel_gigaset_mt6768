@@ -14,7 +14,7 @@ struct CMDQ_MMP_events_t *cmdq_mmp_get_event(void)
 
 void cmdq_mmp_init(void)
 {
-#if IS_ENABLED(CMDQ_MMPROFILE_SUPPORT)
+#if IS_ENABLED(CONFIG_MMPROFILE)
 	mmprofile_enable(1);
 	if (CMDQ_MMP_events.CMDQ == 0) {
 		CMDQ_MMP_events.CMDQ = mmprofile_register_event(

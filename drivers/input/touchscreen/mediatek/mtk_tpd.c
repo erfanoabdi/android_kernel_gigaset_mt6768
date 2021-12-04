@@ -52,6 +52,7 @@ struct pinctrl_state *eint_as_int, *eint_output0,
 const struct of_device_id touch_of_match[] = {
 	{ .compatible = "mediatek,touch", },
 	{ .compatible = "mediatek,mt8167-touch", },
+	{ .compatible = "mediatek,touch-himax", },
 	{},
 };
 
@@ -192,11 +193,13 @@ int tpd_get_gpio_info(struct platform_device *pdev)
 		dev_info(&pdev->dev, "fwq Cannot find pinctrl1!\n");
 		return ret;
 	}
+#ifndef CONFIG_TOUCHSCREEN_HIMAX_CHIPSET_8789P1_8185P3
 	pins_default = pinctrl_lookup_state(pinctrl1, "default");
 	if (IS_ERR(pins_default)) {
 		ret = PTR_ERR(pins_default);
 		TPD_DMESG("Cannot find pinctrl default %d!\n", ret);
 	}
+#endif
 	eint_as_int = pinctrl_lookup_state(pinctrl1, "state_eint_as_int");
 	if (IS_ERR(eint_as_int)) {
 		ret = PTR_ERR(eint_as_int);

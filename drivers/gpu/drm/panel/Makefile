@@ -55,6 +55,28 @@ obj-$(CONFIG_DRM_PANEL_SC_NT36672C_VDO_90HZ) += panel-sc-nt36672c-vdo-90hz.o
 obj-$(CONFIG_DRM_PANEL_SC_NT36672C_VDO_60HZ) += panel-sc-nt36672c-vdo-60hz.o
 obj-$(CONFIG_DRM_PANEL_SAMSUNG_S68FC01_VDO_AOD) += panel-samsung-s68fc01-vdo-aod.o
 obj-$(CONFIG_DRM_PANEL_TRULY_FT8756_VDO) += panel-truly-ft8756-vdo.o
-obj-$(CONFIG_DRM_PANEL_TRULY_FT8756_VDO_FAKE_WCG) += panel-truly-ft8756-vdo-fake-wcg.o
 obj-$(CONFIG_DRM_PANEL_TRULY_NT35595_CMD) += panel-truly-nt35595-cmd.o
 obj-$(CONFIG_DRM_PANEL_TRULY_NT35595_VDO) += panel-truly-nt35595-vdo.o
+obj-$(CONFIG_DRM_PANEL_TRULY_ILI9881H_VDO) += panel-truly-ili9881h-rt4801-vdo.o
+
+
+#prize
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/prize/lcd_bias/
+#//prize--huangjiwu--for ping  start
+obj-$(CONFIG_DRM_PANEL_BOE24_JD9853_VDO) += panel-boe24-jd9853-vdo.o
+obj-$(CONFIG_DRM_PANEL_CTC24_ST7796_VDO) += panel-ctc24-st7796-vdo.o
+obj-$(CONFIG_DRM_PANEL_CSOT_FT8756_VDO) += panel-csot-ft8756-vdo.o
+obj-$(CONFIG_DRM_PANEL_SHARP_R63417_CMD) += panel-sharp-r63417-cmd.o
+obj-$(CONFIG_DRM_PANEL_AUO_ILI7807Q_VDO)+= panel-auo-ili7807q-vdo.o
+obj-$(CONFIG_DRM_PANEL_RRJ_RM69299_CMD)+= panel-rrj-rm69299-cmd.o
+obj-$(CONFIG_DRM_PANEL_RRJ_VTDR6111_VDO)+= panel-rrj-vtdr6111-vdo.o
+#//prize--huangjiwu--for ping  end
+obj-$(CONFIG_DRM_PANEL_VISIONOX_R66455_CMD)+= panel-visionox-r66455-cmd.o
+#//prize--wangyongsheng--for ping  start
+obj-$(CONFIG_DRM_PANEL_TRULY_ILI9881H_TPS65132_VDO) += panel-truly-ili9881h-tps65132-vdo.o
+obj-$(CONFIG_DRM_PANEL_TRULY_ILI9882N_TPS65132_VDO) += panel-truly-ili9882n-tps65132-vdo.o
+#//prize--wangyongsheng--for ping  end
+#//prize add by huarui, lcm , 20210427-start
+obj-$(CONFIG_DRM_PANEL_VISIONOX621_RM69299_CMD)+= panel-visionox621-rm69299-cmd.o
+#//prize add by huarui, lcm , 20210427-end
+obj-$(CONFIG_DRM_PANEL_RRJ24_BOE_ST7701_VDO)+= panel-rrj24-boe-st7701-vdo.o

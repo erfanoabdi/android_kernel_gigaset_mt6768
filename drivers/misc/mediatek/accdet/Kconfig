@@ -120,3 +120,28 @@ config TS3A225E_ACCDET
 	  If you want to use TS3A225E
 	  say Y.
 	  If unsure, say N.
+
+
+#PRIZE
+#prize added by huarui, headset support, 20190111-start
+config PRIZE_TYPEC_ACCDET
+	bool "PRIZE_TYPEC_ACCDET"
+	depends on TCPC_CLASS
+	default n
+	---help---
+	  If unsure, say N.
+	  
+config PRIZE_SWITCH_SGM3798_SUPPORT
+	bool "MediaTek ACCDET sgm3798"
+	#depends on USB_C_SWITCH
+	default n
+	---help---
+	  SGM3798 support for typec headset
+	  
+config PRIZE_NO_PRIZE_TYPEC
+	bool "PRIZE_TYPEC"
+	depends on TCPC_CLASS
+	default n
+	---help---
+	  If unsure, say N.
+	  

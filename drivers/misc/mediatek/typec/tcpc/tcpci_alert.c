@@ -483,7 +483,11 @@ static inline int tcpci_report_usb_port_attached(struct tcpc_device *tcpc)
 	switch (tcpc->typec_attach_new) {
 	case TYPEC_ATTACHED_SNK:
 	case TYPEC_ATTACHED_CUSTOM_SRC:
-	case TYPEC_ATTACHED_NORP_SRC:
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
+    case TYPEC_ATTACHED_DBGACC_SNK:
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 		tcpc->dual_role_pr = DUAL_ROLE_PROP_PR_SNK;
 		tcpc->dual_role_dr = DUAL_ROLE_PROP_DR_DEVICE;
 		tcpc->dual_role_mode = DUAL_ROLE_PROP_MODE_UFP;

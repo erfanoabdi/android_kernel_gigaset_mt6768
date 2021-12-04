@@ -14,6 +14,15 @@
 extern void mt_usbhost_connect(void);
 extern void mt_usbhost_disconnect(void);
 extern void mt_vbus_on(void);
+//prize add by lipengpeng 20210309 start
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+extern void mt_vbus_reverse_on(void);
+extern int usb_otg_set_reverse_vbus(int is_on);
+extern void mt_vbus_reverse_on_limited_current(void);
+extern void mt_vbus_reverse_off_limited_current(void);
+extern int usb_otg_set_reverse_vbus_limited_current(int is_on);
+#endif
+//prize add by lipengpeng 20210309 start
 extern void mt_vbus_off(void);
 extern int usb_otg_set_vbus(int is_on);
 extern void mt_usb_connect(void);
