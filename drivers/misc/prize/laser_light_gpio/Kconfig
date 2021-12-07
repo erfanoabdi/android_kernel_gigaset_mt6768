@@ -2,4 +2,4 @@ config PRIZE_LASER_LIGHT_GPIO
 	bool "Support prize_laser_light_gpio function"
 	default n
 	help
-		 Select Y to enable prize_laser_light_gpio function
+	  Select Y to enable prize_laser_light_gpio function
