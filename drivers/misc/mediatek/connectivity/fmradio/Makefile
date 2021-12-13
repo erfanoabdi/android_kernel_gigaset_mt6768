@@ -49,6 +49,8 @@ ifneq ($(CONFIG_MTK_FMRADIO),)
 MODULE_NAME := fmradio_drv
 obj-y += $(MODULE_NAME).o
 
+CFG_FM_CHIP := mt6631
+
 ifeq ($(CFG_FM_CHIP),)
     FM_CHIP := mt6631_6635
 
