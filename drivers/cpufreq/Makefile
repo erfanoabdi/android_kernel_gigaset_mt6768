@@ -12,7 +12,7 @@ obj-$(CONFIG_CPU_FREQ_STAT)             += cpufreq_stats.o
 obj-$(CONFIG_CPU_FREQ_TIMES)		+= cpufreq_times.o
 
 # CPUfreq mtk
-ifdef CONFIG_CPU_FREQ_MTK
+ifeq ($(CONFIG_CPU_FREQ_MTK),y)
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/sched/
