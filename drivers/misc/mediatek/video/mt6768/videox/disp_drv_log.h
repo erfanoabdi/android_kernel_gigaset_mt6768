@@ -45,14 +45,14 @@
 #define DISPWARN(string, args...)					\
 	do {								\
 		dprec_logger_pr(DPREC_LOGGER_ERROR, string, ##args);	\
-		pr_info("[DISP][%s #%d]warn:"string,			\
+		pr_debug("[DISP][%s #%d]warn:"string,			\
 				__func__, __LINE__, ##args); \
 	} while (0)
 
 #define DISPERR(string, args...)					\
 	do {								\
 		dprec_logger_pr(DPREC_LOGGER_ERROR, string, ##args);	\
-		pr_info("[DISP][%s #%d]ERROR:"string,			\
+		pr_debug("[DISP][%s #%d]ERROR:"string,			\
 				__func__, __LINE__, ##args);		\
 	} while (0)
 
@@ -74,7 +74,7 @@
 	do {								\
 		dprec_logger_pr(DPREC_LOGGER_DEBUG, "func|%s\n", __func__); \
 		if (g_mobilelog)					\
-			pr_info("[DISP]func|%s\n", __func__);		\
+			pr_debug("[DISP]func|%s\n", __func__);		\
 	} while (0)
 
 #ifdef CONFIG_MTK_MT6382_BDG
@@ -82,14 +82,14 @@
 	do {								\
 		dprec_logger_pr(DPREC_LOGGER_DEBUG, "func|%s START\n", __func__); \
 		if (g_mobilelog)					\
-			pr_info("[DISP]mt6382 %s start, line:%d", __func__, __LINE__);\
+			pr_debug("[DISP]mt6382 %s start, line:%d", __func__, __LINE__);\
 	} while (0)
 
 #define DISPFUNCEND()							\
 	do {								\
 		dprec_logger_pr(DPREC_LOGGER_DEBUG, "func|%s END\n", __func__); \
 		if (g_mobilelog)					\
-			pr_info("[DISP]mt6382 %s end, line:%d", __func__, __LINE__);\
+			pr_debug("[DISP]mt6382 %s end, line:%d", __func__, __LINE__);\
 	} while (0)
 #endif
 
