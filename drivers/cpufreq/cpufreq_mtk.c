@@ -239,6 +239,7 @@ static int __init cpufreq_mtk_init(void)
     ret = sysfs_create_group(cpufreq_global_kobject, &mtk_param_attr_group);
     if (ret) {
         pr_err("[%s] sysfs_create_group failed!\n", __func__);
+        ret = -ENOMEM;
         goto out;
     }
 
