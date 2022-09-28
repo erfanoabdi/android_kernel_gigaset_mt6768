@@ -333,7 +333,7 @@ config PRIZE_REVERE_CHARGING_MODE
 # prize-add by sunshuai for German customers Charging restrictions  20200604 start
 config  PRIZE_GIGASET_CHARGE_RESTRICTION
         bool "Charging restrictions"
-        default n
+        default y
         help
            This is used to PRIZE_GIGASET_CHARGE_RESTRICTION
 # prize-add by sunshuai for  German customers Charging restrictions 20200604 end
