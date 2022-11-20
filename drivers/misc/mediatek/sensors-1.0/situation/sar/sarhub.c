@@ -11,7 +11,38 @@
 #include <SCP_sensorHub.h>
 #include <linux/notifier.h>
 #include "include/scp.h"
-#include "sar_factory.h"
+//#include "scp_helper.h"   // prize,aw modify
+#include "sar_factory.h"       // prize,aw modify
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)                                                                                                                                                                                                                                
+#include "../../../hardware_info/hardware_info.h"
+extern struct hardware_info current_sarsensor_info;
+#endif
+/* prize add by wuhui for sensorhub sar hardware info 2021.10.9 end*/
+
+/* awinic bob add start */
+//#define AW_USB_PLUG_CAIL
+
+#ifdef AW_USB_PLUG_CAIL
+
+#include <linux/notifier.h>
+#include <linux/usb.h>
+#include <linux/power_supply.h>
+#include <linux/regulator/consumer.h>
+#include <linux/version.h>
+
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,9,0)
+#define USB_POWER_SUPPLY_NAME   "charger"
+#else
+#define USB_POWER_SUPPLY_NAME   "usb"
+#endif
+
+#define AW_SAR_CONFIG_MTK_CHARGER
+
+#endif
+/* awinic bob add end */
+//add bob
+int aw_data_debug[3];
+// prize,aw modify end
 
 static struct situation_init_info sarhub_init_info;
 static DEFINE_SPINLOCK(calibration_lock);
@@ -91,19 +122,30 @@ static int sar_factory_get_cali(int32_t data[3])
 	data[2] = obj->cali_data[2];
 	status = obj->cali_status;
 	spin_unlock(&calibration_lock);
-	if (status != 0) {
-		pr_debug("sar cali fail!\n");
-		return -2;
-	}
+/* prize,aw modify for sar start */
+//	if (status != 0) {
+//		pr_err("sar cali fail!\n");
+//		return -2;
+//	}
+/* prize,aw modify for sar end */
 	return 0;
 }
 
+/* prize,aw modify for sar start */
+static int sar_get_cfg_data(unsigned char *buf, unsigned char count)
+{
+	pr_err("sar sar_get_cfg_data\n");
+
+	return sensor_cfg_to_hub(ID_SAR, buf, count);
+}
+/* prize,aw modify for sar end */
 
 static struct sar_factory_fops sarhub_factory_fops = {
 	.enable_sensor = sar_factory_enable_sensor,
 	.get_data = sar_factory_get_data,
 	.enable_calibration = sar_factory_enable_calibration,
 	.get_cali = sar_factory_get_cali,
+	.get_cfg_data = sar_get_cfg_data,   /* prize,aw modify for sar */
 };
 
 static struct sar_factory_public sarhub_factory_device = {
@@ -165,6 +207,11 @@ static int sar_recv_data(struct data_unit_t *event, void *reserved)
 		value[0] = event->sar_event.data[0];
 		value[1] = event->sar_event.data[1];
 		value[2] = event->sar_event.data[2];
+		//add bob start
+		aw_data_debug[0] =  event->sar_event.data[0];
+		aw_data_debug[1] =  event->sar_event.data[1];
+		aw_data_debug[2] =  event->sar_event.data[2];
+		//add bob end
 		err = sar_data_report_t(value, (int64_t)event->time_stamp);
 	} else if (event->flush_action == CALI_ACTION) {
 		spin_lock(&calibration_lock);
@@ -176,11 +223,114 @@ static int sar_recv_data(struct data_unit_t *event, void *reserved)
 			event->sar_event.z_bias;
 		obj->cali_status =
 			(int8_t)event->sar_event.status;
+/* prize,aw modify for sar start */
+		pr_err("sar cali_data[0]: 0x%08x, cali_data[1]: 0x%08x, cali_data[2]: 0x%08x\n",
+			obj->cali_data[0], obj->cali_data[1], obj->cali_data[2]);
+/* prize,aw modify for sar end */
 		spin_unlock(&calibration_lock);
 		complete(&obj->calibration_done);
 	}
 	return err;
 }
+
+/* awinic bob add start */
+#ifdef AW_USB_PLUG_CAIL
+
+struct aw_sar_ps {
+	bool ps_is_present;
+	struct work_struct ps_notify_work;
+	struct notifier_block ps_notif;
+};
+
+static void aw_sar_ps_notify_callback_work(struct work_struct *work)
+{
+	pr_info("sar Usb insert,going to force calibrate\n");
+	sar_factory_enable_calibration();
+}
+
+static int aw_sar_ps_get_state(struct power_supply *psy, bool *present)
+{
+	union power_supply_propval pval = { 0 };
+	int retval;
+
+#ifdef AW_SAR_CONFIG_MTK_CHARGER
+	retval = power_supply_get_property(psy, POWER_SUPPLY_PROP_ONLINE,
+			&pval);
+#else
+	retval = power_supply_get_property(psy, POWER_SUPPLY_PROP_PRESENT,
+			&pval);
+#endif
+	if (retval) {
+		pr_err("sar %s psy get property failed\n", psy->desc->name);
+		return retval;
+	}
+	if (strcmp(psy->desc->name, "usb") == 0) {
+		*present = (pval.intval) ? true : false;
+		pr_info("sar %s is %s\n", psy->desc->name,
+				(*present) ? "present" : "not present");
+	}
+
+	return 0;
+}
+
+static int aw_sar_ps_notify_callback(struct notifier_block *self,
+		unsigned long event, void *p)
+{
+	struct aw_sar_ps *aw_sar_ps_to_cail = container_of(self, struct aw_sar_ps, ps_notif);
+	struct power_supply *psy = p;
+	bool present;
+	int retval;
+	pr_info("sar %s\n", __func__);
+	if ((event == PSY_EVENT_PROP_CHANGED)
+		&& psy && psy->desc->get_property && psy->desc->name){
+		pr_info("sar1 %s\n", __func__);
+		retval = aw_sar_ps_get_state(psy, &present);
+		if (retval) {
+			return retval;
+		}
+		if (event == PSY_EVENT_PROP_CHANGED) {
+			if (aw_sar_ps_to_cail->ps_is_present == present) {
+				pr_err("sar ps present state not change\n");
+				return 0;
+			}
+		}
+		aw_sar_ps_to_cail->ps_is_present = present;
+		schedule_work(&aw_sar_ps_to_cail->ps_notify_work);
+	}
+
+	return 0;
+}
+
+static int aw_sar_ps_notify_init(struct aw_sar_ps *aw_sar_ps_to_cail)
+{
+	struct power_supply *psy = NULL;
+	int ret = 0;
+
+	pr_info("%s enter\n", __func__);
+	INIT_WORK(&aw_sar_ps_to_cail->ps_notify_work, aw_sar_ps_notify_callback_work);
+	aw_sar_ps_to_cail->ps_notif.notifier_call = aw_sar_ps_notify_callback;
+	ret = power_supply_reg_notifier(&aw_sar_ps_to_cail->ps_notif);
+	if (ret) {
+		pr_err("sar Unable to register ps_notifier: %d\n", ret);
+		return -1;
+	}
+	psy = power_supply_get_by_name(USB_POWER_SUPPLY_NAME);
+	if (psy) {
+		ret = aw_sar_ps_get_state(psy, &aw_sar_ps_to_cail->ps_is_present);
+		if (ret) {
+			pr_err("sar psy get property failed rc=%d\n", ret);
+			goto free_ps_notifier;
+		}
+	}
+	return 0;
+
+free_ps_notifier:
+	power_supply_unreg_notifier(&aw_sar_ps_to_cail->ps_notif);
+
+	return -1;
+}
+#endif
+/* awinic bob add end*/
 
 
 static int sarhub_local_init(void)
@@ -190,6 +340,22 @@ static int sarhub_local_init(void)
 	int err = 0;
 
 	struct sarhub_ipi_data *obj;
+	/* prize add by wuhui for sensorhub sar hardware info 2021.10.9 start*/
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)
+	struct sensor_hardware_info_t deviceinfo;
+#endif
+	/* prize add by wuhui for sensorhub sar hardware info 2021.10.9 end*/
+	/* awinic bob add start */
+#ifdef AW_USB_PLUG_CAIL
+		int ret = 0;
+		struct aw_sar_ps *aw_sar_ps_to_cail = NULL;
+		aw_sar_ps_to_cail = kzalloc(sizeof(*aw_sar_ps_to_cail), GFP_KERNEL);
+		if (!aw_sar_ps_to_cail) {
+			err = -ENOMEM;
+			goto exit_aw_kfree;
+		}
+#endif
+	/* awinic bob add end */
 
 	pr_debug("%s\n", __func__);
 	obj = kzalloc(sizeof(*obj), GFP_KERNEL);
@@ -227,13 +393,52 @@ static int sarhub_local_init(void)
 		goto exit;
 	}
 
+	/* prize add by wuhui for sensorhub sar hardware info 2021.10.9 start*/
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)
+	err = sensorHub_get_hardware_info(ID_SAR, &deviceinfo);
+	if (err < 0)
+		pr_err("sensorHub_get_hardware_info ID_SAR fail\n");
+	else
+	{	
+    #if defined(CONFIG_PRIZE_HARDWARE_INFO)
+		strlcpy(current_sarsensor_info.chip, deviceinfo.chip, sizeof(current_sarsensor_info.chip));
+		strlcpy(current_sarsensor_info.vendor, deviceinfo.vendor, sizeof(current_sarsensor_info.vendor));
+		strlcpy(current_sarsensor_info.id, deviceinfo.id, sizeof(current_sarsensor_info.id));
+		strlcpy(current_sarsensor_info.more, deviceinfo.more, sizeof(current_sarsensor_info.more));
+    #endif
+		pr_info("sensorHub_get_hardware_info ID_SAR ok\n");
+	}	
+#endif
+	/* prize add by wuhui for sensorhub sar hardware info 2021.10.9 end*/
+
 	err = scp_sensorHub_data_registration(ID_SAR,
 		sar_recv_data);
 	if (err) {
 		pr_err("SCP_sensorHub_data_registration fail!!\n");
 		goto exit;
 	}
+
+	/* awinic bob add start */
+#ifdef AW_USB_PLUG_CAIL
+		pr_err("sar usb_plug_cail\n");
+		ret = aw_sar_ps_notify_init(aw_sar_ps_to_cail);
+		if (ret < 0) {
+			pr_err("sar error creating power supply notify\n");
+			goto exit_ps_notify;
+		}
+#endif
+	/* awinic bob add end */
 	return 0;
+/* awinic bob add start */
+#ifdef AW_USB_PLUG_CAIL
+exit_ps_notify:
+	power_supply_unreg_notifier(&aw_sar_ps_to_cail->ps_notif);
+exit_aw_kfree:
+	kfree(aw_sar_ps_to_cail);
+	aw_sar_ps_to_cail = NULL;
+#endif
+/* awinic bob add end */
+
 exit:
 	return -1;
 }

@@ -73,7 +73,16 @@
 #include "simulator_kernel.h"
 #endif
 
-
+/* prize added by chenjiaxi, battery info, 20190115-start */
+#if defined(CONFIG_PRIZE_HARDWARE_INFO_BAT)
+#include "../../../misc/mediatek/hardware_info/hardware_info.h"
+extern struct hardware_info current_battery_info;
+unsigned char s_Q_MAX_50[32] = "0";
+unsigned char s_Q_MAX_25[32] = "0";
+unsigned char s_Q_MAX_0[32] = "0";
+unsigned char s_Q_MAX_10[32] = "0";
+#endif
+/* prize added by chenjiaxi, battery info, 20190115-end */
 
 /* ============================================================ */
 /* global variable */
@@ -1075,7 +1084,7 @@ static int fg_read_dts_val(const struct device_node *np,
 		bm_debug("Get %s: %d\n",
 			 node_srting, *param);
 	} else {
-		bm_err("Get %s failed\n", node_srting);
+		bm_debug("Get %s failed\n", node_srting);
 		return -1;
 	}
 	return 0;
@@ -1092,7 +1101,7 @@ static int fg_read_dts_val_by_idx(const struct device_node *np,
 		bm_debug("Get %s %d: %d\n",
 			 node_srting, idx, *param);
 	} else {
-		bm_err("Get %s failed, idx %d\n", node_srting, idx);
+		bm_debug("Get %s failed, idx %d\n", node_srting, idx);
 		return -1;
 	}
 	return 0;
@@ -1181,6 +1190,25 @@ static void fg_custom_parse_table(const struct device_node *np,
 
 		idx = idx + column;
 	}
+	
+/* prize added by chenjiaxi, battery info, 20190115-start */
+#if defined(CONFIG_PRIZE_HARDWARE_INFO_BAT)
+	strcpy(current_battery_info.batt_versions, "V0.0.0");
+    if (!strcmp(node_srting, "battery0_profile_t0")) {
+        sprintf(s_Q_MAX_50,"%d",profile_p->mah);
+        strcpy(current_battery_info.Q_MAX_50, s_Q_MAX_50);
+    } else if (!strcmp(node_srting, "battery0_profile_t1")) {
+        sprintf(s_Q_MAX_25,"%d",profile_p->mah);
+        strcpy(current_battery_info.Q_MAX_25, s_Q_MAX_25);
+    } else if (!strcmp(node_srting, "battery0_profile_t3")) {
+        sprintf(s_Q_MAX_0,"%d",profile_p->mah);
+        strcpy(current_battery_info.Q_MAX_0, s_Q_MAX_0);
+    } else if (!strcmp(node_srting, "battery0_profile_t4")) {
+        sprintf(s_Q_MAX_10,"%d",profile_p->mah);
+        strcpy(current_battery_info.Q_MAX_10, s_Q_MAX_10);
+    }
+#endif
+/* prize added by chenjiaxi, battery info, 20190115-end */
 }
 
 /* struct FUELGAUGE_TEMPERATURE Fg_Temperature_Table[21]; */
@@ -3378,11 +3406,18 @@ void bmd_ctrl_cmd_from_user(void *nl_data, struct fgd_nl_msg_t *ret_msg)
 		{
 			int is_charger_exist = 0;
 
+#if defined(CONFIG_MACH_MT6877)
+			if (battery_main.BAT_STATUS == POWER_SUPPLY_STATUS_CHARGING)
+				is_charger_exist = true;
+			else
+				is_charger_exist = false;
+#else
 			if (upmu_get_rgs_chrdet() == 0 ||
 				mt_usb_is_device() == 0)
 				is_charger_exist = false;
 			else
 				is_charger_exist = true;
+#endif
 
 			ret_msg->fgd_data_len += sizeof(is_charger_exist);
 			memcpy(ret_msg->fgd_data,

@@ -180,7 +180,37 @@ config TOUCHSCREEN_MTK_GT9157
 	  module will be called
 
 source "drivers/input/touchscreen/mediatek/GT9157/Kconfig"
+#prize-add-lishuwen-20191226-start
+config TOUCHSCREEN_MTK_GT9XX_PRIZE
+	bool "GT9XX for Mediatek package"
+	default n
+	help
+	  Say Y here if you have GT9XX touch panel.
+	  If unsure, say N.
+	  To compile this dirver as a module, choose M here: the
+	  module will be called.	  
+source "drivers/input/touchscreen/mediatek/GT9XX_prize/Kconfig"
+#prize-add-lishuwen-20191226-end
 
+#prize by xuejian add fts 20220514 start
+config TOUCHSCREEN_FOCALTECH_TOUCH_V33
+	bool "FOCALTECH_TOUCH_V33 touchscreen"
+	default n
+	help
+	  Say Y here if you have a FOCALTECH_TOUCH_V33 touchscreen connected
+	  to your system.
+
+	  If unsure, say N.
+#prize by xuejian add fts 20220514 end
+#prize by pengzhipeng add ILITEK 20220701 end
+config TOUCHSCREEN_MTK_ILITEK_V3
+	bool "ILITEK chipset i2c touchscreen"
+	help
+	  This enables support for ILITEK CHIPSET over I2C based touchscreens.
+	  when turn this option on, TOUCHSCREEN_ILITEK_I2C touch driver
+	  will open.
+	  If unsure,say N.
+#prize by pengzhipeng add ILITEK 20220701 end
 config TOUCHSCREEN_HIMAX_CHIPSET
 	bool "Himax touchpanel CHIPSET"
 	depends on SPI
@@ -202,4 +232,27 @@ config TOUCHSCREEN_GOODIX_BRL
 	  If unsure, say N.
 source "drivers/input/touchscreen/mediatek/goodix_berlin_driver/Kconfig"
 
+# prize diliwu add tp 20191222 start
+config TOUCHSCREEN_CHIPONE
+        tristate "Chipone TDDI touchscreen for Mediatek package"
+        depends on I2C
+        default n
+        help
+          Say y here if you have chipone TDDI touch panel.
+          If unsure, say N.
+          To compile this driver as a module, choose M here: the
+          module will be called chipone-tddi.
+# prize diliwu add tp 20191222 end
 endif
+
+# prize add start
+config TOUCHSCREEN_ILITEK9882_SPI 
+        tristate " ILITEK9882 touchscreen for Mediatek package"
+        depends on I2C || SPI
+        default n
+        help
+          Say y here if you have ILITEK9882 touch panel.
+          If unsure, say N.
+          To compile this driver as a module, choose M here: the
+          module will be called ILITEK9882.
+# prize add end 

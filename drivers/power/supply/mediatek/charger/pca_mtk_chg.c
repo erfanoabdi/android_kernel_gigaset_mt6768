@@ -8,10 +8,10 @@
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
-#include <mt-plat/charger_class.h>
-#include <mt-plat/mtk_charger.h>
-#include <mt-plat/mtk_battery.h>
-#include <mt-plat/prop_chgalgo_class.h>
+#include <mt-plat/v1/charger_class.h>//prize-Resolves an issue where header file errors cannot be found-pengzhipeng-20220514
+#include <mt-plat/v1/mtk_charger.h>//prize-Resolves an issue where header file errors cannot be found-pengzhipeng-20220514
+#include <mt-plat/v1/mtk_battery.h>//prize-Resolves an issue where header file errors cannot be found-pengzhipeng-20220514
+#include <mt-plat/v1/prop_chgalgo_class.h>//prize-Resolves an issue where header file errors cannot be found-pengzhipeng-20220514
 
 #define PCA_MTK_CHG_VERSION	"2.0.0_MTK"
 

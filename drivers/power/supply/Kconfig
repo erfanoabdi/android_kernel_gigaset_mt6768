@@ -114,7 +114,23 @@ config BATTERY_DS2780
 	select W1_SLAVE_DS2780
 	help
 	  Say Y here to enable support for batteries with ds2780 chip.
-
+#prize added by huarui, cw2015 support, 20190111-start
+config MTK_CW2015_SUPPORT
+	bool "Charger Driver for CW2015 fg"
+	default n
+	help
+	  Say Y to enable
+	  CW2015 driver.
+	  It depends on config MTK_SMART_BATTERY
+	  and config MTK_SWCHR_SUPPORT.
+	  
+config MTK_CW2015_SUPPORT_OF
+	bool "Charger Driver for CW2015 fg"
+	default n
+	select MTK_CW2015_SUPPORT
+	help
+	  Say Y to enable CW2015 driver.
+#prize added by huarui, cw2015 support, 20190111-end
 config BATTERY_DS2781
 	tristate "DS2781 battery driver"
 	depends on HAS_IOMEM
@@ -575,6 +591,15 @@ config CHARGER_BQ25890
 	help
 	  Say Y to enable support for the TI BQ25890 battery charger.
 
+config CHARGER_SC8551
+	tristate "Southchip SC8551 battery charger driver"
+	depends on I2C
+	help
+	  This adds support for charger in SC8551.
+	  Say Y to include support for Southchip Semiconductor Technology
+	  SC8551 charger IC Battery Charger. The base name for this driver is
+	  'sc8551.c'.
+
 config CHARGER_SMB347
 	tristate "Summit Microelectronics SMB347 Battery Charger"
 	depends on I2C
@@ -779,7 +804,88 @@ config CHARGER_RT9466
 	  It is mainly used as slave IC for dual charger
 	  application.
 	  It depends on config MTK_CHARGER.
+	  
+#prize added by chenjiaxi, aw32207 drivers, 20220409-start
+config CHARGER_AW32207                                                                                                                                                                                                                             
+    bool "Charger Driver for Awinic AW32207 Charger IC" 
+    
+    default n
+#    depends on MTK_SMART_BATTERY && MTK_SWCHR_SUPPORT
+    help
+      Say Y to enable
+      AWINIC AW32207 driver.
+      It depends on config MTK_SMART_BATTERY
+      and config MTK_SWCHR_SUPPORT.
+#prize added by chenjiaxi, aw32207 drivers, 20220409-end
 
+#prize add by zhaopengge 20211215 start-----	
+config CHARGER_SGM41512
+	bool "CHARGER_SGM41512"
+	default n
+	help
+	  This is used to CHARGER_SGM41512
+config CHARGER_ETA6953
+	bool "CHARGER_ETA6953"
+	default n
+	help
+	  This is used to CHARGER_ETA6953
+#prize add by zhaopengge 20211215 end-----	
+
+# prize add by zhaopengge----20201030---start
+config HL7005ALL_CHARGER_SUPPORT
+	bool "Charger Driver for Halo HL7005 Charger IC"
+	default n
+	help
+	  Say Y to enable
+	  Halo HL7005 driver.
+	  It depends on config MTK_SMART_BATTERY
+	  and config MTK_SWCHR_SUPPORT.
+# prize add by zhaopengge----20201030---end
+
+config PRIZE_CHARGE_CTRL_POLICY
+	bool "PRIZE_CHARGE_CTRL_POLICY"
+	default y
+	help
+	  This is used to PRIZE_CHARGE_CTRL_POLICY
+	  
+config PRIZE_CHARGE_CTRL_POLICY_CURR_VAL
+	bool "PRIZE_CHARGE_CTRL_POLICY_CURR_VAL"
+	default n
+	help
+	  This is used to PRIZE_CHARGE_CTRL_POLICY_CURR_VAL	  
+# begin, prize-pengzhipeng-20210707, add fuel gauge cw2017
+config MTK_CW2017_SUPPORT
+	bool "Charger Driver for CW2017 fg"
+	default n
+	help
+	  Say Y to enable
+	  CW2017 driver.
+	  It depends on config MTK_SMART_BATTERY
+	  and config MTK_SWCHR_SUPPORT.
+	  
+config MTK_CW2017_SUPPORT_OF
+	bool "Charger Driver for CW2015 fg"
+	default n
+	select MTK_CW2017_SUPPORT
+	help
+	  Say Y to enable CW2017 driver.
+
+config MTK_CW2017_BATTERY_ID_AUXADC
+	bool "2017 fuel gauge compatible with multiple batteries"
+	default n
+	help
+	  Say Y to enable
+	  Enable 2017 Multi-Battery Solution.
+	  It depends on config MTK_CW2015_SUPPORT
+	  and config MTK_CW2017_SUPPORT_OF.
+# end, prize-pengzhipeng-20210707, add fuel gauge cw2017
+#prize-add-pengzhipeng-20220706-start
+config BAT_LOW_TEMP_PROTECT_ENABLE
+	bool "BAT_LOW_TEMP_PROTECT_ENABLE"
+	default n
+	help
+	  This is used to BAT_LOW_TEMP_PROTECT_ENABLE
+#prize-add-pengzhipeng-20220706-end
 config CHARGER_RT9467
 	bool "Charger Driver for Richtek RT9467 Charger IC"
 	depends on MTK_CHARGER
@@ -806,6 +912,47 @@ config CHARGER_BQ25601
 	  TI BQ25601 driver.
 	  It depends on
 	  the config MTK_CHARGER.
+
+#//prize added by sunshuai, mt5725-15W support, 20200507-start
+config PRIZE_MT5725_SUPPORT_15W
+	bool "PRIZE_MT5725_SUPPORT_15W"
+	default n
+	help
+	  Set to Yes if mt5725_15W is used.
+#//prize added by sunshuai, mt5725-15W support, 20200507-end
+
+#prize added by lipengpeng 20210621 start 
+config PRIZE_MT5725_SUPPORT_15W_NEW
+	bool "PRIZE_MT5725_SUPPORT_15W_NEW"
+	default n
+	help
+	  Set to Yes if mt5725_15W new is used.
+#prize added by lipengpeng 20210621 end 
+#prize add by tangcong 20220323 start  
+config PRIZE_BATTERY_HIGTEMP_CTRL
+	bool "Charger Driver for fg"
+	default n
+	help
+	  Say Y to enable charge driver.
+#prize add by tangcong 20220323 end
+ 
+config CUSTOM_BATTERY_EXTERNAL_CHANNEL
+	bool "customer external gauge test"
+	depends on MTK_PMIC_CHIP_MT6359P
+	default n
+	help
+	  This config is for internal testing only.
+	  Say Yes to enable support for Customer external gauge.
+          It depends on MTK_PMIC_CHIP_MT6359P
+          Added for Battery System test
+
+# prize add by liaoxingen start
+config MTK_CW2217_SUPPORT          
+	bool "customer external gauge cw2217"
+	default n
+	help
+	  Set to Yes if cw2217 is used.
+# prize add by liaoxingen end
 
 if MACH_MT6768
 source "drivers/power/supply/mediatek/battery/Kconfig"
@@ -841,5 +988,64 @@ if MACH_MT6893
 source "drivers/power/supply/mediatek/battery/Kconfig"
 source "drivers/power/supply/mediatek/charger/Kconfig"
 endif
+
+if MACH_MT6885
+source "drivers/power/supply/mediatek/battery/Kconfig"
+source "drivers/power/supply/mediatek/charger/Kconfig"
+endif
+
+if MACH_MT6853
+source "drivers/power/supply/mediatek/battery/Kconfig"
+source "drivers/power/supply/mediatek/charger/Kconfig"
+endif
+
+if MACH_MT6873
+source "drivers/power/supply/mediatek/battery/Kconfig"
+source "drivers/power/supply/mediatek/charger/Kconfig"
+endif
+
+if MACH_MT6785
+source "drivers/power/supply/mediatek/battery/Kconfig"
+source "drivers/power/supply/mediatek/charger/Kconfig"
+endif
+#prize add by wangfei for charger limit in factory mode 20220331 start
+config  PRIZE_FACTORY_CHARGE_LIMIT
+        bool "Charge limit"
+        default n
+        help
+           This is used to PRIZE_FACTORY_CHARGE_LIMIT
+#prize add by wangfei for charger limit in factory mode 20220331 end
+
+# prize-add by sunshuai for Vsmart customer power limit 20201207 start
+config  PRIZE_CHARGE_CTRL_VSMART
+        bool "Charging is controlled according to the battery specification"
+        default n
+        help
+           This is used to PRIZE_CHARGE_CTRL_VSMART
+# prize-add by sunshuai for Vsmart customer power limit 20201207  end
+
+# /*prize add by liuxuhui---20220528---start*/
+config  PRIZE_SET_D5N_NON_STANDARD_CHG
+        bool "Charging is controlled according to the battery specification"
+        default n
+        help
+           This is used to PRIZE_SET_D5N_NON_STANDARD_CHG
+config  PRIZE_SET_DOUBLE_CHARGE
+        bool "Charging is controlled according to the battery specification"
+        default n
+        help
+           This is used to PRIZE_SET_DOUBLE_CHARGE
+# /*prize add by liuxuhui---20220528---end*/
+
+# /*prize add by liuxuhui for bat---20220816---start*/
+config MTK_CW2015_BATTERY_ID_AUXADC
+        bool "2015 fuel gauge compatible with multiple batteries"
+        default n
+        help
+          Say Y to enable
+          Enable 2015 Multi-Battery Solution.
+          It depends on config MTK_CW2015_SUPPORT
+          and config MTK_CW2015_SUPPORT_OF.
+# /*prize add by liuxuhui for bat---20220816---end*/
 
 endif # POWER_SUPPLY

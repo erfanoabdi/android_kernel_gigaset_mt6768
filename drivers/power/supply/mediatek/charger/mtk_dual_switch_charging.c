@@ -12,6 +12,28 @@
 #include "mtk_charger_intf.h"
 #include "mtk_dual_switch_charging.h"
 
+/* begin, prize-sunshuai-20190315, add fuel gauge cw2015 */
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+extern int g_cw2015_capacity;
+extern int g_cw2015_vol;
+extern int cw2015_exit_flag;
+#endif
+/* end, prize-sunshuai-20190315, add fuel gauge cw2015 */
+
+//prize add by lipengpeng 20210616 start  
+#if defined(CONFIG_PRIZE_CHARGE_CTRL_POLICY)
+extern int g_charge_is_screen_on;
+#endif
+
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+struct charger_manager *mt5725_info;
+extern int reset_mt5725_info(void);
+extern int get_MT5725_status(void);
+extern int get_wireless_charge_current(struct charger_data *pdata);
+static int MT5725_init(struct charger_manager *info);
+extern void En_Dis_add_current(int i);
+#endif
+//prize add by lipengpeng 20210616 end 
 static int _uA_to_mA(int uA)
 {
 	if (uA == -1)
@@ -85,6 +107,36 @@ static bool dual_swchg_check_pd_leave(struct charger_manager *info)
 	return false;
 }
 
+/*prize-add by wangfei for for gigast customer  20210902 start  */
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+static void set_step_current_limit(struct charger_manager *info)
+{
+   struct charger_data *pdata;
+   	
+   pdata = &info->chg1_data;
+   
+   if(info->step_info.current_step == STEP_T1)
+   {
+      if(pdata->charging_current_limit > info->step_info.step1_max_current)
+         pdata->charging_current_limit = info->step_info.step1_max_current;
+   }
+
+   if(info->step_info.current_step == STEP_T3)
+   {
+      if(pdata->charging_current_limit > info->step_info.step3_vot1_current)
+         pdata->charging_current_limit = info->step_info.step3_vot1_current;
+   }
+   if(info->step_info.current_step == STEP_T2)
+   {
+      if(pdata->charging_current_limit > info->step_info.step2_max_current)
+         pdata->charging_current_limit = info->step_info.step2_max_current;
+   }
+   pr_err("set_step_current_limit step[%d] pdata->charging_current_limit =%d\n",info->step_info.current_step,pdata->charging_current_limit); 
+   
+}
+#endif
+/*prize-add by wangfei for for gigast customer  20210902 end  */
+
 static void
 dual_swchg_select_charging_current_limit(struct charger_manager *info)
 {
@@ -106,14 +158,20 @@ dual_swchg_select_charging_current_limit(struct charger_manager *info)
 	/* AICL */
 	if (!mtk_pe20_get_is_connect(info) && !mtk_pe_get_is_connect(info) &&
 	    !mtk_is_TA_support_pd_pps(info) && !mtk_pdc_check_charger(info)) {
+		/* prize modified by hanjiuping for reset previous input current limt before running aicl */
+		pdata->input_current_limit_by_aicl = -1;
 		charger_dev_run_aicl(info->chg1_dev,
 				&pdata->input_current_limit_by_aicl);
+		/* prize deleted by hanjiuping for don't limit the input current if aicc active start */
+		/*
 		if (info->enable_dynamic_mivr) {
 			if (pdata->input_current_limit_by_aicl >
 				info->data.max_dmivr_charger_current)
 				pdata->input_current_limit_by_aicl =
 					info->data.max_dmivr_charger_current;
 		}
+		*/
+		/* prize deleted by hanjiuping for don't limit the input current if aicc active end */
 	}
 
 	if (pdata->force_charging_current > 0) {
@@ -213,10 +271,19 @@ dual_swchg_select_charging_current_limit(struct charger_manager *info)
 				info->data.pd_charger_current;
 			mtk_pdc_setup(info, idx);
 		} else {
+			/* Prize HanJiuping modified 2021/07/14 start */
+			/* Since mtk_pdc_get_setting would always be fail because RT9471 didn't
+			 * support read iBus, we set the current limit per Gigaset's requirement
+			 * directly = 5W = 5000mV * 1000mA */
+			/*
 			pdata->input_current_limit =
 				info->data.usb_charger_current_configured;
 			pdata->charging_current_limit =
 				info->data.usb_charger_current_configured;
+			*/
+			pdata->input_current_limit    =  1000000;
+			pdata->charging_current_limit =  1500000;
+			/* Prize HanJiuping modified 2021/07/14 end */
 		}
 
 		if (!dual_swchg_check_pd_leave(info)) {
@@ -272,6 +339,14 @@ dual_swchg_select_charging_current_limit(struct charger_manager *info)
 					info->data.non_std_ac_charger_current;
 		pdata->charging_current_limit =
 					info->data.non_std_ac_charger_current;
+//prize add by lipengpeng 20210616 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+		if((info->chr_type == NONSTANDARD_CHARGER) && (get_MT5725_status() == 0)){
+			get_wireless_charge_current(pdata);
+			chr_err("wireless charge current input_current_limit %d: charging_current_limit %d\n",pdata->input_current_limit,pdata->charging_current_limit);
+		}
+#endif
+//prize add by lipengpeng 20210616 end 
 	} else if (info->chr_type == STANDARD_CHARGER) {
 		pdata->input_current_limit =
 					info->data.ac_charger_input_current;
@@ -338,6 +413,33 @@ dual_swchg_select_charging_current_limit(struct charger_manager *info)
 			}
 		}
 	}
+//prize add by lipengpeng 20210616 start  
+#if defined(CONFIG_PRIZE_CHARGE_CTRL_POLICY)
+		if (g_charge_is_screen_on){
+			if (pdata->charging_current_limit > 1000000){
+				pdata->charging_current_limit = 1000000;
+			}
+			if (pdata->input_current_limit > 1100000){
+				pdata->input_current_limit = 1100000;
+			}
+//prize add by sunshuai for Bright screen current limit  for master charge	2019-0429 start
+			if ((mtk_pe20_get_is_enable(info) && mtk_pe20_get_is_connect(info))
+				|| (mtk_pe_get_is_enable(info) && mtk_pe_get_is_connect(info))){
+				pdata->input_current_limit = 650000;
+				pdata->charging_current_limit = 1000000;
+			}
+		}
+		printk("PRIZE master  charge current %d:%d\n",pdata->input_current_limit,pdata->charging_current_limit);	
+//prize add by sunshuai for Bright screen current limit  for master charge  2019-0429 end
+#endif
+//prize add by lipengpeng 20210616 end 
+
+/*prize-add by wangfei for for gigast customer  20210902 start  */
+#ifdef CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST
+	set_step_current_limit(info);
+	printk("after set_step_current_limit %d:%d\n",pdata->input_current_limit,pdata->charging_current_limit);
+#endif
+/*prize-add by wangfei for for gigast customer  20210902 end  */
 
 	/*
 	 * If thermal current limit is less than charging IC's minimum
@@ -431,8 +533,10 @@ dual_swchg_select_charging_current_limit(struct charger_manager *info)
 
 done:
 	if (info->data.parallel_vbus) {
-		pdata->input_current_limit = pdata->input_current_limit / 2;
-		pdata2->input_current_limit = pdata2->input_current_limit / 2;
+		/* prize modified by hanjiuping for charge limit during screen on start */
+		pdata->input_current_limit  = pdata->input_current_limit / 2;
+		pdata2->input_current_limit = pdata->input_current_limit;
+		/* prize modified by hanjiuping for charge limit during screen on end */
 	}
 
 	pr_notice("force:%d %d thermal:(%d %d,%d %d)(%d %d %d)setting:(%d %d)(%d %d)",
@@ -526,14 +630,25 @@ static void swchg_select_cv(struct charger_manager *info)
 		}
 
 	/* dynamic cv*/
+/* prize hanjiuping added 20211103 for set cv to 4.1v while hot per TMB battery spec start */
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+	if (unlikely(info->step_info.current_step == STEP_T3)) {
+		constant_voltage = info->step_info.temp_stp3_cv_voltage;
+	}
+	else {
+		constant_voltage = info->data.battery_cv;
+	}
+#else
 	constant_voltage = info->data.battery_cv;
+#endif
+/* prize hanjiuping added 20211103 for set cv to 4.1v while hot per TMB battery spec end */
 	mtk_get_dynamic_cv(info, &constant_voltage);
 
 	charger_dev_set_constant_voltage(info->chg1_dev, constant_voltage);
 	/* Set slave charger's CV to 200mV higher than master's */
 	if (chg2_chip_enabled)
 		charger_dev_set_constant_voltage(info->chg2_dev,
-			constant_voltage + 200000);
+			constant_voltage + 50000);//prize modified by huarui, vchg too high 200000);
 }
 
 static void dual_swchg_turn_on_charging(struct charger_manager *info)
@@ -543,6 +658,11 @@ static void dual_swchg_turn_on_charging(struct charger_manager *info)
 	bool chg2_enable = true;
 	bool chg2_chip_enabled = false;
 
+//prize-add by wangfei for German customer gigast requires charging to be controlled according to the battery specification 20210902 start
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+	bool chg2_hv_enable = true;
+#endif
+//prize-add by wangfei for German customer gigast requires charging to be controlled according to the battery specification 20210902 end
 	charger_dev_is_chip_enabled(info->chg2_dev, &chg2_chip_enabled);
 
 	if (is_dual_charger_supported(info) == false)
@@ -589,6 +709,21 @@ static void dual_swchg_turn_on_charging(struct charger_manager *info)
 	}
 
 	charger_dev_enable(info->chg1_dev, chg1_enable);
+
+/*prize-add by wangfei for for gigast customer  20210902 start  */
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+   if(info->step_info.current_step == STEP_T1){
+      chg2_enable = false;
+	  chg2_hv_enable = false;
+	  chr_err("charge step 1 info->battery_temperature =%d g_cw2015_vol =%d\n",info->battery_temp,g_cw2015_vol);
+   }
+
+   if(info->step_info.current_step == STEP_T3){     
+         chg2_enable = false;
+         chg2_hv_enable = false;
+   }
+#endif
+/*prize-add by wangfei for for gigast customer  20210902 end  */
 
 	if (chg2_enable == true) {
 		if ((mtk_pe20_get_is_enable(info) &&
@@ -648,7 +783,8 @@ static void dual_swchg_turn_on_charging(struct charger_manager *info)
 	charger_dev_is_chip_enabled(info->chg2_dev, &chg2_chip_enabled);
 
 	if (info->data.parallel_vbus) {
-		if (!chg2_enable) {
+		/* prize modified by hanjiuping for double chg1_dev input current if chg2 not enable or hz */
+		if (!chg2_chip_enabled || !chg2_enable) {
 			charger_dev_set_input_current(info->chg1_dev,
 				info->chg1_data.input_current_limit * 2);
 		}
@@ -662,6 +798,19 @@ static int mtk_dual_switch_charging_plug_in(struct charger_manager *info)
 {
 	struct dual_switch_charging_alg_data *swchgalg = info->algorithm_data;
 
+//prize add by lipengpeng 20210616 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+    if((info->chr_type == NONSTANDARD_CHARGER) && (get_MT5725_status() == 0))
+		En_Dis_add_current(0x00);
+#endif
+//prize add by lipengpeng 20210616 end 
+/*prize-add by sunshuai for for gigast customer  20200706 start  */
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+	info->step_info.current_step = STEP_INIT;
+	info->step_info.enter_step3_battery_percentage = -1;
+
+#endif
+/*prize-add by sunshuai for for gigast customer  20200706 end  */
 	swchgalg->state = CHR_CC;
 	info->polling_interval = CHARGING_INTERVAL;
 	swchgalg->disable_charging = false;
@@ -671,6 +820,17 @@ static int mtk_dual_switch_charging_plug_in(struct charger_manager *info)
 
 static int mtk_dual_switch_charging_plug_out(struct charger_manager *info)
 {
+//prize add by lipengpeng 20210616 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+	   reset_mt5725_info();
+#endif
+//prize add by lipengpeng 20210616 end 
+/*prize-add by sunshuai for for gigast customer  20200706 start  */
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+	info->step_info.current_step = STEP_INIT;
+	info->step_info.enter_step3_battery_percentage = -1;
+#endif
+/*prize-add by sunshuai for for gigast customer  20200706 end  */
 	mtk_pe20_set_is_cable_out_occur(info, true);
 	mtk_pe_set_is_cable_out_occur(info, true);
 	mtk_pdc_plugout(info);
@@ -858,6 +1018,19 @@ static int mtk_dual_switch_charge_current(struct charger_manager *info)
 	return 0;
 }
 
+//prize add by lipengpeng 20210616 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+int dual_switch_charging_select_charging_current(void)
+{
+	if(mt5725_info==NULL){
+		printk("%s:lpp----mt5725_info is null\n",__func__);
+	}else{
+		dual_swchg_select_charging_current_limit(mt5725_info);
+	}
+	return 0;
+}
+#endif
+//prize add by lipengpeng 20210616 end 
 static int mtk_dual_switch_charging_run(struct charger_manager *info)
 {
 	struct dual_switch_charging_alg_data *swchgalg = info->algorithm_data;
@@ -873,6 +1046,12 @@ static int mtk_dual_switch_charging_run(struct charger_manager *info)
 			mtk_pe_check_charger(info);
 	}
 
+//prize added by lipengpeng, eta6937 support, 20220408 start 
+#if defined(CONFIG_HL7005ALL_CHARGER_SUPPORT)
+//	charger_dev_kick_wdt(info->chg1_dev);	//PRIZE
+	charger_dev_kick_wdt(info->chg2_dev);	//PRIZE
+#endif
+//prize added by lipengpeng, eta6937 support, 20220408 end 
 	switch (swchgalg->state) {
 	case CHR_CC:
 	case CHR_TUNING:
@@ -918,10 +1097,25 @@ int dual_charger_dev_event(struct notifier_block *nb, unsigned long event,
 	u32 ichg2, ichg2_min;
 	bool chg_en = false;
 	bool chg2_chip_enabled = false;
+//start add by sunshuai for Bright screen current limit close sencod charge 2019-0429
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+	bool chg2_hv_event = true;
+#endif
+//start add by sunshuai for Bright screen current limit close sencod charge 2019-0429
 
 	charger_dev_is_chip_enabled(info->chg2_dev, &chg2_chip_enabled);
 
 	chr_info("charger_dev_event %ld\n", event);
+
+/*prize-add by sunshuai for for gigast customer  20200706 start  */
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+	if ((info->step_info.current_step == STEP_T1) && (g_cw2015_capacity < 100))
+		chg2_hv_event = false;
+
+	if ((info->step_info.current_step == STEP_T3) && (g_cw2015_capacity < 100))
+		chg2_hv_event = false;
+#endif
+/*prize-add by sunshuai for for gigast customer  20200706 end  */
 
 	if (event == CHARGER_DEV_NOTIFY_EOC) {
 		charger_dev_is_enabled(info->chg2_dev, &chg_en);
@@ -1019,7 +1213,11 @@ int mtk_dual_switch_charging_init(struct charger_manager *info)
 		chr_err("*** Error: can't find secondary charger\n");
 
 	mutex_init(&swch_alg->ichg_aicr_access_mutex);
-
+//prize add by lipengpeng 20210616 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+    MT5725_init(info);
+#endif
+//prize add by lipengpeng 20210616 end
 	info->algorithm_data = swch_alg;
 	info->do_algorithm = mtk_dual_switch_charging_run;
 	info->plug_in = mtk_dual_switch_charging_plug_in;
@@ -1030,3 +1228,11 @@ int mtk_dual_switch_charging_init(struct charger_manager *info)
 
 	return 0;
 }
+//prize add by lipengpeng 20210616 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+static int MT5725_init(struct charger_manager *info){
+    mt5725_info = info;
+	return 0;
+}
+#endif
+//prize add by lipengpeng 20210616 end

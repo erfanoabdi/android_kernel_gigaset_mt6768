@@ -66,6 +66,17 @@ struct tag_bootmode {
 	u32 boottype;
 };
 
+//prize add by lipengpeng 20220425 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+static struct charger_manager *mt5725_info;
+extern int reset_mt5725_info(void);
+extern int get_MT5725_status(void);
+extern int get_wireless_charge_current(struct charger_data *pdata);
+static int MT5725_init(struct charger_manager *info);
+extern void En_Dis_add_current(int i);
+#endif
+//prize add by lipengpeng 20220425 end 
+
 static int _uA_to_mA(int uA)
 {
 	if (uA == -1)
@@ -272,6 +283,28 @@ static void swchg_select_charging_current_limit(struct charger_manager *info)
 				info->data.non_std_ac_charger_current;
 		pdata->charging_current_limit =
 				info->data.non_std_ac_charger_current;
+//prize add by lipengpeng 20220425 start
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+		if((info->chr_type == NONSTANDARD_CHARGER) && (get_MT5725_status() == 0)){
+			get_wireless_charge_current(pdata);
+//prize add by lipengpeng 20210611 start 
+		// printk("lpp---tmp=%d\n",battery_get_bat_temperature());
+		//if(battery_get_bat_temperature() >= 45)
+		//{
+		//	printk("lpp-1111--pdata->input_current_limit=%d\n",pdata->input_current_limit);
+		//   En_Dis_add_current(0xFF);
+		//  pdata->input_current_limit= 1100000;
+		//	pdata->charging_current_limit = 2500000;	
+		//}else if(battery_get_bat_temperature() <= 42){
+		
+		//	En_Dis_add_current(0x00);
+		
+		//}
+//prize add by lipengpeng 20210611 end  
+			chr_err("wireless charge current input_current_limit %d: charging_current_limit %d\n",pdata->input_current_limit,pdata->charging_current_limit);
+		}
+#endif
+//prize add by lipengpeng 20220425 end
 	} else if (info->chr_type == STANDARD_CHARGER) {
 		pdata->input_current_limit =
 				info->data.ac_charger_input_current;
@@ -476,11 +509,25 @@ static void swchg_turn_on_charging(struct charger_manager *info)
 
 	charger_dev_enable(info->chg1_dev, charging_enable);
 }
-
+//#if defined(CONFIG_CHARGER_SC8551)
+//prize add by lipengpeng 20210624 start 
+//extern int  set_sc8551_adc_disenable(int enable);
+//prize add by lipengpeng 20210624 end  
+//#endif
 static int mtk_switch_charging_plug_in(struct charger_manager *info)
 {
 	struct switch_charging_alg_data *swchgalg = info->algorithm_data;
-
+//prize add by lipengpeng 20210624 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+    if((info->chr_type == NONSTANDARD_CHARGER) && (get_MT5725_status() == 0))
+		En_Dis_add_current(0x00);
+#endif
+//prize add by lipengpeng 20210624 end 
+//#if defined(CONFIG_CHARGER_SC8551)
+//prize add by lipengpeng 20210624 start 
+//set_sc8551_adc_disenable(1);
+//prize add by lipengpeng 20210624 end  
+//#endif
 	swchgalg->state = CHR_CC;
 	info->polling_interval = CHARGING_INTERVAL;
 	swchgalg->disable_charging = false;
@@ -493,6 +540,16 @@ static int mtk_switch_charging_plug_out(struct charger_manager *info)
 {
 	struct switch_charging_alg_data *swchgalg = info->algorithm_data;
 
+//prize add by lipengpeng 20210624 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+	   reset_mt5725_info();
+#endif
+//prize add by lipengpeng 20210624 end 
+///#if defined(CONFIG_CHARGER_SC8551)
+//prize add by lipengpeng 20210624 start
+//set_sc8551_adc_disenable(1);
+//prize add by lipengpeng 20210624 end 
+//#endif
 	swchgalg->total_charging_time = 0;
 
 	mtk_pe20_set_is_cable_out_occur(info, true);
@@ -751,6 +808,19 @@ static int mtk_switch_charging_current(struct charger_manager *info)
 	return 0;
 }
 
+//prize add by lipengpeng 20210616 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+int switch_charging_select_charging_current(void){
+	if(mt5725_info==NULL){
+		printk("%s:lpp----mt5725_info is null\n",__func__);
+	}else{
+		swchg_select_charging_current_limit(mt5725_info);
+	}
+	return 0;
+}
+#endif
+//prize add by lipengpeng 20210616 end 
+
 static int mtk_switch_charging_run(struct charger_manager *info)
 {
 	struct switch_charging_alg_data *swchgalg = info->algorithm_data;
@@ -921,6 +991,9 @@ int mtk_switch_charging_init(struct charger_manager *info)
 
 	mutex_init(&swch_alg->ichg_aicr_access_mutex);
 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+    MT5725_init(info);
+#endif
 	info->algorithm_data = swch_alg;
 	info->do_algorithm = mtk_switch_charging_run;
 	info->plug_in = mtk_switch_charging_plug_in;
@@ -931,3 +1004,9 @@ int mtk_switch_charging_init(struct charger_manager *info)
 
 	return ret;
 }
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+static int MT5725_init(struct charger_manager *info){
+    mt5725_info = info;
+	return 0;
+}
+#endif

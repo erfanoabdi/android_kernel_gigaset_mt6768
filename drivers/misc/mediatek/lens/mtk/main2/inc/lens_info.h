@@ -54,6 +54,10 @@
 #define AFDRV_MT9P017AF "MT9P017AF"
 #define AFDRV_OV8825AF "OV8825AF"
 #define AFDRV_WV511AAF "WV511AAF"
+/*prize  add  for main2 af by zhuzhengjiang    20210604-begin*/
+#define AFDRV_DW9714KAF "DW9714KAF" 
+/*prize  add  for main2 af by zhuzhengjiang    20210604-end*/
+
 
 #define CONVERT_CCU_TIMESTAMP 0x1000
 

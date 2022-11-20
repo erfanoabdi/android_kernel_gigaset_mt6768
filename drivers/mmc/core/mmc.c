@@ -29,6 +29,18 @@
 #include "sd_ops.h"
 #include "pwrseq.h"
 
+/* prize addded by wangmengdong for hardware info, ufs life, 20210206,start */
+#ifdef CONFIG_DISPLAY_MMC_LIFE
+#ifndef CONFIG_MTK_UFS_SUPPORT
+#include "../../misc/mediatek/hardware_info/hardware_info.h"
+extern struct hardware_info current_mmc_info;
+unsigned char PreEol[5] = "0";
+unsigned char LifeEstA[5] = "0";
+unsigned char LifeEstB[5] = "0";
+unsigned char fwreverion[25] = "2";
+#endif
+#endif
+/* prize addded by wangmengdong for hardware info, ufs life, 20210206,end */
 #define DEFAULT_CMD6_TIMEOUT_MS	500
 #define MIN_CACHE_EN_TIMEOUT_MS 1600
 
@@ -651,6 +663,25 @@ static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
 			ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A];
 		card->ext_csd.device_life_time_est_typ_b =
 			ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_B];
+/* prize addded by wangmengdong for hardware info, ufs life, 20210206,start */
+#ifdef CONFIG_DISPLAY_MMC_LIFE
+#ifndef CONFIG_MTK_UFS_SUPPORT
+	if (card->ext_csd.rev < 7) {
+		sprintf(fwreverion, "0x%x", card->cid.fwrev);
+	} else {
+		sprintf(fwreverion, "0x%*phN", MMC_FIRMWARE_LEN,
+			       card->ext_csd.fwrev);
+	}
+        sprintf(PreEol,"0x%02x",ext_csd[EXT_CSD_PRE_EOL_INFO]);
+        sprintf(LifeEstA,"0x%02x",ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A]);
+        sprintf(LifeEstB,"0x%02x",ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_B]);
+		sprintf(current_mmc_info.more,"prv:0x%02x\n fwrev:%s \n serial:0x%8x %02d/%04d",card->cid.prv,fwreverion,card->cid.serial,card->cid.month, card->cid.year);
+        strcpy(current_mmc_info.chip, LifeEstA);
+        strcpy(current_mmc_info.vendor, LifeEstB);
+        strcpy(current_mmc_info.id, PreEol);
+#endif
+#endif		
+/* prize addded by wangmengdong for hardware info, ufs life, 20210206,end */
 	}
 
 	/* eMMC v5.1 or later */
@@ -1237,6 +1268,14 @@ static int mmc_select_hs400(struct mmc_card *card)
 	/* Set host controller to HS400 timing and frequency */
 	mmc_set_timing(host, MMC_TIMING_MMC_HS400);
 	mmc_set_bus_speed(card);
+
+	if (host->ops->execute_hs400_tuning) {
+		mmc_retune_disable(host);
+		err = host->ops->execute_hs400_tuning(host, card);
+		mmc_retune_enable(host);
+		if (err)
+			goto out_err;
+	}
 
 	if (host->ops->hs400_complete)
 		host->ops->hs400_complete(host);

@@ -456,7 +456,6 @@ int ilitek_tddi_sleep_handler(int mode)
 	switch (mode) {
 	case TP_SUSPEND:
 		ipio_info("TP suspend start\n");
-		idev->tp_suspend = true;
 		if (sense_stop) {
 			if (ilitek_tddi_ic_func_ctrl("sense", DISABLE, NULL, 0) < 0)
 				ipio_err("Write sense stop cmd failed\n");
@@ -474,10 +473,10 @@ int ilitek_tddi_sleep_handler(int mode)
 				ipio_err("Write sleep in cmd failed\n");
 		}
 		ipio_info("TP suspend end\n");
+		idev->tp_suspend = true;
 		break;
 	case TP_DEEP_SLEEP:
-		ipio_info("TP deep suspend start\n");
-		idev->tp_suspend = true;
+		printk("TP deep suspend start\n");
 		if (sense_stop) {
 			if (ilitek_tddi_ic_func_ctrl("sense", DISABLE, NULL, 0) < 0)
 				ipio_err("Write sense stop cmd failed\n");
@@ -495,10 +494,11 @@ int ilitek_tddi_sleep_handler(int mode)
 				ipio_err("Write deep sleep in cmd failed\n");
 		}
 		ipio_info("TP deep suspend end\n");
+		idev->tp_suspend = true;
 		break;
 	case TP_RESUME:
 #if !RESUME_BY_DDI
-		ipio_info("TP resume start\n");
+		printk("TP resume start\n");
 
 		if (idev->gesture)
 			disable_irq_wake(idev->irq_num);
@@ -513,11 +513,11 @@ int ilitek_tddi_sleep_handler(int mode)
 				ipio_err("TP Reset failed during resume\n");
 			ilitek_tddi_ic_func_ctrl_reset();
 		}
+		ilitek_tddi_wq_ctrl(WQ_ESD, ENABLE);
+		ilitek_tddi_wq_ctrl(WQ_BAT, ENABLE);
 		idev->tp_suspend = false;
 		ipio_info("TP resume end\n");
 #endif
-		ilitek_tddi_wq_ctrl(WQ_ESD, ENABLE);
-		ilitek_tddi_wq_ctrl(WQ_BAT, ENABLE);
 		ilitek_plat_irq_enable();
 		break;
 	default:
@@ -580,9 +580,6 @@ int ilitek_set_tp_data_len(int format, bool send, u8* data)
 
 	switch (format) {
 	case DATA_FORMAT_DEMO:
-		len = P5_X_DEMO_MODE_PACKET_LEN;
-		ctrl = DATA_FORMAT_DEMO_CMD;
-		break;
 	case DATA_FORMAT_GESTURE_DEMO:
 		len = P5_X_DEMO_MODE_PACKET_LEN;
 		ctrl = DATA_FORMAT_DEMO_CMD;
@@ -633,6 +630,10 @@ int ilitek_set_tp_data_len(int format, bool send, u8* data)
 		ctrl = DATA_FORMAT_DEBUG_LITE_CMD;
 		break;
 	case DATA_FORMAT_DEBUG_LITE_AREA:
+		if(cmd == NULL) {
+			ipio_err("DATA_FORMAT_DEBUG_LITE_AREA error cmd\n");
+			return -1;
+		}
 		debug_ctrl = DATA_FORMAT_DEBUG_LITE_AREA_CMD;
 		ctrl = DATA_FORMAT_DEBUG_LITE_CMD;
 		cmd[3] = data[0];
@@ -658,8 +659,7 @@ int ilitek_set_tp_data_len(int format, bool send, u8* data)
 
 	} else if (tp_mode == P5_X_FW_AP_MODE ||
 		format == DATA_FORMAT_GESTURE_DEMO ||
-		format == DATA_FORMAT_GESTURE_DEBUG ||
-		format == DATA_FORMAT_DEMO) {
+		format == DATA_FORMAT_GESTURE_DEBUG) {
 		cmd[0] = P5_X_MODE_CONTROL;
 		cmd[1] = ctrl;
 		ret = idev->wrapper(cmd, 2, NULL, 0, OFF, OFF);
@@ -705,6 +705,7 @@ int ilitek_tddi_report_handler(void)
 
 	if (idev->irq_after_recovery) {
 		ipio_info("ignore int triggered by recovery\n");
+		idev->irq_after_recovery = false;
 		return -EINVAL;
 	}
 
@@ -737,18 +738,17 @@ int ilitek_tddi_report_handler(void)
 	if (ret < 0) {
 		ipio_err("Read report packet failed, ret = %d\n", ret);
 		if (ret == DO_SPI_RECOVER) {
-			idev->irq_after_recovery = true;
 			ilitek_tddi_ic_get_pc_counter(DO_SPI_RECOVER);
 			if (idev->tp_suspend && idev->gesture && !idev->prox_near) {
 				ipio_err("Gesture failed, doing gesture recovery\n");
 				if (ilitek_tddi_gesture_recovery() < 0)
 					ipio_err("Failed to recover gesture\n");
+				idev->irq_after_recovery = true;
 			} else {
 				ipio_err("SPI ACK failed, doing spi recovery\n");
 				ilitek_tddi_spi_recovery();
+				idev->irq_after_recovery = true;
 			}
-			msleep(100);
-			idev->irq_after_recovery = false;
 		}
 		goto out;
 	}
@@ -810,15 +810,14 @@ int ilitek_tddi_report_handler(void)
 	default:
 		ipio_err("Unknown packet id, %x\n", pid);
 #if (TDDI_INTERFACE == BUS_I2C)
-		msleep(50);
 		ilitek_tddi_ic_get_pc_counter(DO_I2C_RECOVER);
 		if (idev->fw_latch != 0) {
-			msleep(50);
+			msleep(100);
 			ilitek_tddi_ic_func_ctrl_reset();
 			ipio_err("I2C func_ctrl_reset\n");
 		}
 		if ((idev->actual_tp_mode == P5_X_FW_GESTURE_MODE) && idev->fw_latch != 0) {
-			msleep(50);
+			msleep(100);
 			ilitek_set_gesture_symbol();
 			ipio_err("I2C gesture_symbol\n");
 		}
@@ -1011,7 +1010,6 @@ int ilitek_tddi_init(void)
 	atomic_set(&idev->tp_sleep, END);
 	atomic_set(&idev->cmd_int_check, DISABLE);
 	atomic_set(&idev->esd_stat, END);
-	atomic_set(&idev->tp_sw_mode, END);
 
 	ilitek_tddi_ic_init();
 	ilitek_tddi_wq_init();
@@ -1062,7 +1060,9 @@ int ilitek_tddi_init(void)
 #if (TDDI_INTERFACE == BUS_I2C)
 	idev->info_from_hex = DISABLE;
 #endif
-
+//power on TP no touch prize by lipengpeng 20210726 start 
+	ilitek_plat_tp_reset(); 
+//power on TP no touch prize by lipengpeng 20210726 end 
 	ilitek_tddi_ic_get_core_ver();
 	ilitek_tddi_ic_get_protocl_ver();
 	ilitek_tddi_ic_get_fw_ver();

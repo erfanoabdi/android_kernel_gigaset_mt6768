@@ -7,6 +7,8 @@
 #include <linux/i2c.h>
 
 #define DEFAULT_MAX_EEPROM_SIZE_8K 0x2000
+#define DEFAULT_MAX_EEPROM_SIZE_16K 0x4000 //prize add by linchong 20220924
+
 
 typedef unsigned int (*cam_cal_cmd_func) (struct i2c_client *client,
 	unsigned int addr, unsigned char *data, unsigned int size);
@@ -18,6 +20,14 @@ struct stCAM_CAL_LIST_STRUCT {
 	unsigned int maxEepromSize;
 };
 
+extern unsigned int  zte_s5k4h7_read_region(struct i2c_client *client,
+	unsigned int addr,
+	unsigned char *data,
+	unsigned int size);
+extern unsigned int  zte_s5k4h7_sub_read_region(struct i2c_client *client,
+	unsigned int addr,
+	unsigned char *data,
+	unsigned int size);
 
 unsigned int cam_cal_get_sensor_list
 		(struct stCAM_CAL_LIST_STRUCT **ppCamcalList);

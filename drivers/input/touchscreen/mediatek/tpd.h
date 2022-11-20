@@ -22,6 +22,7 @@
 #include <linux/kobject.h>
 #include <linux/regulator/consumer.h>
 #include <linux/pinctrl/consumer.h>
+#include <linux/of_gpio.h>
 
 /*debug macros */
 #define TPD_DEBUG
@@ -161,7 +162,7 @@ extern void tpd_get_dts_info(void);
 #define GTP_RST_PORT    0
 #define GTP_INT_PORT    1
 #endif
-extern void tpd_gpio_as_int(int pin);
+extern int tpd_gpio_as_int(void);
 extern void tpd_gpio_output(int pin, int level);
 extern const struct of_device_id touch_of_match[];
 #ifdef TPD_DEBUG_CODE

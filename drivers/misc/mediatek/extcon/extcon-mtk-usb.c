@@ -243,6 +243,14 @@ static int mtk_usb_extcon_psy_init(struct mtk_extcon_info *extcon)
 	return 0;
 }
 
+//prize add by lipengpeng 20210308 start
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+extern int set_otg_gpio(int en);
+extern int turn_off_5725(int en);
+#endif
+//prize add by lipengpeng 20210308 end
+
+
 #if defined ADAPT_CHARGER_V1
 #include <mt-plat/v1/charger_class.h>
 static struct charger_device *primary_charger;
@@ -250,7 +258,7 @@ static struct charger_device *primary_charger;
 static int mtk_usb_extcon_set_vbus_v1(bool is_on) {
 	if (!primary_charger) {
 		primary_charger = get_charger_by_name("primary_chg");
-		if (primary_charger) {
+		if (!primary_charger) {
 			pr_info("%s: get primary charger device failed\n", __func__);
 			return -ENODEV;
 		}
@@ -291,11 +299,26 @@ static int mtk_usb_extcon_set_vbus(struct mtk_extcon_info *extcon,
 							bool is_on)
 {
 	int ret;
+#if !defined ADAPT_CHARGER_V1
+    struct regulator *vbus = extcon->vbus;
+	struct device *dev = extcon->dev;
+#endif    
+//prize add by lipengpeng 20210308 start	
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+if(is_on){
+	turn_off_5725(1);  //GPIO88 OD5
+	set_otg_gpio(1);  //OD7  87
+	
+}else{
+	set_otg_gpio(0);//OD7
+	turn_off_5725(0);//OD5   0--->low  1--->high
+
+}
+#endif
+//prize add by lipengpeng 20210308 end
 #if defined ADAPT_CHARGER_V1
 	ret = mtk_usb_extcon_set_vbus_v1(is_on);
 #else
-	struct regulator *vbus = extcon->vbus;
-	struct device *dev = extcon->dev;
 
 	/* vbus is optional */
 	if (!vbus || extcon->vbus_on == is_on)
@@ -527,6 +550,26 @@ static void issue_connection_work(unsigned int dr)
 	/* issue connection work */
 	mtk_usb_extcon_set_role(g_extcon, dr);
 }
+
+//prize add by lipengpeng 20210308 start
+#if defined (CONFIG_PRIZE_REVERE_CHARGING_MODE)
+
+
+void mt_vbus_revere_on(void)
+{
+	usb_otg_set_vbus(true);
+}
+EXPORT_SYMBOL_GPL(mt_vbus_revere_on);
+
+void mt_vbus_revere_off(void)
+{
+	usb_otg_set_vbus(false);
+}
+EXPORT_SYMBOL_GPL(mt_vbus_revere_off); 
+ 
+#endif
+//prize add by lipengpeng 20210308 end
+
 
 void mt_usb_connect_v1(void)
 {

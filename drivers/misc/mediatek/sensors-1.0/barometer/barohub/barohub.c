@@ -18,6 +18,12 @@
 #include <hwmsensor.h>
 #include <SCP_sensorHub.h>
 #include "SCP_power_monitor.h"
+/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)                                                                                                                                                                                                                                
+#include "../../../hardware_info/hardware_info.h"
+extern struct hardware_info current_barosensor_info;
+#endif
+/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 
 /* trace */
 enum BAR_TRC {
@@ -34,8 +40,10 @@ struct barohub_ipi_data {
 	atomic_t suspend;
 	struct work_struct init_done_work;
 	atomic_t scp_init_done;
+	atomic_t first_ready_after_boot;
 	bool factory_enable;
 	bool android_enable;
+	int32_t config_data[2];
 };
 
 static struct barohub_ipi_data *obj_ipi_data;
@@ -185,6 +193,49 @@ static int barohub_delete_attr(struct device_driver *driver)
 		driver_remove_file(driver, barohub_attr_list[idx]);
 
 	return err;
+}
+
+static void scp_init_work_done(struct work_struct *work)
+{
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO) 
+	int err = 0;
+#endif
+//	int32_t cfg_data[2] = {0};
+	struct barohub_ipi_data *obj = obj_ipi_data;
+	/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)                                                                                                                                                                                                                      
+	struct sensor_hardware_info_t deviceinfo;
+#endif
+	pr_info("%s first_ready_after_boot = %d +\n", __func__, atomic_read(&obj->first_ready_after_boot));
+	/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
+
+	if (atomic_read(&obj->scp_init_done) == 0) {
+		pr_debug("scp is not ready to send cmd\n");
+		return;
+	}
+	if (atomic_xchg(&obj->first_ready_after_boot, 1) == 0) {
+		/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)
+				err = sensorHub_get_hardware_info(ID_PRESSURE, &deviceinfo);
+				if (err < 0)
+					pr_err("sensorHub_get_hardware_info ID_MAGNETIC fail\n");
+				else
+				{	
+            #if defined(CONFIG_PRIZE_HARDWARE_INFO)
+					strlcpy(current_barosensor_info.chip, deviceinfo.chip, sizeof(current_barosensor_info.chip));
+					strlcpy(current_barosensor_info.vendor, deviceinfo.vendor, sizeof(current_barosensor_info.vendor));
+					strlcpy(current_barosensor_info.id, deviceinfo.id, sizeof(current_barosensor_info.id));
+					strlcpy(current_barosensor_info.more, deviceinfo.more, sizeof(current_barosensor_info.more));
+            #endif
+					pr_info("sensorHub_get_hardware_info ID_PRESSURE ok\n");
+				}	
+#endif
+				pr_info("%s first_ready_after_boot = %d -\n", __func__, atomic_read(&obj->first_ready_after_boot));
+		/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
+
+		return;
+	}
+
 }
 
 static int baro_recv_data(struct data_unit_t *event, void *reserved)
@@ -373,6 +424,7 @@ static int scp_ready_event(uint8_t event, void *ptr)
 	switch (event) {
 	case SENSOR_POWER_UP:
 	    atomic_set(&obj->scp_init_done, 1);
+	    schedule_work(&obj->init_done_work);
 		break;
 	case SENSOR_POWER_DOWN:
 	    atomic_set(&obj->scp_init_done, 0);
@@ -402,7 +454,7 @@ static int barohub_probe(struct platform_device *pdev)
 		err = -ENOMEM;
 		goto exit;
 	}
-
+	INIT_WORK(&obj->init_done_work, scp_init_work_done);
 	obj_ipi_data = obj;
 	platform_set_drvdata(pdev, obj);
 
@@ -412,6 +464,7 @@ static int barohub_probe(struct platform_device *pdev)
 	WRITE_ONCE(obj->android_enable, false);
 
 	atomic_set(&obj->scp_init_done, 0);
+	atomic_set(&obj->first_ready_after_boot, 0);
 	scp_power_monitor_register(&scp_ready_notifier);
 	err = scp_sensorHub_data_registration(ID_PRESSURE, baro_recv_data);
 	if (err < 0) {

@@ -1,6 +1,14 @@
-/* SPDX-License-Identifier: GPL-2.0 */
 /*
- * Copyright (c) 2019 MediaTek Inc.
+ * Copyright (C) 2015 MediaTek Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  */
 
 #ifndef _KD_IMGSENSOR_DATA_H
@@ -33,6 +41,7 @@
 #define MINT32 signed int
 #endif
 
+#define MIPI_SWITCH  1 // prize by zhuzhengjiang for mipi switch 20210202
 /************************************************************************
  *
  ************************************************************************/
@@ -299,6 +308,8 @@ enum ACDK_SENSOR_FEATURE_ENUM {
 	SENSOR_FEATURE_GET_SEAMLESS_SCENARIOS,
 	SENSOR_FEATURE_GET_SEAMLESS_SYSTEM_DELAY,
 	SENSOR_FEATURE_SET_SEAMLESS_EXTEND_FRAME_LENGTH,
+	SENSOR_FEATURE_SET_HDR_SHUTTER_FRAME_TIME,
+	SENSOR_FEATURE_SET_HDR_TRI_SHUTTER_FRAME_TIME,
 	SENSOR_FEATURE_MAX
 };
 
@@ -583,7 +594,6 @@ struct ACDK_SENSOR_INFO_STRUCT {
 	MUINT32 Custom13DelayFrame;
 	MUINT32 Custom14DelayFrame;
 	MUINT32 Custom15DelayFrame;
-
 	MUINT16 SensorGrabStartX;
 	MUINT16 SensorGrabStartY;
 	MUINT16 SensorGrabStartX_PRV;
@@ -1552,4 +1562,8 @@ struct IMGSENSOR_AE_FRM_MODE {
 	MUINT32 frame_mode_4:4;
 };
 
+struct IMGSENSOR_AE_MULTI_SHUTTER {
+	MUINT32 shutter_num; /* How many shutter settings in this structure */
+	MUINT32 shutter[3];
+};
 #endif              /* _KD_IMGSENSOR_DATA_H */

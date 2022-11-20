@@ -59,3 +59,6 @@ obj-$(CONFIG_SND_SOC)	+= uniphier/
 obj-$(CONFIG_SND_SOC)	+= ux500/
 obj-$(CONFIG_SND_SOC)	+= xtensa/
 obj-$(CONFIG_SND_SOC)	+= zte/
+# prize add by wuhui aw881xx, 20210623 start
+obj-$(CONFIG_SND_SMARTPA_AW881XX_V1_3_0)    += aw881xx_v1_3_0/
+# prize add by wuhui aw881xx, 20210623 end

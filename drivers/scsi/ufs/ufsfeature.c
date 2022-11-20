@@ -159,7 +159,7 @@ static int ufsf_read_desc(struct ufs_hba *hba, u8 desc_id, u8 desc_index,
 	int err = 0;
 	bool pm_resumed = false;
 
-	if (hba->ufshcd_state != UFSHCD_STATE_RESET) {
+	if (!hba->pm_op_in_progress) {
 		pm_runtime_get_sync(hba->dev);
 		pm_resumed = true;
 	}
@@ -192,7 +192,7 @@ static int ufsf_read_dev_desc(struct ufsf_feature *ufsf, u8 selector)
 	INIT_INFO("sel=%u length=%u(0x%x) bSupport=0x%.2x, extend=0x%.2x_%.2x",
 		  selector, desc_buf[DEVICE_DESC_PARAM_LEN],
 		  desc_buf[DEVICE_DESC_PARAM_LEN],
-		  desc_buf[DEVICE_DESC_PARAM_UFS_FEAT],
+		  desc_buf[DEVICE_DESC_PARAM_FEAT_SUP],
 		  desc_buf[DEVICE_DESC_PARAM_EX_FEAT_SUP+2],
 		  desc_buf[DEVICE_DESC_PARAM_EX_FEAT_SUP+3]);
 

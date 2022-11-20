@@ -11,6 +11,12 @@
 #include <SCP_sensorHub.h>
 #include "SCP_power_monitor.h"
 #include <linux/pm_wakeup.h>
+/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+#include "../../../hardware_info/hardware_info.h"
+extern struct hardware_info current_alsps_info;
+#endif
+/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 
 
 #define ALSPSHUB_DEV_NAME     "alsps_hub_pl"
@@ -279,13 +285,43 @@ static void alspshub_init_done_work(struct work_struct *work)
 #ifndef MTK_OLD_FACTORY_CALIBRATION
 	int32_t cfg_data[2] = {0};
 #endif
+	/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)
+	struct sensor_hardware_info_t deviceinfo;
+#endif
+	pr_info("%s first_ready_after_boot = %d +\n", __func__, atomic_read(&obj->first_ready_after_boot));
+	/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 
 	if (atomic_read(&obj->scp_init_done) == 0) {
 		pr_err("wait for nvram to set calibration\n");
 		return;
 	}
+/* begin, prize-lifenfen-20181126, first_ready_after_boot default is 0, this case will always be true */
+#if 0
 	if (atomic_xchg(&obj->first_ready_after_boot, 1) == 0)
+#else
+	if (atomic_xchg(&obj->first_ready_after_boot, 1) == 1)
+#endif
+/* end, prize-lifenfen-20181126, first_ready_after_boot default is 0, this case will always be true */
 		return;
+/* begin, prize-lifenfen-20181126, add for sensorhub hardware info */
+#if defined(CONFIG_SENSORHUB_PRIZE_HARDWARE_INFO)
+	err = sensorHub_get_hardware_info(ID_PROXIMITY, &deviceinfo);
+	if (err < 0)
+		pr_err("sensorHub_get_hardware_info ID_PROXIMITY fail\n");
+	else
+	{
+		#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+		strlcpy(current_alsps_info.chip, deviceinfo.chip, sizeof(current_alsps_info.chip));
+		strlcpy(current_alsps_info.vendor, deviceinfo.vendor, sizeof(current_alsps_info.vendor));
+		strlcpy(current_alsps_info.id, deviceinfo.id, sizeof(current_alsps_info.id));
+		strlcpy(current_alsps_info.more, deviceinfo.more, sizeof(current_alsps_info.more));
+		#endif
+		pr_info("sensorHub_get_hardware_info ID_PROXIMITY ok\n");
+	}
+#endif
+	pr_info("%s first_ready_after_boot = %d -\n", __func__, atomic_read(&obj->first_ready_after_boot));
+/* end, prize-lifenfen-20181126, add for sensorhub hardware info */
 #ifdef MTK_OLD_FACTORY_CALIBRATION
 	err = sensor_set_cmd_to_hub(ID_PROXIMITY,
 		CUST_ACTION_SET_CALI, &obj->ps_cali);

@@ -36,6 +36,7 @@ endif
 obj-$(CONFIG_MTK_LENS)    += mainaf.o
 
 mainaf-y  += main_lens.o
+mainaf-y  += common/fp5516weaf/FP5516WEAF.o
 mainaf-y  += common/fp5510e2af/FP5510E2AF.o
 mainaf-y  += common/bu6424af/BU6424AF.o
 mainaf-y  += common/bu6429af/BU6429AF.o
@@ -49,6 +50,7 @@ mainaf-y  += common/dw9718saf/DW9718SAF.o
 mainaf-y  += common/dw9718taf/DW9718TAF.o
 mainaf-y  += common/dw9719taf/DW9719TAF.o
 mainaf-y  += common/dw9763af/DW9763AF.o
+mainaf-y  += common/dw9761af/DW9761AF.o
 mainaf-y  += common/dw9839af/DW9839AF.o
 mainaf-y  += common/gt9764af/GT9764AF.o
 mainaf-y  += common/lc898212af/LC898212AF.o
@@ -72,4 +74,17 @@ mainaf-y  += common/bu63169af/OIS_func.o
 mainaf-y  += common/bu63169af/OIS_main.o
 mainaf-y  += common/bu63169af/OIS_user.o
 mainaf-y  += common/bu64253gwzaf/BU64253GWZAF.o
+#/*prize add by zhuzhengjiang for lens:zc535 20220110 start*/
+mainaf-y  += common/zc535af/ZC535AF.o
+mainaf-y  += common/gt9767af/GT9767AF.o
+mainaf-y  += common/gt9772af/GT9772AF.o
+mainaf-y  += common/aw8601csr/AW8601CSR.o
+mainaf-y  += common/fp5510fe4af/FP5510FE4AF.o
+ifeq ($(CONFIG_MTK_LENS_DW9781CAF_SUPPORT), y)
+mainaf-y  += common/dw9781caf/DW9781CAF.o
+mainaf-y  += common/dw9781caf/OIS_func_register.o
+endif
+mainaf-y  += common/aw8601xaf/AW8601xAF.o
+mainaf-y  += common/aw86014af/AW86014AF.o
+#/*prize add by zhuzhengjiang for lens:zc535 20220110 end*/
 

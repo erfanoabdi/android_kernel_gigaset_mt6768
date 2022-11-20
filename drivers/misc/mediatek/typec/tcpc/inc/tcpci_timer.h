@@ -111,6 +111,11 @@ enum {
 #ifdef CONFIG_TYPEC_CAP_NORP_SRC
 	TYPEC_TIMER_NORP_SRC,
 #endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
+//prize add by huarui, cc controller sgm7220, start
+#if defined(CONFIG_TCPC_SGM7220)||defined(CONFIG_TCPC_WUSB3801)
+	TYPEC_TIMER_VBUS_CHECK,
+#endif	/* CONFIG_TCPC_SGM7220 */
+//prize add by huarui, cc controller sgm7220, end
 	PD_TIMER_NR,
 };
 

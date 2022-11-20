@@ -35,6 +35,9 @@ struct mt6360_ldo_platform_data {
 	int irq_res_cnt;
 	u32 sdcard_det_en;
 	u32 sdcard_hlact;
+	/* prize added anhengxuan for 6360 sdcard detect level select ,20220402,start */
+	u32 sdcard_det_level;
+	/* prize added anhengxuan for 6360 sdcard detect level select ,20220402,end */
 };
 
 struct mt6360_ldo_info {

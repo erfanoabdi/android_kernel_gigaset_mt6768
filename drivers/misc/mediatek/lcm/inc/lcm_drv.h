@@ -11,6 +11,12 @@
 #include <linux/platform_device.h>
 #include <linux/regulator/consumer.h>
 
+//prize-add prize-lishuwen-20191226-start
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+#include "../../hardware_info/hardware_info.h"
+#endif
+//prize-add prize-lishuwen-20191226-end
+
 #ifndef ARY_SIZE
 #define ARY_SIZE(x) (sizeof((x)) / sizeof((x[0])))
 #endif
@@ -551,15 +557,21 @@ struct dynamic_fps_info {
 	/*unsigned int idle_check_interval;*//*ms*/
 };
 
+struct vsync_trigger_time {
+	unsigned int fps;
+	unsigned int trigger_after_te;
+	unsigned int config_expense_time;
+};
 
 /*DynFPS*/
 enum DynFPS_LEVEL {
 	DFPS_LEVEL0 = 0,
 	DFPS_LEVEL1,
+	DFPS_LEVEL2,
 	DFPS_LEVELNUM,
 };
 
-#define DFPS_LEVELS 2
+#define DFPS_LEVELS 3
 enum FPS_CHANGE_INDEX {
 	DYNFPS_NOT_DEFINED = 0,
 	DYNFPS_DSI_VFP = 1,
@@ -684,6 +696,7 @@ struct LCM_DSI_PARAMS {
 	/* PLL_CLOCK = (int) PLL_CLOCK */
 	unsigned int PLL_CLOCK;
 	/* data_rate = PLL_CLOCK x 2 */
+	unsigned int ap_data_rate;
 	unsigned int data_rate;
 	unsigned int PLL_CK_VDO;
 	unsigned int PLL_CK_CMD;
@@ -757,6 +770,7 @@ struct LCM_DSI_PARAMS {
 	/*for ARR*/
 	unsigned int dynamic_fps_levels;
 	struct dynamic_fps_info dynamic_fps_table[DYNAMIC_FPS_LEVELS];
+	struct vsync_trigger_time vsync_after_te[DFPS_LEVELS];
 
 #ifdef CONFIG_MTK_HIGH_FRAME_RATE
 	/****DynFPS start****/
@@ -1000,6 +1014,13 @@ enum LCM_DRV_IOCTL_CMD {
 
 struct LCM_DRIVER {
 	const char *name;
+
+//prize-add prize-lishuwen-20191226-start	
+    #if defined(CONFIG_PRIZE_HARDWARE_INFO)
+	struct hardware_info lcm_info;
+    #endif
+//prize-add prize-lishuwen-20191226-end
+
 	void (*set_util_funcs)(const struct LCM_UTIL_FUNCS *util);
 	void (*get_params)(struct LCM_PARAMS *params);
 
@@ -1079,5 +1100,14 @@ extern int display_bias_disable(void);
 extern int display_bias_regulator_init(void);
 
 
+//prize added by huarui, add lcm driver, 20190327-start
+extern int display_bias_enable_v(unsigned int mv);
+extern int display_bias_vpos_enable(int enable);
+extern int display_bias_vneg_enable(int enable);
+extern int display_bias_vpos_set(int mv);
+extern int display_bias_vneg_set(int mv);
+extern int display_ldo18_enable(int enable);
+extern int display_ldo28_enable(int enable);
+//prize added by huarui, add lcm driver, 20190327-end
 
 #endif /* __LCM_DRV_H__ */

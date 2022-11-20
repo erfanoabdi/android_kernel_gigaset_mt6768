@@ -13,9 +13,13 @@
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <linux/wait.h>
-#include <mt-plat/prop_chgalgo_class.h>
-#include <mt-plat/mtk_battery.h>
-
+#include <mt-plat/v1/prop_chgalgo_class.h>//prize-Resolves an issue where header file errors cannot be found-pengzhipeng-20220514
+#include <mt-plat/v1/mtk_battery.h>//prize-Resolves an issue where header file errors cannot be found-pengzhipeng-20220514
+//add by liaojie 20210305  for sc8551 30w start
+#if defined(CONFIG_CHARGER_SC8551)
+#include "sc8551.h"
+#endif
+//add by liaojie 20210305  for sc8551 30w end
 #define PCA_DV2_ALGO_VERSION	"2.0.2_G"
 #define MS_TO_NS(msec)		((msec) * 1000 * 1000)
 #define PRECISION_ENHANCE	5
@@ -29,12 +33,24 @@
 #define DV2_ITA_TRACKING_GAP	150	/* mA */
 #define DV2_ITA_GAP_WINDOW_SIZE	50
 #define DV2_DVCHG_VBUSALM_GAP	100	/* mV */
+//prize add by lipengpeng 20211013 start 
+#if defined(CONFIG_CHARGER_SC8551)
+#define DV2_DVCHG_STARTUP_CONVERT_RATIO SC8551_DV2_DVCHG_CONVERT_RATIO
+#else
 #define DV2_DVCHG_STARTUP_CONVERT_RATIO		210	/* % */
+#endif
+//prize add by lipengpeng 20211013 end 
 #define DV2_DVCHG_CHARGING_CONVERT_RATIO	202	/* % */
 #define DV2_VBUSOVP_RATIO	110
 #define DV2_IBUSOCP_RATIO	110
 #define DV2_VBATOVP_RATIO	110
-#define DV2_IBATOCP_RATIO	110
+//add by liaojie 20210305  for sc8551 30w start
+#if defined(CONFIG_CHARGER_SC8551)
+#define DV2_IBATOCP_RATIO	SC8551_DV2_IBATOCP_RATIO  /*define in sc8551.h*/
+#else
+#define DV2_IBATOCP_RATIO   (110)	
+#endif
+//add by liaojie 20210305  for sc8551 30w end
 #define DV2_ITAOCP_RATIO	110
 #define DV2_IBUSUCPF_RECHECK	250	/* mA */
 #define DV2_VBUS_CALI_THRESHOLD	150	/* mV */
@@ -3032,7 +3048,7 @@ static bool __dv2_check_ibatocp(struct dv2_algo_info *info,
 	int ret, ibat;
 	struct dv2_algo_data *data = info->data;
 	u32 ibatocp;
-
+	#define IBAT_ILI_MAX (10000)
 	if (!data->is_dvchg_en[DV2_DVCHG_MASTER])
 		return true;
 	ibatocp =  __dv2_get_ibatocp(info, data->ita_setting);
@@ -3042,6 +3058,12 @@ static bool __dv2_check_ibatocp(struct dv2_algo_info *info,
 		return false;
 	}
 	PCA_INFO("ibat(%dmA), ibatocp(%dmA)\n", ibat, ibatocp);
+	/*prize modified by lvyuanchuan for ibat ocp,20221013 ,start*/
+	if(ibat > IBAT_ILI_MAX){
+		PCA_INFO("Skip ibatocp checking,during bringup cp\n", ibat, ibatocp);
+		return true;
+	}
+	/*prize modified by lvyuanchuan for ibat ocp,20221013 ,end*/
 	if (ibat > ibatocp) {
 		PCA_ERR("ibat(%dmA) > ibatocp(%dmA)\n", ibat, ibatocp);
 		return false;

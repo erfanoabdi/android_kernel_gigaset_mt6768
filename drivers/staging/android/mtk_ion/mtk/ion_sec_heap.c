@@ -361,7 +361,7 @@ static int ion_sec_heap_allocate(struct ion_heap *heap,
 	caller_tid = (unsigned int)current->tgid;
 
 	pbufferinfo = kzalloc(sizeof(*pbufferinfo), GFP_KERNEL);
-	if (IS_ERR_OR_NULL(pbufferinfo)) {
+	if (!pbufferinfo) {
 		IONMSG("%s Error. Allocate pbufferinfo failed.\n", __func__);
 		caller_pid = 0;
 		caller_tid = 0;
@@ -756,6 +756,11 @@ static int __do_dump_share_fd(const void *data,
 		return 0;
 
 	bug_info = (struct ion_sec_buffer_info *)buffer->priv_virt;
+
+	if (!bug_info ||
+	    buffer->heap->type != (unsigned int)ION_HEAP_TYPE_MULTIMEDIA_SEC)
+		return 0;
+
 	if (!buffer->handle_count)
 		ION_DUMP(s, "0x%p %9d %16s %5d %5d %16s %4d\n",
 			 buffer, bug_info->pid,

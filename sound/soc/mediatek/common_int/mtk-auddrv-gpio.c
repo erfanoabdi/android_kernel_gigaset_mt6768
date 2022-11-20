@@ -42,6 +42,19 @@
 #include <linux/delay.h>
 #include <linux/of.h>
 #include <linux/of_fdt.h>
+#include <linux/module.h>	//PRIZE+
+#if defined(CONFIG_AW8155_SUPPORT)
+static int extspk_mode = CONFIG_AW8155_MODE;
+module_param(extspk_mode,int,0644);
+#elif defined(CONFIG_AW8736_SUPPORT)
+static int extspk_mode = CONFIG_AW8736_MODE;
+module_param(extspk_mode,int,0644);
+#elif defined(CONFIG_AW8733_SUPPORT)
+static int extspk_mode = CONFIG_AW8733_MODE;
+module_param(extspk_mode,int,0644);
+#elif defined(CONFIG_SND_SOC_AW87339)
+extern unsigned char prize_aw87339_audio_speaker_on(bool on);
+#endif	//PRIZE-
 
 struct pinctrl *pinctrlaud;
 
@@ -467,13 +480,18 @@ int AudDrv_GPIO_EXTAMP_Select(int bEnable, int mode)
 
 	mutex_lock(&gpio_request_mutex);
 	if (bEnable == 1) {
+//prize-add-pengzhipeng-20191031-start
+	#if defined(CONFIG_AW8155_SUPPORT)||defined(CONFIG_AW8736_SUPPORT)||defined(CONFIG_AW8733_SUPPORT)	//PRIZE+
+		extamp_mode = extspk_mode;
+	#else
 		if (mode == 1)
 			extamp_mode = 1;
 		else if (mode == 2)
 			extamp_mode = 2;
 		else
 			extamp_mode = 3; /* default mode is 3 */
-
+	#endif
+//prize-add-pengzhipeng-20191031-start
 		if (aud_gpios[GPIO_EXTAMP_HIGH].gpio_prepare) {
 			for (i = 0; i < extamp_mode; i++) {
 				retval = pinctrl_select_state(
@@ -514,13 +532,18 @@ int AudDrv_GPIO_EXTAMP2_Select(int bEnable, int mode)
 
 	mutex_lock(&gpio_request_mutex);
 	if (bEnable == 1) {
+//prize-add-pengzhipeng-20191031-start
+	#if defined(CONFIG_AW8736_SUPPORT)
+		extamp_mode = extspk_mode;
+	#else
 		if (mode == 1)
 			extamp_mode = 1;
 		else if (mode == 2)
 			extamp_mode = 2;
 		else
 			extamp_mode = 3; /* default mode is 3 */
-
+	#endif
+//prize-add-pengzhipeng-20191031-start
 		if (aud_gpios[GPIO_EXTAMP2_HIGH].gpio_prepare) {
 			for (i = 0; i < extamp_mode; i++) {
 				retval = pinctrl_select_state(

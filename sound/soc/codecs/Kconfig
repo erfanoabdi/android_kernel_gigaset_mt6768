@@ -80,6 +80,7 @@ config SND_SOC_ALL_CODECS
 	select SND_SOC_ES8328_I2C if I2C
 	select SND_SOC_ES7134
 	select SND_SOC_ES7241
+	select SND_SOC_ES7243E
 	select SND_SOC_GTM601
 	select SND_SOC_HDAC_HDMI
 	select SND_SOC_ICS43432
@@ -597,6 +598,10 @@ config SND_SOC_ES7134
 config SND_SOC_ES7241
        tristate "Everest Semi ES7241 CODEC"
 
+config SND_SOC_ES7243E
+	tristate "ES7243E 2CH ADC"
+	depends on I2C
+
 config SND_SOC_ES8316
 	tristate "Everest Semi ES8316 CODEC"
 	depends on I2C
@@ -613,6 +618,14 @@ config SND_SOC_ES8328_SPI
 	tristate "Everest Semi ES8328 CODEC (SPI)"
 	depends on SPI_MASTER
 	select SND_SOC_ES8328
+
+config SND_SOC_FS16XX
+	tristate "Foursemi speaker amplifier"
+	depends on I2C
+	help
+	  Config of FS18xx . It is a Smart power amplifier which contain speaker protection,
+	  multi-band DRC, equalizer function. It would be set to yes if device with FS18xx on it.
+	  Select this if your FS16xx is connected via an I2S bus.
 
 config SND_SOC_GTM601
 	tristate 'GTM601 UMTS modem audio codec'
@@ -1433,4 +1446,68 @@ config SND_SOC_SMARTPAINFO
 	  if device with smartpa on it, enable it.
 	  If unsure, say N.
 
+source "sound/soc/codecs/cs35l43/Kconfig"
+
+#prize-add smartpa aw883xx-pengzhipeng-20211206-start
+config SND_SMARTPA_AW883XX
+    tristate "SoC Audio for awinic aw883xx series"
+    depends on I2C
+    help
+      This option enables support for aw883xx series Smart PA.
+#prize-add smartpa aw883xx-pengzhipeng-20211206-end
+
+# prize add by anhengxuan, add HAC, 20220406 begin
+config MTK_HAC_SUPPORT
+        tristate "HAC for awinic aw881xx series"
+        default n
+        help
+          This option enables support for HAC.
+# prize add by anhengxuan, add HAC, 20220406 end
+
+#add by prize anhengxuan for AW87XXX 20220402 start
+config SND_SOC_AW87XXX
+        tristate "SoC Audio for awinic AW87XXX series"
+        depends on I2C
+        default n
+        help
+          This option enables support for AW87XXX series Smart PA.
+#add by prize anhengxuan for AW87XXX 20220402 end		
+#prize add by lipengpeng 20210330 start
+config SND_SMARTPA_AW881XX_V2
+        tristate "SoC Audio for awinic aw881a series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+
+
+
+config SND_SOC_AW881XX_STEREO
+        tristate "SoC Audio for awinic aw881xx series"
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+	  
+config SND_SMARTPA_AW88194A
+        tristate "SoC Audio for awinic aw881xx series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+	  
+config SND_SMARTPA_AW88194A_NEW
+        tristate "SoC Audio for awinic aw881a series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+
+config SND_SOC_AW8898
+        tristate "SoC Audio for awinic aw8898 series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw8898 series Smart PA.
+	  	  	  	  	   
+#prize add by lipengpeng 20210330 end
 endmenu

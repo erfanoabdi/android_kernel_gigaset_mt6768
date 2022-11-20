@@ -111,7 +111,9 @@ static struct stAF_DrvList g_stAF_DrvList[MAX_NUM_OF_LENS] = {
 	{1, AFDRV_DW9719TAF, DW9719TAF_SetI2Cclient, DW9719TAF_Ioctl,
 	 DW9719TAF_Release, DW9719TAF_GetFileName, NULL},
 	{1, AFDRV_DW9763AF, DW9763AF_SetI2Cclient, DW9763AF_Ioctl,
-	 DW9763AF_Release, DW9763AF_GetFileName, NULL},
+	 DW9763AF_Release, DW9763AF_GetFileName, NULL},	
+	{1, AFDRV_DW9761AF, DW9761AF_SetI2Cclient, DW9761AF_Ioctl,
+	 DW9761AF_Release, DW9761AF_GetFileName, NULL},
 	{1, AFDRV_LC898212XDAF, LC898212XDAF_SetI2Cclient, LC898212XDAF_Ioctl,
 	 LC898212XDAF_Release, LC898212XDAF_GetFileName, NULL},
 	{1, AFDRV_DW9800WAF, DW9800WAF_SetI2Cclient, DW9800WAF_Ioctl,
@@ -144,6 +146,28 @@ static struct stAF_DrvList g_stAF_DrvList[MAX_NUM_OF_LENS] = {
 	 LC898122AF_Release, LC898122AF_GetFileName, NULL},
 	{1, AFDRV_WV511AAF, WV511AAF_SetI2Cclient, WV511AAF_Ioctl,
 	 WV511AAF_Release, WV511AAF_GetFileName, NULL},
+/*prize add by zhuzhengjiang for lens:zc535 20220110 start*/
+    {1, AFDRV_FP5516WEAF, FP5516WEAF_SetI2Cclient, FP5516WEAF_Ioctl,
+	 FP5516WEAF_Release, FP5516WEAF_GetFileName, NULL},
+    {1, AFDRV_AW8601CSR, AW8601CSR_SetI2Cclient, AW8601CSR_Ioctl,
+	 AW8601CSR_Release, AW8601CSR_GetFileName, NULL},
+    {1, AFDRV_GT9767AF, GT9767AF_SetI2Cclient, GT9767AF_Ioctl,
+	 GT9767AF_Release, GT9767AF_GetFileName, NULL},	 
+	{1, AFDRV_GT9772AF, GT9772AF_SetI2Cclient, GT9772AF_Ioctl,
+	 GT9772AF_Release, GT9772AF_GetFileName, NULL},
+	{1, AFDRV_ZC535AF, ZC535AF_SetI2Cclient, ZC535AF_Ioctl,
+	 ZC535AF_Release, ZC535AF_GetFileName, NULL},
+	 {1, AFDRV_FP5510FE4AF, FP5510FE4AF_SetI2Cclient, FP5510FE4AF_Ioctl,
+	 FP5510FE4AF_Release, FP5510FE4AF_GetFileName, NULL},
+#ifdef CONFIG_MTK_LENS_DW9781CAF_SUPPORT
+	{1, AFDRV_DW9781CAF, DW9781CAF_SetI2Cclient, DW9781CAF_Ioctl,
+	 DW9781CAF_Release, DW9781CAF_GetFileName, NULL},
+#endif
+	{1, AFDRV_AW8601xAF, AW8601xAF_SetI2Cclient, AW8601xAF_Ioctl,
+	 AW8601xAF_Release, AW8601xAF_GetFileName, NULL},
+	 {1, AFDRV_AW86014AF, AW86014AF_SetI2Cclient, AW86014AF_Ioctl,
+	 AW86014AF_Release, AW86014AF_GetFileName, NULL},
+/*prize add by zhuzhengjiang for lens:zc535 20220110 end*/
 };
 
 static struct stAF_DrvList *g_pstAF_CurDrv;
@@ -274,7 +298,6 @@ void AF_PowerDown(void)
 
 		BU63169AF_PowerDown(g_pstAF_I2Cclient, &g_s4AF_Opened);
 #endif
-
 #ifdef CONFIG_MACH_MT6765
 		int Ret1 = 0, Ret2 = 0, Ret3 = 0;
 
@@ -308,6 +331,9 @@ void AF_PowerDown(void)
 
 #ifdef CONFIG_MACH_MT6761
 		DW9718SAF_PowerDown(g_pstAF_I2Cclient, &g_s4AF_Opened);
+#endif
+#ifdef CONFIG_MTK_LENS_DW9781CAF_SUPPORT
+		DW9781CAF_PowerDown(g_pstAF_I2Cclient, &g_s4AF_Opened); /*prize add by zhuzhengjiang 20220318 start*/
 #endif
 	}
 	// MAIN2AF_PowerDown();

@@ -60,10 +60,10 @@
 
 /* define GT1151 parameter */
 #define GT1151_FIRMWARE "firmware2"
-#define GTP_DRIVER_SEND_CFG
+//#define GTP_DRIVER_SEND_CFG
 #define GTP_CUSTOM_CFG
 #define GTP_AUTO_UPDATE
-#define GTP_REQUEST_FW_UPDATE
+//#define GTP_REQUEST_FW_UPDATE
 #define GTP_CREATE_WR_NODE
 #define GTP_POWER_CTRL_SLEEP
 

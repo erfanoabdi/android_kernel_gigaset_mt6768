@@ -473,14 +473,26 @@ static int pd_tcp_notifier_call(struct notifier_block *pnb,
 		if (noti->typec_state.old_state == TYPEC_UNATTACHED &&
 		    (noti->typec_state.new_state == TYPEC_ATTACHED_SNK ||
 		    noti->typec_state.new_state == TYPEC_ATTACHED_CUSTOM_SRC ||
-		    noti->typec_state.new_state == TYPEC_ATTACHED_NORP_SRC)) {
+		    noti->typec_state.new_state == TYPEC_ATTACHED_NORP_SRC
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
+		 || noti->typec_state.new_state == TYPEC_ATTACHED_DBGACC_SNK
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+	)) {
 			pr_info("%s USB Plug in, pol = %d\n", __func__,
 					noti->typec_state.polarity);
 			plug_in_out_handler(cti, true, false);
 		} else if ((noti->typec_state.old_state == TYPEC_ATTACHED_SNK ||
 		    noti->typec_state.old_state == TYPEC_ATTACHED_CUSTOM_SRC ||
 		    noti->typec_state.old_state == TYPEC_ATTACHED_NORP_SRC ||
-		    noti->typec_state.old_state == TYPEC_ATTACHED_AUDIO)
+		    noti->typec_state.old_state == TYPEC_ATTACHED_AUDIO
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
+		 || noti->typec_state.old_state == TYPEC_ATTACHED_DBGACC_SNK
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+		)
 			&& noti->typec_state.new_state == TYPEC_UNATTACHED) {
 			if (cti->tcpc_kpoc) {
 				vbus = battery_get_vbus();
@@ -611,7 +623,7 @@ static void init_extcon_work(struct work_struct *work)
 #endif
 
 #ifdef CONFIG_MACH_MT6771
-static int mtk_6370_psy_notifier(struct notifier_block *nb,
+static int mt6370_psy_notifier(struct notifier_block *nb,
 				unsigned long event, void *data)
 {
 	struct power_supply *psy = data;
@@ -623,18 +635,25 @@ static int mtk_6370_psy_notifier(struct notifier_block *nb,
 	union power_supply_propval pval;
 	int ret;
 
-	cti->chr_psy = power_supply_get_by_name("mt6370_pmu_charger");
-	if (IS_ERR_OR_NULL(cti->chr_psy)) {
-		pr_info("fail to get chr_psy\n");
-		cti->chr_psy = NULL;
+	if (event != PSY_EVENT_PROP_CHANGED) {
+		pr_info("%s, event not equal\n", __func__);
 		return NOTIFY_DONE;
 	}
 
-	/*psy is mt6370, type_psy is charger_type psy*/
-	if (event != PSY_EVENT_PROP_CHANGED || psy != cti->chr_psy) {
-		pr_info("event or power supply not equal\n");
-		return NOTIFY_DONE;
+	if (IS_ERR_OR_NULL(cti->chr_psy)) {
+		cti->chr_psy = power_supply_get_by_name("mt6370_pmu_charger");
+		if (IS_ERR_OR_NULL(cti->chr_psy)) {
+			pr_info("fail to get chr_psy\n");
+			cti->chr_psy = NULL;
+			return NOTIFY_DONE;
+		}
+	} else
+		pr_info("%s, get mt6370 psy success, event(%d)\n", __func__, event);
 
+	/*psy is mt6370, type_psy is charger_type psy*/
+	if (psy != cti->chr_psy) {
+		pr_info("power supply not equal\n");
+		return NOTIFY_DONE;
 	}
 
 	type_psy = power_supply_get_by_name("charger");
@@ -795,7 +814,7 @@ static int mt_charger_probe(struct platform_device *pdev)
 				boot_mode = tag->bootmode;
 		}
 	}
-//	ret = get_boot_mode();
+	//ret = get_boot_mode();
 	if (boot_mode == KERNEL_POWER_OFF_CHARGING_BOOT ||
 	    boot_mode == LOW_POWER_OFF_CHARGING_BOOT)
 		cti->tcpc_kpoc = true;
@@ -826,10 +845,14 @@ static int mt_charger_probe(struct platform_device *pdev)
 	device_init_wakeup(&pdev->dev, true);
 
 #ifdef CONFIG_MACH_MT6771
-	cti->psy_nb.notifier_call = mtk_6370_psy_notifier;
+	cti->psy_nb.notifier_call = mt6370_psy_notifier;
 	ret = power_supply_reg_notifier(&cti->psy_nb);
 	if (ret)
 		pr_info("fail to register notifer\n");
+
+	cti->chr_psy = power_supply_get_by_name("mt6370_pmu_charger");
+	if (IS_ERR_OR_NULL(cti->chr_psy))
+		pr_info("%s, fail to get chr_psy\n", __func__);
 #endif
 
 	#ifdef CONFIG_EXTCON_USB_CHG

@@ -554,9 +554,27 @@ source "drivers/misc/mediatek/dbgtop/Kconfig"
 source "drivers/misc/mediatek/vow/Kconfig"
 source "drivers/misc/mediatek/sda/Kconfig"
 source "drivers/misc/mediatek/freqhopping/Kconfig"
+
+
+#/*prize add by zhuzhengjiang for sham dual camera  20201208 start*/
+source "drivers/misc/mediatek/prize_dual_camera/Kconfig"
+#/*prize add by zhuzhengjiang for sham dual camera  20201208 end*/
+
+#prize add by zhaopengge 20201113------start
+source "drivers/misc/mediatek/hardware_info/Kconfig"
+#prize add by zhaopengge 20201113------end
+#prize-add-zhaopengge-20200827-start
+source "drivers/misc/mediatek/hall_as1800/Kconfig"
+source "drivers/misc/mediatek/aw9203/Kconfig"
+source "drivers/misc/mediatek/base_charger/Kconfig"
+#prize-add-zhaopengge-20200827-end
 endmenu # Debug
+#prize add by wangyongsheng 20210104------start
+source "drivers/misc/mediatek/uhf/Kconfig"
+#prize add by wangyongsheng 20210104------end
 
 menu "Misc"
 source "drivers/misc/mediatek/ext_gic/Kconfig"
 source "drivers/misc/mediatek/cirq/Kconfig"
+source "drivers/misc/mediatek/timer/Kconfig"
 endmenu # Misc

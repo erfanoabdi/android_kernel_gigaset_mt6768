@@ -8,6 +8,13 @@
 #include <mtk_gauge_class.h>
 #include <mtk_battery_internal.h>
 
+/* begin, prize-lifenfen-20181207, add fuel gauge cw2015 */
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+extern int g_cw2015_capacity;
+extern int g_cw2015_vol;
+extern int cw2015_exit_flag;
+#endif
+/* end, prize-lifenfen-20181207, add fuel gauge cw2015 */
 
 #if (CONFIG_MTK_GAUGE_VERSION != 30)
 signed int battery_get_bat_voltage(void)
@@ -33,7 +40,7 @@ signed int battery_get_soc(void)
 signed int battery_get_uisoc(void)
 {
 	struct mtk_battery *gm = get_mtk_battery();
-	int boot_mode = gm->boot_mode;
+
 	if (gm != NULL) {
 		int boot_mode = gm->boot_mode;
 
@@ -72,7 +79,18 @@ signed int battery_get_bat_avg_current(void)
 
 signed int battery_get_bat_voltage(void)
 {
+/* begin, prize-lifenfen-20181207, add fuel gauge cw2015 */
+	#if defined(CONFIG_MTK_CW2015_SUPPORT)
+	if(cw2015_exit_flag==1)
+		return g_cw2015_vol;
+	else
+		return pmic_get_battery_voltage();
+	#else
+/* end, prize-lifenfen-20181207, add fuel gauge cw2015 */
 	return pmic_get_battery_voltage();
+/* begin, prize-lifenfen-20181207, add fuel gauge cw2015 */
+	#endif
+/* end, prize-lifenfen-20181207, add fuel gauge cw2015 */
 }
 
 signed int battery_get_bat_current(void)
@@ -93,14 +111,38 @@ signed int battery_get_bat_current_mA(void)
 
 signed int battery_get_soc(void)
 {
+/* begin, prize-lifenfen-20181207, add fuel gauge cw2015 */
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+	if(cw2015_exit_flag==1)
+		return g_cw2015_capacity;
+	else {
+		if (get_mtk_battery() != NULL)
+			return get_mtk_battery()->soc;
+		else
+			return 50;
+	}
+#else
 	if (get_mtk_battery() != NULL)
 		return get_mtk_battery()->soc;
 	else
 		return 50;
+#endif
+/* end, prize-lifenfen-20181207, add fuel gauge cw2015 */
 }
 
 signed int battery_get_uisoc(void)
 {
+/* begin, prize-lifenfen-20181207, add fuel gauge cw2015 */
+#if defined(CONFIG_MTK_CW2015_SUPPORT)
+	if(cw2015_exit_flag==1)
+		return g_cw2015_capacity;
+	else {
+		if (get_mtk_battery() != NULL)
+			return get_mtk_battery()->ui_soc;
+		else
+			return 50;
+	}
+#else
 	struct mtk_battery *gm = get_mtk_battery();
 	int boot_mode = gm->boot_mode;
 
@@ -114,6 +156,8 @@ signed int battery_get_uisoc(void)
 		return get_mtk_battery()->ui_soc;
 	else
 		return 50;
+#endif
+/* end, prize-lifenfen-20181207, add fuel gauge cw2015 */
 }
 
 signed int battery_get_bat_temperature(void)

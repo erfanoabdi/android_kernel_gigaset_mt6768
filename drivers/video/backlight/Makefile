@@ -59,3 +59,6 @@ obj-$(CONFIG_BACKLIGHT_TPS65217)	+= tps65217_bl.o
 obj-$(CONFIG_BACKLIGHT_WM831X)		+= wm831x_bl.o
 obj-$(CONFIG_BACKLIGHT_ARCXCNN) 	+= arcxcnn_bl.o
 obj-$(CONFIG_BACKLIGHT_RAVE_SP)		+= rave-sp-backlight.o
+#prize by anhengxuan,add aw99703,20220302,beigin
+obj-$(CONFIG_BACKLIGHT_AW99703) 	+= aw99703_bl.o
+#prize by anhengxuan,add aw99703,20220302,end

@@ -30,4 +30,8 @@ endif
 obj-$(CONFIG_MTK_LENS)    += sub2af.o
 
 sub2af-y  += sub2_lens.o
+#prize add by tangcong 20220416 start 
+obj-y  += common/aw86014af/
+obj-y  += common/dw9718saf/
+#prize add by tangcong 20220416 end 
 #sub2af-y  += common/ak7371af/AK7371AF.o

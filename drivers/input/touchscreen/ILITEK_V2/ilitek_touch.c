@@ -807,7 +807,7 @@ void ilitek_tddi_touch_press(u16 x, u16 y, u16 pressure, u16 id)
 		input_mt_slot(idev->input, id);
 		input_mt_report_slot_state(idev->input, MT_TOOL_FINGER, true);
 		input_report_abs(idev->input, ABS_MT_POSITION_X, x);
-		input_report_abs(idev->input, ABS_MT_POSITION_Y, 1520 - y);
+		input_report_abs(idev->input, ABS_MT_POSITION_Y,  y);
 		if (MT_PRESSURE)
 			input_report_abs(idev->input, ABS_MT_PRESSURE, pressure);
 	} else {

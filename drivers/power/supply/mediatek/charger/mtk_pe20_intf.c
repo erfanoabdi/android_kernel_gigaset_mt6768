@@ -743,8 +743,14 @@ int mtk_pe20_init(struct charger_manager *pinfo)
 	pinfo->pe2.profile[5].vchr = 9000000;
 	pinfo->pe2.profile[6].vchr = 9500000;
 	pinfo->pe2.profile[7].vchr = 9500000;
+	/* Prize HanJiuping modified 20210721 for set pe20 vchr upper limit to 9.5v in case of VBUS OVP start */
+	/*	
 	pinfo->pe2.profile[8].vchr = 10000000;
 	pinfo->pe2.profile[9].vchr = 10000000;
+	*/
+	pinfo->pe2.profile[8].vchr = 9500000;
+	pinfo->pe2.profile[9].vchr = 9500000;
+	/* Prize HanJiuping modified 20210721 for set pe20 vchr upper limit to 9.5v in case of VBUS OVP end */
 
 	ret = charger_dev_set_pe20_efficiency_table(pinfo->chg1_dev);
 	if (ret != 0)

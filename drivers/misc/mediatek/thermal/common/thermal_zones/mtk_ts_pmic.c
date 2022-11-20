@@ -693,6 +693,8 @@ static int mtk_ts_pmic_probe(struct platform_device *pdev)
 	 */
 #if (defined(CONFIG_MACH_MT6739)  \
 	|| defined(CONFIG_MACH_MT6877) \
+	|| defined(CONFIG_MACH_MT6853)    \
+	|| defined(CONFIG_MACH_MT6873)    \
 	|| defined(CONFIG_MACH_MT6893))
 	mtktspmic_cali_prepare();
 #else
@@ -700,7 +702,12 @@ static int mtk_ts_pmic_probe(struct platform_device *pdev)
 #endif
 	mtktspmic_cali_prepare2();
 #if defined(THERMAL_USE_IIO_CHANNEL)
+#if defined(CONFIG_MACH_MT6785)
+	if(!mtktspmic_get_from_dts(pdev))
+		return -EPROBE_DEFER;
+#else
 	mtktspmic_get_from_dts(pdev);
+#endif
 #endif
 
 	err = mtktspmic_register_cooler();

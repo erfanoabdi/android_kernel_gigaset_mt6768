@@ -42,7 +42,7 @@ struct pinctrl *pinctrl1;
 struct pinctrl_state *pins_default;
 struct pinctrl_state *eint_as_int, *eint_output0,
 		*eint_output1, *rst_output0, *rst_output1,
-		*pins_spi_mode;
+		*pins_i2c_mode;
 const struct of_device_id touch_of_match[] = {
 	{ .compatible = "goodix,touch", },
 	{},
@@ -152,7 +152,7 @@ void tpd_gpio_mode_set(void)
 {
 	mutex_lock(&tpd_set_gpio_mutex);
 	TPD_DEBUG("[tpd]%s set gpio mode!\n", __func__);
-	pinctrl_select_state(pinctrl1, pins_spi_mode);
+	pinctrl_select_state(pinctrl1, pins_i2c_mode);
 	mutex_unlock(&tpd_set_gpio_mutex);
 }
 
@@ -216,12 +216,12 @@ int tpd_get_gpio_info(struct platform_device *pdev)
 		TPD_DMESG("Cannot find pinctrl state_eint_output1!\n");
 		return ret;
 	}
-	pins_spi_mode = pinctrl_lookup_state(pinctrl1, "state_spi_mode");
-	if (IS_ERR(pins_spi_mode)) {
-		ret = PTR_ERR(pins_spi_mode);
-		TPD_DMESG("Cannot find pinctrl state_spi_mode!\n");
-		return ret;
-	}
+		pins_i2c_mode = pinctrl_lookup_state(pinctrl1, "state_i2c_mode");
+		if (IS_ERR(pins_i2c_mode)) {
+			ret = PTR_ERR(pins_i2c_mode);
+			TPD_DMESG("Cannot find pinctrl state_i2c_mode!\n");
+			return ret;
+		}
 	if (tpd_dts_data.tpd_use_ext_gpio == false) {
 		rst_output0 =
 			pinctrl_lookup_state(pinctrl1, "state_rst_output0");
@@ -622,7 +622,7 @@ static int tpd_probe(struct platform_device *pdev)
 	tpd_mode_max = TPD_RES_Y;
 	tpd_mode_keypad_tolerance = TPD_RES_X * TPD_RES_X / 1600;
 	/* struct input_dev dev initialization and registration */
-	tpd->dev->name = TPD_DEVICE;
+	tpd->dev->name = TPD_INPUT_DEVICE;
 	set_bit(EV_ABS, tpd->dev->evbit);
 	set_bit(EV_KEY, tpd->dev->evbit);
 	set_bit(ABS_X, tpd->dev->absbit);

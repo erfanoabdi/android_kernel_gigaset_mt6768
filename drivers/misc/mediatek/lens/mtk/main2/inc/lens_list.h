@@ -144,5 +144,17 @@ extern long DW9718TAF_Ioctl(struct file *a_pstFile, unsigned int a_u4Command,
 			    unsigned long a_u4Param);
 extern int DW9718TAF_Release(struct inode *a_pstInode, struct file *a_pstFile);
 extern int DW9718TAF_GetFileName(unsigned char *pFileName);
+/*prize  add  for main2 af by zhuzhengjiang    20210604-begin*/
+#define DW9714KAF_SetI2Cclient DW9714KAF_SetI2Cclient_Main2
+#define DW9714KAF_Ioctl DW9714KAF_Ioctl_Main2
+#define DW9714KAF_Release DW9714KAF_Release_Main2
+#define DW9714KAF_GetFileName DW9714KAF_GetFileName_Main2
+extern int DW9714KAF_SetI2Cclient(struct i2c_client *pstAF_I2Cclient,
+				  spinlock_t *pAF_SpinLock, int *pAF_Opened);
+extern long DW9714KAF_Ioctl(struct file *a_pstFile, unsigned int a_u4Command,
+			    unsigned long a_u4Param);
+extern int DW9714KAF_Release(struct inode *a_pstInode, struct file *a_pstFile);
+extern int DW9714KAF_GetFileName(unsigned char *pFileName);
+/*prize  add  for main2 af by zhuzhengjiang    20190416-end*/
 
 #endif

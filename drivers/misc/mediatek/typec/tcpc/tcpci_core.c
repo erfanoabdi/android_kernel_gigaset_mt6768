@@ -448,6 +448,10 @@ struct tcpc_device *tcpc_device_register(struct device *parent,
 	pd_core_init(tcpc);
 #endif /* CONFIG_USB_POWER_DELIVERY */
 
+
+	/* prize hanjiuping 20210914 add debug msg for tcpc dev register OK start */
+	dev_info(&tcpc->dev, "%s OK\n", __func__);
+	/* prize hanjiuping 20210914 add debug msg for tcpc dev register OK start */
 	return tcpc;
 }
 EXPORT_SYMBOL(tcpc_device_register);

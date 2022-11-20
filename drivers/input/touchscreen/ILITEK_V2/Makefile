@@ -1,8 +1,8 @@
-BUILD_INFAE := spi
+BUILD_INFAE := i2c
 BUILD_PLATFORM := mtk
 BUILD_MODULE := n
 
-ccflags-y += -Wall
+#ccflags-y += -Wall
 
 ifeq ($(BUILD_PLATFORM),mtk)
 platform=ilitek_plat_mtk

@@ -16,6 +16,14 @@
 #include <mtk_musb.h>
 #include <linux/reboot.h>
 
+//prize add by huarui, typec support, 20210923-start
+#if defined(CONFIG_TCPC_CLASS)
+#include <tcpm.h>
+#include <linux/kthread.h>
+#include <linux/completion.h>
+#endif
+//prize add by huarui, typec support, 20210923-end
+
 /* ============================================================ */
 /* pmic control start*/
 /* ============================================================ */
@@ -91,6 +99,17 @@ struct mtk_charger_type {
 	int bc12_active;
 	u32 bootmode;
 	u32 boottype;
+
+//prize add by huarui, typec support, 20210923-start
+#if defined(CONFIG_TCPC_CLASS)
+	struct mutex attach_lock;
+	struct tcpc_device *tcpc_dev;
+	struct notifier_block pd_nb;
+	bool attach;
+	struct completion chrdet_start;
+	struct task_struct *attach_task;
+#endif
+//prize add by huarui, typec support, 20210923-end
 };
 
 struct tag_bootmode {
@@ -544,8 +563,8 @@ void do_charger_detect(struct mtk_charger_type *info, bool en)
 		return;
 	}
 #endif
-
-	prop_online.intval = en;
+	mutex_lock(&info->ops_lock);//prize-Solve the problem that the charging status is still displayed when the USB is unplugged during the animation stage-pengzhipeng-20211026-end
+    prop_online.intval = en;	
 	if (en) {
 		ret = power_supply_set_property(info->psy,
 				POWER_SUPPLY_PROP_ONLINE, &prop_online);
@@ -561,9 +580,10 @@ void do_charger_detect(struct mtk_charger_type *info, bool en)
 	}
 
 	power_supply_changed(info->psy);
+	mutex_unlock(&info->ops_lock);//prize-Solve the problem that the charging status is still displayed when the USB is unplugged during the animation stage-pengzhipeng-20211026-end
 }
 
-static void do_charger_detection_work(struct work_struct *data)
+__maybe_unused static void do_charger_detection_work(struct work_struct *data)	//prize add by huarui
 {
 	struct mtk_charger_type *info = (struct mtk_charger_type *)container_of(
 				     data, struct mtk_charger_type, chr_work);
@@ -778,6 +798,86 @@ static int check_boot_mode(struct mtk_charger_type *info, struct device *dev)
 	return 0;
 }
 
+//prize add by huarui, typec support, 20210923-start
+#if defined(CONFIG_TCPC_CLASS)
+static int typec_attach_thread(void *data)
+{
+	struct mtk_charger_type *info = data;
+	int ret = 0;
+	bool attach;
+
+	pr_err("%s: ++\n", __func__);
+	while (!kthread_should_stop()) {
+		wait_for_completion(&info->chrdet_start);
+		mutex_lock(&info->attach_lock);
+		attach = info->attach;
+		mutex_unlock(&info->attach_lock);
+		do_charger_detect(info, attach);
+		//typec_get_charger_type(tpc_data, attach);
+	}
+	return ret;
+}
+static void handle_typec_attach(struct mtk_charger_type *info,
+				bool en)
+{
+	mutex_lock(&info->attach_lock);
+	//chrdet_int_handler(0, info);
+	info->attach = en;
+	complete(&info->chrdet_start);
+	//do_charger_detect(info, en);
+	mutex_unlock(&info->attach_lock);
+}
+
+static int mt6357_tcp_notifier_call(struct notifier_block *nb,
+				unsigned long event, void *data)
+{
+	struct tcp_notify *noti = data;
+	struct mtk_charger_type *info =
+		(struct mtk_charger_type *)container_of(nb,
+		struct mtk_charger_type, pd_nb);
+	
+	switch (event) {
+	case TCP_NOTIFY_TYPEC_STATE:
+		if (noti->typec_state.old_state == TYPEC_UNATTACHED &&
+		    (noti->typec_state.new_state == TYPEC_ATTACHED_SNK ||
+		    noti->typec_state.new_state == TYPEC_ATTACHED_CUSTOM_SRC ||
+		    noti->typec_state.new_state == TYPEC_ATTACHED_NORP_SRC)) {
+			pr_err("%s USB Plug in, pol = %d\n", __func__,
+					noti->typec_state.polarity);
+			handle_typec_attach(info, true);
+		} else if ((noti->typec_state.old_state == TYPEC_ATTACHED_SNK ||
+		    noti->typec_state.old_state == TYPEC_ATTACHED_CUSTOM_SRC ||
+			noti->typec_state.old_state == TYPEC_ATTACHED_NORP_SRC)
+			&& noti->typec_state.new_state == TYPEC_UNATTACHED) {
+			pr_err("%s USB Plug out\n", __func__);
+			/* 8 = KERNEL_POWER_OFF_CHARGING_BOOT */
+			/* 9 = LOW_POWER_OFF_CHARGING_BOOT */
+			if (info->bootmode == 8 || info->bootmode == 9) {
+				pr_err("%s: typec unattached, power off\n",
+					__func__);
+#ifdef FIXME
+				kernel_power_off();
+#endif
+			}
+			handle_typec_attach(info, false);
+		} else if (noti->typec_state.old_state == TYPEC_ATTACHED_SRC &&
+			noti->typec_state.new_state == TYPEC_ATTACHED_SNK) {
+			pr_err("%s Source_to_Sink\n", __func__);
+			handle_typec_attach(info, true);
+		}  else if (noti->typec_state.old_state == TYPEC_ATTACHED_SNK &&
+			noti->typec_state.new_state == TYPEC_ATTACHED_SRC) {
+			pr_err("%s Sink_to_Source\n", __func__);
+			handle_typec_attach(info, false);
+		}
+		break;
+	default:
+		break;
+	};
+	return NOTIFY_OK;
+}
+#endif
+//prize add by huarui, typec support, 20210923-end
+
 static int mt6357_charger_type_probe(struct platform_device *pdev)
 {
 	struct mtk_charger_type *info;
@@ -882,6 +982,9 @@ static int mt6357_charger_type_probe(struct platform_device *pdev)
 			return PTR_ERR(info->usb_psy);
 		}
 
+//prize add by huarui, typec support, 20210923-start
+    #ifndef CONFIG_TCPC_CLASS
+	
 		INIT_WORK(&info->chr_work, do_charger_detection_work);
 		schedule_work(&info->chr_work);
 
@@ -889,7 +992,30 @@ static int mt6357_charger_type_probe(struct platform_device *pdev)
 			platform_get_irq_byname(pdev, "chrdet"), NULL,
 			chrdet_int_handler, IRQF_TRIGGER_HIGH, "chrdet", info);
 		if (ret < 0)
-			pr_notice("%s request chrdet irq fail\n", __func__);
+			pr_err("%s request chrdet irq fail\n", __func__);
+	#else
+		init_completion(&info->chrdet_start);
+		mutex_init(&info->attach_lock);
+		info->attach_task = kthread_run(typec_attach_thread, info,
+					"typec_attach_thread");
+		if (IS_ERR(info->attach_task)) {
+			ret = PTR_ERR(info->attach_task);
+			//goto err_attach_task;
+			pr_err("%s get tcpc device info->attach_task fail\n", __func__);
+		}
+		info->tcpc_dev = tcpc_dev_get_by_name("type_c_port0");
+		if (!info->tcpc_dev) {
+			pr_err("%s get tcpc device type_c_port0 fail\n", __func__);
+		}else{
+			info->pd_nb.notifier_call = mt6357_tcp_notifier_call;
+			ret = register_tcp_dev_notifier(info->tcpc_dev, &info->pd_nb,
+							TCP_NOTIFY_TYPE_ALL);
+			if (ret < 0) {
+				pr_err("%s: register tcpc notifer fail\n", __func__);
+			}
+		}
+	#endif
+//prize add by huarui, typec support, 20210923-end
 	}
 
 	info->first_connect = true;

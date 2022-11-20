@@ -94,6 +94,13 @@
 #include <linux/soc/mediatek/mtk-pm-qos.h>
 #endif
 
+//prize-xuejian-20220515-start
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+#include "../../../hardware_info/hardware_info.h"
+extern struct hardware_info current_lcm_info;
+#endif
+//prize-xuejian-20220515-end
+
 #define MMSYS_CLK_LOW (0)
 #define MMSYS_CLK_HIGH (1)
 #define TUI_SINGLE_WINDOW_MODE (0)
@@ -3903,6 +3910,11 @@ int primary_display_init(char *lcm_name, unsigned int lcm_fps,
 		goto done;
 	} else {
 		DISPCHECK("disp_lcm_probe SUCCESS\n");
+		//prize-xuejian-20220515-start
+		#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+		current_lcm_info=pgc->plcm->drv->lcm_info;
+		#endif
+		//prize-xuejian-20220515-end
 	}
 
 	lcm_param = disp_lcm_get_params(pgc->plcm);
@@ -4236,8 +4248,10 @@ int primary_display_init(char *lcm_name, unsigned int lcm_fps,
 done:
 	DISPDBG("init and hold wakelock...\n");
 	pri_wk_lock = wakeup_source_register(NULL, "pri_disp_wakelock");
-	__pm_stay_awake(pri_wk_lock);
-
+	//prize add by wangfei for idle current start
+	//__pm_stay_awake(pri_wk_lock);
+	lock_primary_wake_lock(1);
+    //prize add by wangfei for idle current end
 	if (disp_helper_get_stage() != DISP_HELPER_STAGE_NORMAL)
 		primary_display_diagnose();
 
@@ -4814,6 +4828,8 @@ int primary_display_suspend(void)
 	if (!primary_display_is_video_mode())
 		primary_display_wakeup_pf_thread();
 
+	//prize xuejian,add delay for bug140742
+	msleep(150);
 	DISPCHECK("[POWER]primary display path stop[begin]\n");
 	dpmgr_path_stop(pgc->dpmgr_handle, CMDQ_DISABLE);
 	DISPCHECK("[POWER]primary display path stop[end]\n");

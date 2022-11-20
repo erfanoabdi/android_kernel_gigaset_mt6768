@@ -1,0 +1,380 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AIMER_I2C_ADDR	hsm_imager.h	129;"	d
+AR0144_I2C_ADDR	hsm_imager.h	126;"	d
+AR0144_I2C_ADDR2	hsm_imager.h	127;"	d
+AR0144_ID_REG	hsmmipiraw_Sensor.c	141;"	d	file:
+AR0144_REVISION	hsmmipiraw_Sensor.c	142;"	d	file:
+BASE_VIDIOC_PRIVATE	hsm_imager.h	159;"	d
+CAMERA_CONTROL_FLOW	hsmmipiraw_Sensor.c	287;"	d	file:
+CAMERA_CONTROL_FLOW	hsmmipiraw_Sensor.c	289;"	d	file:
+CAMERA_SENSOR_CCT_DEFAULT_VALUE	hsmmipiraw_Camera_Sensor_para.h	139;"	d
+CAMERA_SENSOR_REG_DEFAULT_VALUE	hsmmipiraw_Camera_Sensor_para.h	90;"	d
+CAM_PREVIEW_30FPS	hsmmipiraw_Sensor.h	136;"	d
+CAM_SIZE_05M_HEIGHT	hsmmipiraw_CameraCustomized.h	136;"	d
+CAM_SIZE_05M_WIDTH	hsmmipiraw_CameraCustomized.h	135;"	d
+CAM_SIZE_1M_HEIGHT	hsmmipiraw_CameraCustomized.h	138;"	d
+CAM_SIZE_1M_WIDTH	hsmmipiraw_CameraCustomized.h	137;"	d
+CAM_SIZE_2M_HEIGHT	hsmmipiraw_CameraCustomized.h	140;"	d
+CAM_SIZE_2M_WIDTH	hsmmipiraw_CameraCustomized.h	139;"	d
+CAM_SIZE_3M_HEIGHT	hsmmipiraw_CameraCustomized.h	142;"	d
+CAM_SIZE_3M_WIDTH	hsmmipiraw_CameraCustomized.h	141;"	d
+CAM_SIZE_5M_HEIGHT	hsmmipiraw_CameraCustomized.h	144;"	d
+CAM_SIZE_5M_WIDTH	hsmmipiraw_CameraCustomized.h	143;"	d
+CAM_SIZE_QVGA_HEIGHT	hsmmipiraw_CameraCustomized.h	132;"	d
+CAM_SIZE_QVGA_WIDTH	hsmmipiraw_CameraCustomized.h	131;"	d
+CAM_SIZE_VGA_HEIGHT	hsmmipiraw_CameraCustomized.h	134;"	d
+CAM_SIZE_VGA_WIDTH	hsmmipiraw_CameraCustomized.h	133;"	d
+CCT	hsmmipiraw_Sensor.h	/^	struct SENSOR_REG_STRUCT CCT[FACTORY_END_ADDR];$/;"	m	struct:__anon1	typeref:struct:__anon1::SENSOR_REG_STRUCT
+CCT_REGISTER_INDEX	hsmmipiraw_Sensor.h	/^} CCT_REGISTER_INDEX;$/;"	t	typeref:enum:register_index
+CMMCLK_CURRENT	hsmmipiraw_Sensor.h	/^	CMMCLK_CURRENT,$/;"	e	enum:group_enum
+CMMCLK_CURRENT_INDEX	hsmmipiraw_Sensor.h	/^	CMMCLK_CURRENT_INDEX=ENGINEER_START_ADDR,$/;"	e	enum:engineer_index
+CONFIG_SOC_HSM_IMAGER_DEBUG	hsmmipiraw_Sensor.c	182;"	d	file:
+Close	hsmmipiraw_Sensor.h	/^	kal_uint32 (*Close)(void);$/;"	m	struct:__anon2
+Control	hsmmipiraw_Sensor.h	/^	kal_uint32 (*Control)(enum MSDK_SCENARIO_ID_ENUM ScenarioId, MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *pImageWindow,MSDK_SENSOR_CONFIG_STRUCT *pSensorConfigData);	  $/;"	m	struct:__anon2
+ENGINEER_END	hsmmipiraw_Sensor.h	/^	ENGINEER_END$/;"	e	enum:engineer_index
+ENGINEER_START_ADDR	hsmmipiraw_Sensor.h	94;"	d
+EV76C454_I2C_ADDR	hsm_imager.h	122;"	d
+EX30_HEIGHT	hsm_imager.h	148;"	d
+EX30_IMAGE_SENSOR_HEIGHT	hsmmipiraw_Sensor.h	192;"	d
+EX30_IMAGE_SENSOR_WIDTH	hsmmipiraw_Sensor.h	191;"	d
+EX30_READ_ID	hsmmipiraw_Sensor.h	204;"	d
+EX30_SENSOR_FULL_HEIGHT	hsmmipiraw_Sensor.h	195;"	d
+EX30_SENSOR_FULL_WIDTH	hsmmipiraw_Sensor.h	194;"	d
+EX30_SENSOR_PV_HEIGHT	hsmmipiraw_Sensor.h	198;"	d
+EX30_SENSOR_PV_WIDTH	hsmmipiraw_Sensor.h	197;"	d
+EX30_SENSOR_VIDEO_HEIGHT	hsmmipiraw_Sensor.h	201;"	d
+EX30_SENSOR_VIDEO_WIDTH	hsmmipiraw_Sensor.h	200;"	d
+EX30_WIDTH	hsm_imager.h	147;"	d
+EX30_WRITE_ID	hsmmipiraw_Sensor.h	203;"	d
+EX30_read_cmos_sensor	hsmmipiraw_Sensor.c	/^static kal_uint16 EX30_read_cmos_sensor(kal_uint16 addr)$/;"	f	file:
+FACTORY_END_ADDR	hsmmipiraw_Sensor.h	/^	FACTORY_END_ADDR$/;"	e	enum:register_index
+FACTORY_ENGINEER_INDEX	hsmmipiraw_Sensor.h	/^} FACTORY_ENGINEER_INDEX; $/;"	t	typeref:enum:engineer_index
+FACTORY_REGISTER_INDEX	hsmmipiraw_Sensor.h	/^} FACTORY_REGISTER_INDEX;$/;"	t	typeref:enum:group_enum
+FACTORY_START_ADDR	hsmmipiraw_Sensor.h	93;"	d
+FRAME_RATE_LIMITATION	hsmmipiraw_Sensor.h	/^	FRAME_RATE_LIMITATION,$/;"	e	enum:group_enum
+FeatureControl	hsmmipiraw_Sensor.h	/^	kal_uint32 (* FeatureControl)(MSDK_SENSOR_FEATURE_ENUM ScenarioId, kal_uint8 *para, kal_uint32 *len);$/;"	m	struct:__anon2
+GPIO_3V3_LED_IMGR	hsmmipiraw_Sensor.c	192;"	d	file:
+GPIO_3V3_LED_LASER	hsmmipiraw_Sensor.c	193;"	d	file:
+GPIO_AIM_ON	hsmmipiraw_Sensor.c	196;"	d	file:
+GPIO_ENG_RESET	hsmmipiraw_Sensor.c	198;"	d	file:
+GPIO_ILL_ON	hsmmipiraw_Sensor.c	197;"	d	file:
+GPIO_MIPI_SWITCH_SEL	hsmmipiraw_Sensor.c	195;"	d	file:
+GPIO_OUT_ONE	hsmmipiraw_Sensor.c	201;"	d	file:
+GPIO_OUT_ZERO	hsmmipiraw_Sensor.c	202;"	d	file:
+GPIO_POWER_ENA	hsmmipiraw_Sensor.c	199;"	d	file:
+GPIO_VCC_IO_HOST	hsmmipiraw_Sensor.c	191;"	d	file:
+GPIO_VCC_MIPI_SWITCH	hsmmipiraw_Sensor.c	194;"	d	file:
+GROUP_TOTAL_NUMS	hsmmipiraw_Sensor.h	/^	GROUP_TOTAL_NUMS$/;"	e	enum:group_enum
+GetInfo	hsmmipiraw_Sensor.h	/^	kal_uint32 (*GetInfo)(enum MSDK_SCENARIO_ID_ENUM ScenarioId,MSDK_SENSOR_INFO_STRUCT *pSensorInfo,MSDK_SENSOR_CONFIG_STRUCT *pSensorConfigData);$/;"	m	struct:__anon2
+GetResolution	hsmmipiraw_Sensor.h	/^	kal_uint32 (*GetResolution)(MSDK_SENSOR_RESOLUTION_INFO_STRUCT *pSensorResolution);$/;"	m	struct:__anon2
+HSM_DEBUG	hsmmipiraw_Sensor.c	240;"	d	file:
+HSM_ENGINE_EX30	hsm_imager.h	/^	HSM_ENGINE_EX30,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_IT5000	hsm_imager.h	/^	HSM_ENGINE_IT5000,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_N3600	hsm_imager.h	/^	HSM_ENGINE_N3600,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_N3603	hsm_imager.h	/^	HSM_ENGINE_N3603,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_N4603	hsm_imager.h	/^	HSM_ENGINE_N4603,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_N5600	hsm_imager.h	/^	HSM_ENGINE_N5600,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_N5703	hsm_imager.h	/^	HSM_ENGINE_N5703,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_N6700	hsm_imager.h	/^	HSM_ENGINE_N6700,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_NUM	hsm_imager.h	/^	HSM_ENGINE_NUM,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_UNKNOWN	hsm_imager.h	/^	HSM_ENGINE_UNKNOWN = 0,$/;"	e	enum:hsm_engine_id
+HSM_ENGINE_UNSUPPORTED	hsm_imager.h	/^	HSM_ENGINE_UNSUPPORTED$/;"	e	enum:hsm_engine_id
+HSM_ERROR	hsmmipiraw_Sensor.c	265;"	d	file:
+HSM_GET_PROPERTIES	hsm_imager.h	164;"	d
+HSM_GPIO_AIMER	hsm_imager.h	/^	HSM_GPIO_AIMER,$/;"	e	enum:hsm_gpio_id
+HSM_GPIO_ENGINE_RESET	hsm_imager.h	/^	HSM_GPIO_ENGINE_RESET,$/;"	e	enum:hsm_gpio_id
+HSM_GPIO_FLASH_OUT	hsm_imager.h	/^	HSM_GPIO_FLASH_OUT,$/;"	e	enum:hsm_gpio_id
+HSM_GPIO_ILLUMINATOR	hsm_imager.h	/^	HSM_GPIO_ILLUMINATOR,$/;"	e	enum:hsm_gpio_id
+HSM_GPIO_MIPI_RESET	hsm_imager.h	/^	HSM_GPIO_MIPI_RESET,$/;"	e	enum:hsm_gpio_id
+HSM_GPIO_POWER_ENABLE	hsm_imager.h	/^	HSM_GPIO_POWER_ENABLE = 0,$/;"	e	enum:hsm_gpio_id
+HSM_GPIO_POWER_SUPPLY	hsm_imager.h	/^	HSM_GPIO_POWER_SUPPLY,$/;"	e	enum:hsm_gpio_id
+HSM_GPIO_READ	hsm_imager.h	169;"	d
+HSM_GPIO_VSYNC_GPIO	hsm_imager.h	/^	HSM_GPIO_VSYNC_GPIO,$/;"	e	enum:hsm_gpio_id
+HSM_GPIO_WRITE	hsm_imager.h	168;"	d
+HSM_I2C_M_TWOBYTEREG	hsmmipiraw_Sensor.c	130;"	d	file:
+HSM_IIC_READ	hsm_imager.h	166;"	d
+HSM_IIC_READ32	hsmmipiraw_Sensor.c	299;"	d	file:
+HSM_IIC_TRANSFER	hsm_imager.h	170;"	d
+HSM_IIC_WRITE	hsm_imager.h	165;"	d
+HSM_IIC_WRITE32	hsmmipiraw_Sensor.c	298;"	d	file:
+HSM_INFO_L1	hsmmipiraw_Sensor.c	252;"	d	file:
+HSM_INFO_L2	hsmmipiraw_Sensor.c	246;"	d	file:
+HSM_LOG_ALL	hsmmipiraw_Sensor.c	/^    HSM_LOG_ALL		= 0xffff,$/;"	e	enum:hsm_log	file:
+HSM_LOG_DEBUG	hsmmipiraw_Sensor.c	/^    HSM_LOG_DEBUG		= 0x1000,$/;"	e	enum:hsm_log	file:
+HSM_LOG_DEFAULT	hsmmipiraw_Sensor.c	185;"	d	file:
+HSM_LOG_DEFAULT	hsmmipiraw_Sensor.c	187;"	d	file:
+HSM_LOG_ERR	hsmmipiraw_Sensor.c	/^    HSM_LOG_ERR		= 0x0001,$/;"	e	enum:hsm_log	file:
+HSM_LOG_INFO_L1	hsmmipiraw_Sensor.c	/^    HSM_LOG_INFO_L1		= 0x0100,$/;"	e	enum:hsm_log	file:
+HSM_LOG_INFO_L2	hsmmipiraw_Sensor.c	/^    HSM_LOG_INFO_L2		= 0x0200,$/;"	e	enum:hsm_log	file:
+HSM_LOG_WARN	hsmmipiraw_Sensor.c	/^    HSM_LOG_WARN		= 0x0010,$/;"	e	enum:hsm_log	file:
+HSM_MIPI_1_LANE	hsmmipiraw_Sensor.h	276;"	d
+HSM_MIPI_2_LANE	hsmmipiraw_Sensor.h	277;"	d
+HSM_MIPI_RAW_DEBUG	hsmmipiraw_Sensor.c	278;"	d	file:
+HSM_MIPI_RAW_SensorInit	hsmmipiraw_Sensor.c	/^UINT32 HSM_MIPI_RAW_SensorInit(struct SENSOR_FUNCTION_STRUCT **pfFunc)$/;"	f
+HSM_MOUNT_LEFT	hsm_imager.h	/^	HSM_MOUNT_LEFT,$/;"	e	enum:hsm_mount_options
+HSM_MOUNT_RIGHT	hsm_imager.h	/^	HSM_MOUNT_RIGHT,$/;"	e	enum:hsm_mount_options
+HSM_MOUNT_RIGHT_SIDE_UP	hsm_imager.h	/^	HSM_MOUNT_RIGHT_SIDE_UP = 0,$/;"	e	enum:hsm_mount_options
+HSM_MOUNT_UPSIDE_DOWN	hsm_imager.h	/^	HSM_MOUNT_UPSIDE_DOWN,      \/* This is what most devices use. Ears$/;"	e	enum:hsm_mount_options
+HSM_NUM_GPIO	hsm_imager.h	/^	HSM_NUM_GPIO,$/;"	e	enum:hsm_gpio_id
+HSM_PLATFORM_BUFFER_ALLIGN	hsm_imager.h	65;"	d
+HSM_PLATFORM_GET_SKIP_IMAGES	hsm_imager.h	70;"	d
+HSM_PLATFORM_HAS_STATUS	hsm_imager.h	68;"	d
+HSM_PLATFORM_PROBE_AFTER_S_INPUT	hsm_imager.h	66;"	d
+HSM_PLATFORM_SET_SKIP_IMAGES	hsm_imager.h	69;"	d
+HSM_PLATFORM_SUPPORTS_SUPPLY	hsm_imager.h	67;"	d
+HSM_PLATFORM_VERSION	hsm_imager.h	97;"	d
+HSM_PROPERTIES_V1	hsm_imager.h	72;"	d
+HSM_SENSOR_GRAB_START_X	hsmmipiraw_Sensor.h	171;"	d
+HSM_SENSOR_GRAB_START_Y	hsmmipiraw_Sensor.h	172;"	d
+HSM_STATUS_NEED_REINIT	hsm_imager.h	88;"	d
+HSM_STATUS_READ	hsm_imager.h	171;"	d
+HSM_STATUS_V1	hsm_imager.h	89;"	d
+HSM_SUPPLY_READ	hsm_imager.h	173;"	d
+HSM_SUPPLY_WRITE	hsm_imager.h	172;"	d
+HSM_WARN	hsmmipiraw_Sensor.c	258;"	d	file:
+HsmClose	hsmmipiraw_Sensor.c	/^static kal_uint32 HsmClose(void)$/;"	f	file:
+HsmControl	hsmmipiraw_Sensor.c	/^static kal_uint32 HsmControl(enum MSDK_SCENARIO_ID_ENUM ScenarioId, MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *pImageWindow,$/;"	f	file:
+HsmFeatureControl	hsmmipiraw_Sensor.c	/^static kal_uint32 HsmFeatureControl(MSDK_SENSOR_FEATURE_ENUM id, kal_uint8 *para, kal_uint32 *len)$/;"	f	file:
+HsmGetDefaultFramerateByScenario	hsmmipiraw_Sensor.c	/^static kal_uint32 HsmGetDefaultFramerateByScenario(enum MSDK_SCENARIO_ID_ENUM scenarioId, MUINT32 *pframeRate)$/;"	f	file:
+HsmGetInfo	hsmmipiraw_Sensor.c	/^static kal_uint32 HsmGetInfo(enum MSDK_SCENARIO_ID_ENUM ScenarioId,$/;"	f	file:
+HsmGetResolution	hsmmipiraw_Sensor.c	/^static kal_uint32 HsmGetResolution(MSDK_SENSOR_RESOLUTION_INFO_STRUCT *pSensorResolution)$/;"	f	file:
+HsmOpen	hsmmipiraw_Sensor.c	/^static kal_uint32 HsmOpen(void)$/;"	f	file:
+HsmSensorConfigData	hsmmipiraw_Sensor.c	/^static MSDK_SENSOR_CONFIG_STRUCT	HsmSensorConfigData;$/;"	v	file:
+Hsm_GetSensorID	hsmmipiraw_Sensor.c	/^static kal_uint32 Hsm_GetSensorID(kal_uint32 *sensorID)$/;"	f	file:
+Hsm_Preview	hsmmipiraw_Sensor.c	/^static kal_uint32 Hsm_Preview(MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *image_window,$/;"	f	file:
+Hsm_Sensor_Driver	hsmmipiraw_Sensor.c	/^static struct Hsm_Sensor_Struct	Hsm_Sensor_Driver;$/;"	v	typeref:struct:Hsm_Sensor_Struct	file:
+Hsm_Sensor_Driver_Init	hsmmipiraw_Sensor.c	/^static void Hsm_Sensor_Driver_Init(void)$/;"	f	file:
+Hsm_Sensor_Struct	hsmmipiraw_Sensor.h	/^struct Hsm_Sensor_Struct$/;"	s
+Hsm_SetSoftwarePWDNMode	hsmmipiraw_Sensor.c	/^UINT32 Hsm_SetSoftwarePWDNMode(kal_bool bEnable)$/;"	f
+Hsm_SetVideoMode	hsmmipiraw_Sensor.c	/^static kal_uint32 Hsm_SetVideoMode(UINT16 u2FrameRate)$/;"	f	file:
+Hsm_get_size	hsmmipiraw_Sensor.c	/^static void Hsm_get_size(kal_uint16 *sensor_width, kal_uint16 *sensor_height)$/;"	f	file:
+Hsm_night_mode	hsmmipiraw_Sensor.c	/^static void Hsm_night_mode(kal_bool bEnable)$/;"	f	file:
+IDT6P50016_I2C_ADDR	hsm_imager.h	123;"	d
+ILLUM_I2C_ADDR	hsm_imager.h	130;"	d
+IMAGE_SENSOR_DRVNAME	hsmmipiraw_Sensor.h	90;"	d
+IT5000_HEIGHT	hsm_imager.h	139;"	d
+IT5000_WIDTH	hsm_imager.h	138;"	d
+JADE_ID_REG	hsmmipiraw_Sensor.c	145;"	d	file:
+JADE_REVISION	hsmmipiraw_Sensor.c	146;"	d	file:
+JADE_REVISION_2	hsmmipiraw_Sensor.c	147;"	d	file:
+MAIN_NUM_OF_PREVIEW_RESOLUTION	hsmmipiraw_CameraCustomized.h	147;"	d
+MAIN_NUM_OF_STILL_RESOLUTION	hsmmipiraw_CameraCustomized.h	149;"	d
+MAIN_NUM_OF_VIDEO_RESOLUTION	hsmmipiraw_CameraCustomized.h	148;"	d
+MAIN_PREVIEW_RESOLUTION_PROFILE	hsmmipiraw_CameraCustomized.h	151;"	d
+MAIN_SENSOR_ORIENTATION_ANGLE	hsmmipiraw_CameraCustomized.h	119;"	d
+MAIN_SENSOR_TO_PHONE_ANGLE	hsmmipiraw_CameraCustomized.h	127;"	d
+MAIN_STILL_RESOLUTION_PROFILE	hsmmipiraw_CameraCustomized.h	152;"	d
+MAIN_VIDEO_RESOLUTION_PROFILE	hsmmipiraw_CameraCustomized.h	150;"	d
+MODE_CAPTURE	hsmmipiraw_Sensor.h	/^	kal_bool MODE_CAPTURE;$/;"	m	struct:Hsm_Sensor_Struct
+MPEG4_encode_mode	hsmmipiraw_Sensor.h	/^	kal_bool MPEG4_encode_mode;$/;"	m	struct:Hsm_Sensor_Struct
+MT9M114_CHIP_VERSION_REG	hsmmipiraw_Sensor.c	150;"	d	file:
+MT9M114_I2C_ADDR	hsm_imager.h	128;"	d
+MT9M114_REVISION	hsmmipiraw_Sensor.c	151;"	d	file:
+MT9V022_I2C_ADDR	hsm_imager.h	121;"	d
+N3600_IMAGE_SENSOR_HEIGHT	hsmmipiraw_Sensor.h	224;"	d
+N3600_IMAGE_SENSOR_WIDTH	hsmmipiraw_Sensor.h	223;"	d
+N3600_READ_ID	hsmmipiraw_Sensor.h	237;"	d
+N3600_SENSOR_FULL_HEIGHT	hsmmipiraw_Sensor.h	227;"	d
+N3600_SENSOR_FULL_WIDTH	hsmmipiraw_Sensor.h	226;"	d
+N3600_SENSOR_PV_HEIGHT	hsmmipiraw_Sensor.h	230;"	d
+N3600_SENSOR_PV_WIDTH	hsmmipiraw_Sensor.h	229;"	d
+N3600_SENSOR_VIDEO_HEIGHT	hsmmipiraw_Sensor.h	233;"	d
+N3600_SENSOR_VIDEO_WIDTH	hsmmipiraw_Sensor.h	232;"	d
+N3600_WRITE_ID	hsmmipiraw_Sensor.h	236;"	d
+N3600_read_cmos_sensor	hsmmipiraw_Sensor.c	/^static kal_uint16 N3600_read_cmos_sensor(kal_uint16 addr)$/;"	f	file:
+N3601_HEIGHT	hsm_imager.h	142;"	d
+N3601_WIDTH	hsm_imager.h	141;"	d
+N4603_HEIGHT	hsm_imager.h	151;"	d
+N4603_I2C_ADDR	hsm_imager.h	131;"	d
+N4603_ID_REG	hsmmipiraw_Sensor.c	133;"	d	file:
+N4603_IMAGE_SENSOR_HEIGHT	hsmmipiraw_Sensor.h	241;"	d
+N4603_IMAGE_SENSOR_WIDTH	hsmmipiraw_Sensor.h	240;"	d
+N4603_READ_ID	hsmmipiraw_Sensor.h	254;"	d
+N4603_REVISION	hsmmipiraw_Sensor.c	134;"	d	file:
+N4603_SENSOR_FULL_HEIGHT	hsmmipiraw_Sensor.h	244;"	d
+N4603_SENSOR_FULL_WIDTH	hsmmipiraw_Sensor.h	243;"	d
+N4603_SENSOR_PV_HEIGHT	hsmmipiraw_Sensor.h	247;"	d
+N4603_SENSOR_PV_WIDTH	hsmmipiraw_Sensor.h	246;"	d
+N4603_SENSOR_VIDEO_HEIGHT	hsmmipiraw_Sensor.h	250;"	d
+N4603_SENSOR_VIDEO_WIDTH	hsmmipiraw_Sensor.h	249;"	d
+N4603_WIDTH	hsm_imager.h	150;"	d
+N4603_WRITE_ID	hsmmipiraw_Sensor.h	253;"	d
+N4603_read_cmos_sensor	hsmmipiraw_Sensor.c	/^static kal_uint16 N4603_read_cmos_sensor(kal_uint16 addr)$/;"	f	file:
+N5600_HEIGHT	hsm_imager.h	136;"	d
+N5600_IMAGE_SENSOR_HEIGHT	hsmmipiraw_Sensor.h	207;"	d
+N5600_IMAGE_SENSOR_WIDTH	hsmmipiraw_Sensor.h	206;"	d
+N5600_READ_ID	hsmmipiraw_Sensor.h	220;"	d
+N5600_SENSOR_FULL_HEIGHT	hsmmipiraw_Sensor.h	210;"	d
+N5600_SENSOR_FULL_WIDTH	hsmmipiraw_Sensor.h	209;"	d
+N5600_SENSOR_PV_HEIGHT	hsmmipiraw_Sensor.h	213;"	d
+N5600_SENSOR_PV_WIDTH	hsmmipiraw_Sensor.h	212;"	d
+N5600_SENSOR_VIDEO_HEIGHT	hsmmipiraw_Sensor.h	216;"	d
+N5600_SENSOR_VIDEO_WIDTH	hsmmipiraw_Sensor.h	215;"	d
+N5600_WIDTH	hsm_imager.h	135;"	d
+N5600_WRITE_ID	hsmmipiraw_Sensor.h	219;"	d
+N5600_read_cmos_sensor	hsmmipiraw_Sensor.c	/^static kal_uint16 N5600_read_cmos_sensor(kal_uint8 addr)$/;"	f	file:
+N5703_2_READ_ID	hsmmipiraw_Sensor.h	274;"	d
+N5703_2_WRITE_ID	hsmmipiraw_Sensor.h	273;"	d
+N5703_HEIGHT	hsm_imager.h	154;"	d
+N5703_I2C_ADDR	hsm_imager.h	132;"	d
+N5703_I2C_ADDR2	hsm_imager.h	133;"	d
+N5703_ID_REG	hsmmipiraw_Sensor.c	137;"	d	file:
+N5703_IMAGE_SENSOR_HEIGHT	hsmmipiraw_Sensor.h	258;"	d
+N5703_IMAGE_SENSOR_WIDTH	hsmmipiraw_Sensor.h	257;"	d
+N5703_READ_ID	hsmmipiraw_Sensor.h	271;"	d
+N5703_REVISION	hsmmipiraw_Sensor.c	138;"	d	file:
+N5703_SENSOR_FULL_HEIGHT	hsmmipiraw_Sensor.h	261;"	d
+N5703_SENSOR_FULL_WIDTH	hsmmipiraw_Sensor.h	260;"	d
+N5703_SENSOR_PV_HEIGHT	hsmmipiraw_Sensor.h	264;"	d
+N5703_SENSOR_PV_WIDTH	hsmmipiraw_Sensor.h	263;"	d
+N5703_SENSOR_VIDEO_HEIGHT	hsmmipiraw_Sensor.h	267;"	d
+N5703_SENSOR_VIDEO_WIDTH	hsmmipiraw_Sensor.h	266;"	d
+N5703_WIDTH	hsm_imager.h	153;"	d
+N5703_WRITE_ID	hsmmipiraw_Sensor.h	270;"	d
+N5703_read_cmos_sensor	hsmmipiraw_Sensor.c	/^static kal_uint16 N5703_read_cmos_sensor(kal_uint16 addr)$/;"	f	file:
+N6700_HEIGHT	hsm_imager.h	145;"	d
+N6700_IMAGE_SENSOR_HEIGHT	hsmmipiraw_Sensor.h	175;"	d
+N6700_IMAGE_SENSOR_WIDTH	hsmmipiraw_Sensor.h	174;"	d
+N6700_READ_ID	hsmmipiraw_Sensor.h	188;"	d
+N6700_SENSOR_FULL_HEIGHT	hsmmipiraw_Sensor.h	178;"	d
+N6700_SENSOR_FULL_WIDTH	hsmmipiraw_Sensor.h	177;"	d
+N6700_SENSOR_PV_HEIGHT	hsmmipiraw_Sensor.h	181;"	d
+N6700_SENSOR_PV_WIDTH	hsmmipiraw_Sensor.h	180;"	d
+N6700_SENSOR_VIDEO_HEIGHT	hsmmipiraw_Sensor.h	184;"	d
+N6700_SENSOR_VIDEO_WIDTH	hsmmipiraw_Sensor.h	183;"	d
+N6700_WIDTH	hsm_imager.h	144;"	d
+N6700_WRITE_ID	hsmmipiraw_Sensor.h	187;"	d
+N6700_read_cmos_sensor	hsmmipiraw_Sensor.c	/^static kal_uint16 N6700_read_cmos_sensor(kal_uint16 addr)$/;"	f	file:
+NUM_OF_VIDEO_STREAM_BUFF	hsmmipiraw_CameraCustomized.h	172;"	d
+Open	hsmmipiraw_Sensor.h	/^	kal_uint32 (*Open)(struct i2c_client *i2c_clit);$/;"	m	struct:__anon2
+PIXEL_CLK	hsmmipiraw_Sensor.h	140;"	d
+PIXEL_CLK	hsmmipiraw_Sensor.h	142;"	d
+PIXEL_CLK	hsmmipiraw_Sensor.h	144;"	d
+PRE_GAIN	hsmmipiraw_Sensor.h	/^	PRE_GAIN=0,$/;"	e	enum:group_enum
+PRE_GAIN_B_INDEX	hsmmipiraw_Sensor.h	/^	PRE_GAIN_B_INDEX,$/;"	e	enum:register_index
+PRE_GAIN_Gb_INDEX	hsmmipiraw_Sensor.h	/^	PRE_GAIN_Gb_INDEX,$/;"	e	enum:register_index
+PRE_GAIN_Gr_INDEX	hsmmipiraw_Sensor.h	/^	PRE_GAIN_Gr_INDEX,$/;"	e	enum:register_index
+PRE_GAIN_R_INDEX	hsmmipiraw_Sensor.h	/^	PRE_GAIN_R_INDEX,$/;"	e	enum:register_index
+PSENSOR_DATA_STRUCT	hsmmipiraw_Sensor.h	/^} SENSOR_DATA_STRUCT,*PSENSOR_DATA_STRUCT;$/;"	t	typeref:struct:__anon1
+PSOC_I2C_ADDR	hsm_imager.h	120;"	d
+REGISTER_EDITOR	hsmmipiraw_Sensor.h	/^	REGISTER_EDITOR,$/;"	e	enum:group_enum
+Reg	hsmmipiraw_Sensor.h	/^	struct SENSOR_REG_STRUCT Reg[ENGINEER_END];$/;"	m	struct:__anon1	typeref:struct:__anon1::SENSOR_REG_STRUCT
+Reserved	hsm_imager.h	/^	u32	Reserved;$/;"	m	struct:hsm_status_data
+Reserved	hsm_imager.h	/^	u32	Reserved[3];$/;"	m	struct:hsm_engine_properties
+SENSORDB	hsmmipiraw_Sensor.c	280;"	d	file:
+SENSORDB	hsmmipiraw_Sensor.c	282;"	d	file:
+SENSOR_BASEGAIN	hsmmipiraw_Sensor.h	/^	SENSOR_BASEGAIN=FACTORY_START_ADDR,$/;"	e	enum:register_index
+SENSOR_DATA_STRUCT	hsmmipiraw_Sensor.h	/^} SENSOR_DATA_STRUCT,*PSENSOR_DATA_STRUCT;$/;"	t	typeref:struct:__anon1
+SUB_NUM_OF_PREVIEW_RESOLUTION	hsmmipiraw_CameraCustomized.h	161;"	d
+SUB_NUM_OF_STILL_RESOLUTION	hsmmipiraw_CameraCustomized.h	163;"	d
+SUB_NUM_OF_VIDEO_RESOLUTION	hsmmipiraw_CameraCustomized.h	162;"	d
+SUB_PREVIEW_RESOLUTION_PROFILE	hsmmipiraw_CameraCustomized.h	165;"	d
+SUB_SENSOR_ORIENTATION_ANGLE	hsmmipiraw_CameraCustomized.h	120;"	d
+SUB_SENSOR_TO_PHONE_ANGLE	hsmmipiraw_CameraCustomized.h	128;"	d
+SUB_STILL_RESOLUTION_PROFILE	hsmmipiraw_CameraCustomized.h	166;"	d
+SUB_VIDEO_RESOLUTION_PROFILE	hsmmipiraw_CameraCustomized.h	164;"	d
+SYSTEM_CLK	hsmmipiraw_Sensor.h	137;"	d
+SensorFuncHsm	hsmmipiraw_Sensor.c	/^static struct SENSOR_FUNCTION_STRUCT SensorFuncHsm = {$/;"	v	typeref:struct:SENSOR_FUNCTION_STRUCT	file:
+TC358746_I2C_ADDR	hsm_imager.h	125;"	d
+TC358748_I2C_ADDR	hsm_imager.h	124;"	d
+_HSM_IMAGER_H	hsm_imager.h	11;"	d
+__CAMERA_CUSTOMIZED_H	hsmmipiraw_CameraCustomized.h	116;"	d
+__CAMERA_SENSOR_PARA_H	hsmmipiraw_Camera_Sensor_para.h	88;"	d
+__SENSOR_CONTROL__	hsmmipiraw_Sensor.c	285;"	d	file:
+__SENSOR_H	hsmmipiraw_Sensor.h	87;"	d
+bBanding_value	hsmmipiraw_Sensor.h	/^	kal_bool  bBanding_value; \/\/ to distinguish between 50HZ and 60HZ.$/;"	m	struct:Hsm_Sensor_Struct
+bNight_mode	hsmmipiraw_Sensor.h	/^	kal_bool  bNight_mode; \/\/ to distinguish night mode or auto mode, default: auto mode setting$/;"	m	struct:Hsm_Sensor_Struct
+buf	hsm_imager.h	/^	u8	*buf;$/;"	m	struct:hsm_iic_data
+buf	hsmmipiraw_Sensor.c	/^	u32 buf;$/;"	m	struct:hsm_iic_data32	file:
+capture	hsmmipiraw_Sensor.c	/^static kal_uint32 capture(MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *image_window,$/;"	f	file:
+cfg_data	hsmmipiraw_Sensor.h	/^	MSDK_SENSOR_CONFIG_STRUCT cfg_data;$/;"	m	struct:Hsm_Sensor_Struct
+compat_iic_data	hsmmipiraw_Sensor.c	/^static void compat_iic_data(struct hsm_iic_data32 *iic32, struct hsm_iic_data *iic)$/;"	f	file:
+dbg_flags	hsmmipiraw_Sensor.c	/^static enum hsm_log dbg_flags = HSM_LOG_DEFAULT;$/;"	v	typeref:enum:hsm_log	file:
+def_value	hsm_imager.h	/^	u8	def_value;$/;"	m	struct:hsm_gpio_config
+dir	hsm_imager.h	/^	u8	dir;$/;"	m	struct:hsm_gpio_config
+dummy_lines	hsmmipiraw_Sensor.h	/^	kal_uint16 dummy_lines;$/;"	m	struct:Hsm_Sensor_Struct
+dummy_pixels	hsmmipiraw_Sensor.h	/^	kal_uint16 dummy_pixels;$/;"	m	struct:Hsm_Sensor_Struct
+eng	hsmmipiraw_Sensor.h	/^	SENSOR_DATA_STRUCT eng; \/* engineer mode *\/$/;"	m	struct:Hsm_Sensor_Struct
+eng_info	hsmmipiraw_Sensor.h	/^	MSDK_SENSOR_ENG_INFO_STRUCT eng_info;$/;"	m	struct:Hsm_Sensor_Struct
+engine_id	hsmmipiraw_Sensor.c	/^static int engine_id;$/;"	v	file:
+engineer_index	hsmmipiraw_Sensor.h	/^typedef enum engineer_index$/;"	g
+exposure_lines	hsmmipiraw_Sensor.h	/^	kal_uint16 exposure_lines;$/;"	m	struct:Hsm_Sensor_Struct
+extra_exposure_lines	hsmmipiraw_Sensor.h	/^	kal_uint16 extra_exposure_lines;$/;"	m	struct:Hsm_Sensor_Struct
+fPV_PCLK	hsmmipiraw_Sensor.h	/^	kal_uint32 fPV_PCLK; \/\/26000000;$/;"	m	struct:Hsm_Sensor_Struct
+g_hsm_power_pinA	hsmmipiraw_Sensor.c	/^u32 g_hsm_power_pinA[9]={0};$/;"	v
+gpio	hsm_imager.h	/^	struct hsm_gpio gpio[HSM_NUM_GPIO];$/;"	m	struct:hsm_platform_data	typeref:struct:hsm_platform_data::hsm_gpio
+group_enum	hsmmipiraw_Sensor.h	/^typedef enum group_enum {$/;"	g
+height	hsm_imager.h	/^	u32	height;$/;"	m	struct:hsm_engine_properties
+hs_video	hsmmipiraw_Sensor.c	/^static kal_uint32 hs_video(MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *image_window,$/;"	f	file:
+hsm_dbg	hsmmipiraw_Sensor.c	272;"	d	file:
+hsm_engine_id	hsm_imager.h	/^enum hsm_engine_id {$/;"	g
+hsm_engine_properties	hsm_imager.h	/^struct hsm_engine_properties {$/;"	s
+hsm_err	hsmmipiraw_Sensor.c	276;"	d	file:
+hsm_gpio	hsm_imager.h	/^struct hsm_gpio {$/;"	s
+hsm_gpio_config	hsm_imager.h	/^struct hsm_gpio_config {$/;"	s
+hsm_gpio_data	hsm_imager.h	/^struct hsm_gpio_data {$/;"	s
+hsm_gpio_id	hsm_imager.h	/^enum hsm_gpio_id {$/;"	g
+hsm_iic_data	hsm_imager.h	/^struct hsm_iic_data {$/;"	s
+hsm_iic_data32	hsmmipiraw_Sensor.c	/^struct hsm_iic_data32 {$/;"	s	file:
+hsm_info1	hsmmipiraw_Sensor.c	274;"	d	file:
+hsm_info2	hsmmipiraw_Sensor.c	273;"	d	file:
+hsm_ioctl	hsmmipiraw_Sensor.c	/^long hsm_ioctl(unsigned int cmd, void *arg, u32 *len)$/;"	f
+hsm_log	hsmmipiraw_Sensor.c	/^enum hsm_log {$/;"	g	file:
+hsm_mount_options	hsm_imager.h	/^enum hsm_mount_options {$/;"	g
+hsm_parse_dt	hsmmipiraw_Sensor.c	/^ void hsm_parse_dt(void) {$/;"	f
+hsm_platform	hsmmipiraw_Sensor.c	/^static struct hsm_platform_data	hsm_platform = {$/;"	v	typeref:struct:hsm_platform_data	file:
+hsm_platform_data	hsm_imager.h	/^struct hsm_platform_data {$/;"	s
+hsm_props	hsmmipiraw_Sensor.c	/^static struct hsm_engine_properties	hsm_props;$/;"	v	typeref:struct:hsm_engine_properties	file:
+hsm_status_data	hsm_imager.h	/^struct hsm_status_data {$/;"	s
+hsm_supply_en	hsm_imager.h	/^	int (*hsm_supply_en)(int en); \/* This function should enable the VCC on sensor *\/$/;"	m	struct:hsm_platform_data
+hsm_supply_enable	hsmmipiraw_Sensor.c	/^static void hsm_supply_enable (struct hsm_platform_data * platform, int en)$/;"	f	file:
+hsm_warn	hsmmipiraw_Sensor.c	275;"	d	file:
+i2c_adapter_id_mipi	hsm_imager.h	/^	int i2c_adapter_id_mipi;$/;"	m	struct:hsm_platform_data
+i2c_addr	hsm_imager.h	/^	u8	i2c_addr;$/;"	m	struct:hsm_iic_data
+i2c_addr	hsmmipiraw_Sensor.c	/^	u8	i2c_addr;$/;"	m	struct:hsm_iic_data32	file:
+i2c_addr_clock	hsm_imager.h	/^	u8	i2c_addr_clock;		\/\/!< Address of clock chip in 7bit format$/;"	m	struct:hsm_engine_properties
+i2c_addr_mipi	hsm_imager.h	/^	u8	i2c_addr_mipi;		\/\/!< Address of the mipi converter in 7bit format$/;"	m	struct:hsm_engine_properties
+i2c_addr_mipi	hsm_imager.h	/^	u8 i2c_addr_mipi;$/;"	m	struct:hsm_platform_data
+i2c_addr_psoc	hsm_imager.h	/^	u8	i2c_addr_psoc;		\/\/!< Address of PSOC in 7bit format$/;"	m	struct:hsm_engine_properties
+i2c_addr_sensor	hsm_imager.h	/^	u8	i2c_addr_sensor;	\/\/!< Address of camera sensor in 7bit format$/;"	m	struct:hsm_engine_properties
+i2c_clit	hsmmipiraw_Sensor.h	/^	struct i2c_client *i2c_clit;$/;"	m	struct:Hsm_Sensor_Struct	typeref:struct:Hsm_Sensor_Struct::i2c_client
+iBackupExtraExp	hsmmipiraw_Sensor.h	/^	kal_uint16 iBackupExtraExp;$/;"	m	struct:Hsm_Sensor_Struct
+iPV_Pixels_Per_Line	hsmmipiraw_Sensor.h	/^	kal_uint16 iPV_Pixels_Per_Line;$/;"	m	struct:Hsm_Sensor_Struct
+image_sensor_func_struct	hsmmipiraw_Sensor.h	/^}image_sensor_func_struct;$/;"	t	typeref:struct:__anon2
+imager	hsm_imager.h	/^	u32	imager;$/;"	m	struct:hsm_engine_properties
+init	hsm_imager.h	/^	bool init;$/;"	m	struct:hsm_gpio
+inverted	hsm_imager.h	/^	bool inverted;$/;"	m	struct:hsm_gpio
+isBanding	hsmmipiraw_Sensor.c	/^kal_uint8 isBanding = 0; \/\/ 0: 50hz  1:60hz$/;"	v
+isN5703_2	hsmmipiraw_Sensor.c	/^static bool isN5703_2 = 0;$/;"	v	file:
+len	hsm_imager.h	/^	u8	len;$/;"	m	struct:hsm_iic_data
+len	hsmmipiraw_Sensor.c	/^	u8	len;$/;"	m	struct:hsm_iic_data32	file:
+mount	hsm_imager.h	/^	enum hsm_mount_options mount;$/;"	m	struct:hsm_platform_data	typeref:enum:hsm_platform_data::hsm_mount_options
+mount	hsm_imager.h	/^	u32	mount;				\/\/!< hsm_mount_options$/;"	m	struct:hsm_engine_properties
+mt_hsm_s_power	hsmmipiraw_Sensor.c	/^static int mt_hsm_s_power(int en)$/;"	f	file:
+name	hsm_imager.h	/^	char * name;$/;"	m	struct:hsm_gpio
+normal_video	hsmmipiraw_Sensor.c	/^static kal_uint32 normal_video(MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *image_window,$/;"	f	file:
+pin	hsm_imager.h	/^	u8	pin;$/;"	m	struct:hsm_gpio_config
+pin	hsm_imager.h	/^	u8	pin;$/;"	m	struct:hsm_gpio_data
+pixelformat	hsm_imager.h	/^	unsigned int pixelformat;$/;"	m	struct:hsm_platform_data
+platform_details	hsm_imager.h	/^	u32	platform_details;	\/\/!< Workaround hints for Platforms$/;"	m	struct:hsm_engine_properties
+port	hsm_imager.h	/^	resource_size_t port;$/;"	m	struct:hsm_gpio
+reg	hsm_imager.h	/^	u16	reg;$/;"	m	struct:hsm_iic_data
+reg	hsmmipiraw_Sensor.c	/^	u16	reg;$/;"	m	struct:hsm_iic_data32	file:
+register_index	hsmmipiraw_Sensor.h	/^typedef enum register_index {$/;"	g
+sensor_night_mode	hsmmipiraw_Sensor.h	/^	kal_bool sensor_night_mode;$/;"	m	struct:Hsm_Sensor_Struct
+slim_video	hsmmipiraw_Sensor.c	/^static kal_uint32 slim_video(MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *image_window,$/;"	f	file:
+spreadspectrum	hsm_imager.h	/^	int spreadspectrum;$/;"	m	struct:hsm_platform_data
+spreadspectrum	hsm_imager.h	/^	u32	spreadspectrum;		\/\/!< Currently not used$/;"	m	struct:hsm_engine_properties
+status	hsm_imager.h	/^	u32	status;$/;"	m	struct:hsm_status_data
+u8Effect_value	hsmmipiraw_Sensor.h	/^	kal_uint8 u8Effect_value;$/;"	m	struct:Hsm_Sensor_Struct
+u8Ev_value	hsmmipiraw_Sensor.h	/^	kal_uint8 u8Ev_value;$/;"	m	struct:Hsm_Sensor_Struct
+u8Wb_value	hsmmipiraw_Sensor.h	/^	kal_uint8 u8Wb_value;$/;"	m	struct:Hsm_Sensor_Struct
+value	hsm_imager.h	/^	u8	value;$/;"	m	struct:hsm_gpio_data
+version	hsm_imager.h	/^	u32	version;$/;"	m	struct:hsm_engine_properties
+version	hsm_imager.h	/^	u32	version;$/;"	m	struct:hsm_status_data
+width	hsm_imager.h	/^	u32	width;$/;"	m	struct:hsm_engine_properties

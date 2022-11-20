@@ -20,8 +20,10 @@
 #include <linux/reboot.h>
 
 #include <mt-plat/upmu_common.h>
-#include <mt-plat/charger_class.h>
-#include <mt-plat/charger_type.h>
+/* prize modified for compile error start */
+#include <mt-plat/v1/charger_class.h>
+#include <mt-plat/v1/charger_type.h>
+/* prize modified for compile error end */
 #ifdef CONFIG_RT_REGMAP
 #include <mt-plat/rt-regmap.h>
 #endif /* CONFIG_RT_REGMAP */
@@ -830,8 +832,11 @@ static int rt9471_enable_hz(struct rt9471_chip *chip, bool en, u32 user)
 
 	mutex_lock(&chip->hz_lock);
 	chip->hz_users[user] = en;
-	for (i = 0, en = true; i < RT9471_HZU_MAX; i++)
+	for (i = 0, en = true; i < RT9471_HZU_MAX; i++) {
+		dev_info(chip->dev, "%s hz_users[%d] = %s\n",
+			__func__, i, chip->hz_users[i] ? "true" : "false");
 		en &= chip->hz_users[i];
+	}
 	ret = __rt9471_enable_hz(chip, en);
 	mutex_unlock(&chip->hz_lock);
 
@@ -2496,6 +2501,10 @@ static int rt9471_is_powerpath_enabled(struct charger_device *chg_dev, bool *en)
 	ret = __rt9471_is_hz_enabled(chip, en);
 	*en = !*en;
 
+	if (unlikely(chip->hz_users[RT9471_HZU_PP] == *en)) {
+		dev_warn(chip->dev, "%s: %s is_pp_enabled and hz_users are both %s\n",
+			chip->desc->chg_name, __func__, *en ? "true" : "false");
+	}
 	return ret;
 }
 

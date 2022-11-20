@@ -1036,7 +1036,7 @@ static int create_files(void)
 
 phys_addr_t scp_get_reserve_mem_phys(enum scp_reserve_mem_id_t id)
 {
-	if (id >= NUMS_MEM_ID || id < 0) {
+	if (id >= NUMS_MEM_ID) {
 		pr_err("[SCP] no reserve memory for %d", id);
 		return 0;
 	} else
@@ -1046,7 +1046,7 @@ EXPORT_SYMBOL_GPL(scp_get_reserve_mem_phys);
 
 phys_addr_t scp_get_reserve_mem_virt(enum scp_reserve_mem_id_t id)
 {
-	if (id >= NUMS_MEM_ID || id < 0) {
+	if (id >= NUMS_MEM_ID) {
 		pr_err("[SCP] no reserve memory for %d", id);
 		return 0;
 	} else
@@ -1056,7 +1056,7 @@ EXPORT_SYMBOL_GPL(scp_get_reserve_mem_virt);
 
 phys_addr_t scp_get_reserve_mem_size(enum scp_reserve_mem_id_t id)
 {
-	if (id >= NUMS_MEM_ID || id < 0) {
+	if (id >= NUMS_MEM_ID) {
 		pr_err("[SCP] no reserve memory for %d", id);
 		return 0;
 	} else
@@ -1960,14 +1960,24 @@ static int __init scp_init(void)
 #endif
 #endif  // CONFIG_FPGA_EARLY_PORTING
 
+	if (platform_driver_register(&mtk_scpsys_device)) {
+		pr_err("[SCP] scpsys probe fail\n");
+		goto err_1;
+	}
+
+	if(scpreg.scpsys == 0) {
+		pr_err("[SCP] skip the scpsys probe\n");
+		goto err_1;
+	}
+
 	if (platform_driver_register(&mtk_scp_device)) {
 		pr_err("[SCP] scp probe fail\n");
 		goto err;
 	}
 
-	if (platform_driver_register(&mtk_scpsys_device)) {
-		pr_err("[SCP] scpsys probe fail\n");
-		goto err_1;
+	if(scpreg.sram == 0) {
+		pr_err("[SCP] skip the scp probe\n");
+		goto err;
 	}
 
 	/* skip initial if dts status = "disable" */

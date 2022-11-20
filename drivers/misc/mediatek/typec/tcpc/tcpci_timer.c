@@ -210,6 +210,11 @@ static const char *const tcpc_timer_name[] = {
 #ifdef CONFIG_TYPEC_CAP_NORP_SRC
 	"TYPEC_TIMER_NORP_SRC",
 #endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
+//prize add by huarui, cc controller sgm7220, start
+#if defined(CONFIG_TCPC_SGM7220)||defined(CONFIG_TCPC_WUSB3801)
+	"TYPEC_TIMER_VBUS_CHECK",
+#endif	/* CONFIG_TCPC_SGM7220 */
+//prize add by huarui, cc controller sgm7220, end
 };
 #endif /* TCPC_TIMER_DBG_EN || TCPC_TIMER_INFO_EN */
 /* CONFIG_USB_PD_SAFE0V_DELAY */
@@ -350,6 +355,11 @@ DECL_TCPC_TIMEOUT(TYPEC_TIMER_DRP_SRC_TOGGLE, 60),
 #ifdef CONFIG_TYPEC_CAP_NORP_SRC
 DECL_TCPC_TIMEOUT(TYPEC_TIMER_NORP_SRC, 300),
 #endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
+//prize add by huarui, cc controller sgm7220, start
+#if defined(CONFIG_TCPC_SGM7220)||defined(CONFIG_TCPC_WUSB3801)
+DECL_TCPC_TIMEOUT(TYPEC_TIMER_VBUS_CHECK, 200),
+#endif	/* CONFIG_TCPC_SGM7220 */
+//prize add by huarui, cc controller sgm7220, end
 };
 
 typedef enum hrtimer_restart (*tcpc_hrtimer_call)(struct hrtimer *timer);
@@ -1070,6 +1080,20 @@ static enum hrtimer_restart tcpc_timer_norp_src(struct hrtimer *timer)
 }
 #endif	/* CONFIG_TYPEC_CAP_NORP_SRC */
 
+//prize add by huarui, cc controller sgm7220, start
+#if defined(CONFIG_TCPC_SGM7220)||defined(CONFIG_TCPC_WUSB3801)
+static enum hrtimer_restart tcpc_timer_vbus_check(struct hrtimer *timer)
+{
+	int index = TYPEC_TIMER_VBUS_CHECK;
+	struct tcpc_device *tcpc =
+		container_of(timer, struct tcpc_device, tcpc_timer[index]);
+
+	TCPC_TIMER_TRIGGER();
+	return HRTIMER_NORESTART;
+}
+#endif	/* CONFIG_TCPC_SGM7220 */
+//prize add by huarui, cc controller sgm7220, end
+
 static tcpc_hrtimer_call tcpc_timer_call[PD_TIMER_NR] = {
 #ifdef CONFIG_USB_POWER_DELIVERY
 	tcpc_timer_discover_id,
@@ -1161,6 +1185,11 @@ static tcpc_hrtimer_call tcpc_timer_call[PD_TIMER_NR] = {
 #ifdef CONFIG_TYPEC_CAP_NORP_SRC
 	tcpc_timer_norp_src,
 #endif
+//prize add by huarui, cc controller sgm7220, start
+#if defined(CONFIG_TCPC_SGM7220)||defined(CONFIG_TCPC_WUSB3801)
+	tcpc_timer_vbus_check,
+#endif
+//prize add by huarui, cc controller sgm7220, end
 };
 
 /*

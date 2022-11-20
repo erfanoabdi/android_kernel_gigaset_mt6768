@@ -14,7 +14,8 @@
 
 
 #include "imgsensor_hw.h"
-
+extern void  regulator_afvdd_set(int status);/* prize add by zhuzhengjiang for otp 20201124 start*/
+int curr_sensor_id;// prize add by zhuzhengjiang for camera 20220110 start
 enum IMGSENSOR_RETURN imgsensor_hw_release_all(struct IMGSENSOR_HW *phw)
 {
 	int i;
@@ -97,7 +98,7 @@ static enum IMGSENSOR_RETURN imgsensor_hw_power_sequence(
 	struct IMGSENSOR_HW_POWER_INFO   *ppwr_info;
 	struct IMGSENSOR_HW_DEVICE       *pdev;
 	int                               pin_cnt = 0;
-
+	curr_sensor_id = sensor_idx; // prize add by zhuzhengjiang for camera 20220110 start
 	while (ppwr_seq < ppower_sequence + IMGSENSOR_HW_SENSOR_MAX_NUM &&
 		ppwr_seq->name != NULL) {
 		if (!strcmp(ppwr_seq->name, PLATFORM_POWER_SEQ_NAME)) {
@@ -114,6 +115,11 @@ static enum IMGSENSOR_RETURN imgsensor_hw_power_sequence(
 		return IMGSENSOR_RETURN_ERROR;
 
 	ppwr_info = ppwr_seq->pwr_info;
+	/* prize add by zhuzhengjiang for otp 20201124 start*/
+	if (sensor_idx == IMGSENSOR_SENSOR_IDX_MAIN  && ppwr_info->pin == IMGSENSOR_HW_PIN_MCLK)  {
+		regulator_afvdd_set(pwr_status);
+	}
+	/* prize add by zhuzhengjiang for otp 20201124 end*/
 
 	while (ppwr_info->pin != IMGSENSOR_HW_PIN_NONE &&
 		ppwr_info < ppwr_seq->pwr_info + IMGSENSOR_HW_POWER_INFO_MAX) {

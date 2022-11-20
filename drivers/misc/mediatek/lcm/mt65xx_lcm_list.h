@@ -9,6 +9,48 @@
 
 #include <lcm_drv.h>
 
+/*******************************************************************************
+*prize add, order:0-9-a-z ,start
+*******************************************************************************/
+extern struct LCM_DRIVER er68577_hdplus_dsi_vdo_mz_panda_lcm_drv; //prize add by tangcong 20220318 ---start
+/*prize add by liuxuhui---20220620---start*/
+extern struct LCM_DRIVER icnl9911c_hdplus_dsi_vdo_lcm_drv;
+/*prize add by liuxuhui---20220620---end*/
+/*prize-add lcm-tangcong-20210821-start*/
+extern struct LCM_DRIVER er68577_hdplus_dsi_vdo_cmi_lcm_drv;
+/*prize-add lcm-tangcong-20210821-end*/
+/*prize-add lcm-tangcong-20210719-start*/
+extern struct LCM_DRIVER nv3051d_hdplus_dsi_vdo_hq_lcm_drv;
+/*prize-add lcm-tangcong-20210719-end*/
+extern struct LCM_DRIVER ili9882n_hj_dsi_vdo_ivo_hl_lcm_drv;
+/*prize-add lcm-tangcong-20220523-start*/
+extern struct LCM_DRIVER ili9882n_hj_dsi_vdo_ivo_hl_ata_lcm_drv;
+/*prize-add lcm-tangcong-20220523-end*/
+extern struct LCM_DRIVER r63417_fhd_dsi_cmd_sharp55_lcm_drv;
+extern struct LCM_DRIVER ili9881c_hd_dsi_vdo_cmi_ata_lcm_drv;
+/* prize added by chenjiaxi, lcm, 20190401-start */
+extern struct LCM_DRIVER nt35532_hd720_dsi_vdo_xm_lcm_drv;
+/* prize added by chenjiaxi, lcm, 20190401-end */
+/*prize-add lcm-tangcong-20211109-start*/
+extern struct LCM_DRIVER er68576_hdplus_dsi_vdo_cmi_bx_lcm_drv;
+extern struct LCM_DRIVER er68576_hdplus_dsi_vdo_cmi_bx_12_lcm_drv;
+/*prize-add lcm-tangcong-20211109-end*/
+/*prize-add lcm-tangcong-20220113-start*/
+extern struct LCM_DRIVER er68576_hdplus_dsi_vdo_cmi_bx_04_lcm_drv;
+/*prize-add lcm-tangcong-20220113-end*/
+/*prize add by liuxuhui---20220706---start*/
+extern struct LCM_DRIVER icnl9911c_boe_lcm_drv;
+extern struct LCM_DRIVER ili9881h_hdplus_dsi_vdo_cmi_hf_lcm_drv;
+extern struct LCM_DRIVER ili9882n_hdp_dsi_vdo_incell_txd_lcm_drv;
+/*prize add by liuxuhui---20220706---end*/
+/*prize-add lcm -wangmd-20211111-start*/
+extern struct LCM_DRIVER er68577_hdplus_dsi_vdo_08_lcm_drv;
+extern struct LCM_DRIVER er68577_hdplus_dsi_vdo_mz_panda_lcm_drv;
+extern struct LCM_DRIVER er68578_hdplus_dsi_vdo_bx_boe_lcm_drv;
+/*prize-add lcm -wangmd-20211111-end*/
+/*******************************************************************************
+*prize add, end
+*******************************************************************************/
 extern struct LCM_DRIVER otm1282a_hd720_dsi_vdo_60hz_lcm_drv;
 extern struct LCM_DRIVER otm1282a_hd720_dsi_vdo_lcm_drv;
 extern struct LCM_DRIVER nt35595_fhd_dsi_cmd_truly_8163_lcm_drv;
@@ -69,6 +111,9 @@ extern struct LCM_DRIVER nt35510_dsi_vdo_6572_drv;
 extern struct LCM_DRIVER nt35510_dpi_6572_lcm_drv;
 extern struct LCM_DRIVER nt35510_mcu_6572_lcm_drv;
 extern struct LCM_DRIVER nt51012_hd720_dsi_vdo_lcm_drv;
+extern struct LCM_DRIVER nt35532_fhd_dsi_vdo_sharp_lcm_drv;
+extern struct LCM_DRIVER otm1901a_fhd_dsi_vdo_tpv_lcm_drv;
+extern struct LCM_DRIVER r63350a_fhd_dsi_vdo_truly_lcm_drv;
 extern struct LCM_DRIVER r63303_idisplay_lcm_drv;
 extern struct LCM_DRIVER hj080ia_lcm_drv;
 extern struct LCM_DRIVER hj101na02a_lcm_drv;
@@ -82,6 +127,23 @@ extern struct LCM_DRIVER nt35510_fwvga_lcm_drv;
 #if defined(GN_SSD2825_SMD_S6E8AA)
 extern struct LCM_DRIVER gn_ssd2825_smd_s6e8aa;
 #endif
+//prize add by chenfeiwen 20210902 ---start
+extern struct LCM_DRIVER ft8006s_aa_hdp_dsi_vdo_boe_drip_incell_lcm_drv;
+extern struct LCM_DRIVER ft8006s_ab_hdp_dsi_vdo_boe_drip_incell_lcm_drv;
+extern struct LCM_DRIVER gc2702_hdplus_dsi_vdo_incell_lcm_drv;
+extern struct LCM_DRIVER gc7202a_hdplus_dsi_vdo_incell_lcm_drv;
+//prize add by chenfeiwen 20210902 ---end
+extern struct LCM_DRIVER ili9882n_hdp_dsi_vdo_incell_truly_lcm_drv;
+extern struct LCM_DRIVER nt36525_hdp_dsi_vdo_boe_drip_incell_lcm_drv;
+//prize add by tangcong 20220228 ---start
+extern struct LCM_DRIVER gc9702_hdplus_dsi_vdo_incell_lcm_drv;
+//prize add by tangcong 20220228 ---end
+//prize add by tangcong 20220615 ---start
+extern struct LCM_DRIVER gc9702_hdplus_dsi_vdo_incell_xingyi_lcm_drv;
+//prize add by tangcong 20220615 ---end
+//prize add by liushuai 20220615 ---start
+extern struct LCM_DRIVER gc9702_hdplus_dsi_hkc_incell_lcm_drv;
+//prize add by liushuai 20220615 ---end
 extern struct LCM_DRIVER nt35517_dsi_vdo_lcm_drv;
 extern struct LCM_DRIVER hx8369_dsi_bld_lcm_drv;
 extern struct LCM_DRIVER hx8369_dsi_tm_lcm_drv;
@@ -294,6 +356,7 @@ extern struct LCM_DRIVER ili9881c_hdp_dsi_vdo_ilitek_rt5081_lcm_drv;
 extern struct LCM_DRIVER nt51021_wuxga_dsi_vdo_mt8173_lcm_drv;
 extern struct LCM_DRIVER ili9881c_hdp_dsi_vdo_ilitek_rt5081_lcm_drv_ebbg;
 extern struct LCM_DRIVER hx8394f_hd720_dsi_vdo_tianma_lcm_drv;
+extern struct LCM_DRIVER jd9365_hd720_dsi_lcm_drv;
 extern struct LCM_DRIVER nt36672_fhdp_dsi_vdo_auo_lcm_drv;
 extern struct LCM_DRIVER nt36672_fhdp_dsi_vdo_auo_laneswap_lcm_drv;
 extern struct LCM_DRIVER nt36672c_fhdp_dsi_vdo_60hz_wo_dsc_shenchao_lcm_drv;
@@ -318,8 +381,25 @@ extern struct LCM_DRIVER sofeg01_fhdplus_dsi_cmd_samsung_lcm_drv;
 #if defined(NT36672C_FHDP_DSI_VDO_AUO_CPHY_90HZ_TIANMA)
 extern struct LCM_DRIVER nt36672c_fhdp_dsi_vdo_auo_cphy_90hz_tianma_lcm_drv;
 #endif
+//prize add by pengzhipeng 20200916 start
+extern struct LCM_DRIVER hx83112_fhdp_dsi_vdo_kn_drv;
+extern struct LCM_DRIVER ft8756_fhdp_dsi_vdo_tcl_drv;
+//prize add by pengzhipeng 20200916 end 
 
 extern struct LCM_DRIVER oppo_tianma_td4310_fhdp_dsi_vdo_rt5081_lcm_drv;
+//prize add by lipengpeng 20200714 start
+extern struct LCM_DRIVER ili9882_hdp_dsi_vdo_ctc6217_dzx_lcm_drv;
+extern struct LCM_DRIVER ili9881h_hdp_dsi_vdo_ctc6217_dzx_lcm_drv;
+extern struct LCM_DRIVER ft8006p_hdp_dsi_vdo_boe_drip_incell_lcm_drv;
+//prize add by lipengpeng 20200714 end
+//prize add by liaoxingen start
+extern struct LCM_DRIVER icnl9911c_hdp_dsi_vdo_auo6517_lcm_drv;
+extern struct LCM_DRIVER icnl9911c_hdp_dsi_vdo_auo6517_2_lcm_drv;
+extern struct LCM_DRIVER ili9882q_hdp_dsi_vdo_incell_truly_lcm_drv;
+extern struct LCM_DRIVER icnl9911c_hdp_dsi_vdo_ctc6517_lcm_drv;
+extern struct LCM_DRIVER icnl9911c_hdp_dsi_vdo_hkc6517_lcm_drv;
+//prize add by liaoxingen end
+
 extern struct LCM_DRIVER nt36672c_fhdp_dsi_vdo_60hz_shenchao_lcm_drv;
 extern struct LCM_DRIVER nt36672c_fhdp_dsi_vdo_90hz_shenchao_lcm_drv;
 extern struct LCM_DRIVER nt36672c_fhdp_dsi_vdo_90hz_shenchao_6382_lcm_drv;
@@ -329,7 +409,19 @@ extern struct LCM_DRIVER td4320_fhdp_dsi_vdo_auo_rt5081_lcm_drv;
 /*6768 otm */
 extern struct LCM_DRIVER otm1911a_fhdp_dsi_vdo_truly_rt5081_lcm_drv;
 extern struct LCM_DRIVER otm1911a_fhdp_dsi_vdo_truly_rt5081_hdp_lcm_drv;
-
+extern struct LCM_DRIVER hx83102p_wxga_vdo_incell_boe_lcm_drv;
+extern struct LCM_DRIVER nl9911_hdplus_dsi_vdo_incell_lcm_drv;
+/*prize-add  lcm zhaopengge 20200826 start*/
+extern struct LCM_DRIVER nl9911_fhdp_dsi_vdo_incell_lcm_drv;
+extern struct LCM_DRIVER ili9882_hdp_dsi_vdo_incell_lcm_drv;
+extern struct LCM_DRIVER td4321_fhdp_dsi_vdo_auo_drv;
+//prize add by lvyuanchuan 20220117  --end
+// prize add by lvyuanchuan 20220310 ---start
+extern struct LCM_DRIVER ft8720_fhdp_dsi_vdo_tcl_drv;
+//prize add by lvyuanchuan 20220310  ---end
+/*prize-add lcm -lvyuanchuan-20220629-start*/
+extern struct LCM_DRIVER nt36672c_fhdp_dsi_vdo_90hz_6382_lcm_drv;
+/*prize-add lcm -lvyuanchuan-20220629-start*/
 #ifdef BUILD_LK
 extern void mdelay(unsigned long msec);
 #endif

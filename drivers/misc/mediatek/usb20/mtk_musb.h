@@ -6,7 +6,10 @@
 #ifndef __MUSB_MTK_MUSB_H__
 #define __MUSB_MTK_MUSB_H__
 
-#ifdef CONFIG_MTK_MUSB_PHY
+//prize hjw  20220518 for ALPS07185706 otg usb  check fail start
+//#ifdef CONFIG_MTK_MUSB_PHY
+#if defined(CONFIG_MACH_MT6761)||defined(CONFIG_MTK_MUSB_PHY)
+//prize hjw  20220518 for ALPS07185706 otg usb  check fail start
 #ifdef CONFIG_OF
 extern struct musb *mtk_musb;
 

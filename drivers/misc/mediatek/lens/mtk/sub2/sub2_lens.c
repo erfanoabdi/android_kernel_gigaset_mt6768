@@ -79,6 +79,15 @@ static struct stAF_OisPosInfo OisPosInfo;
 /* ------------------------- */
 
 static struct stAF_DrvList g_stAF_DrvList[MAX_NUM_OF_LENS] = {
+	{1, AFDRV_AW86014AF, AW86014AF_SetI2Cclient, AW86014AF_Ioctl,
+	 AW86014AF_Release, AW86014AF_GetFileName, NULL},
+	 {1, AFDRV_DW9718SAF, DW9718SAF_SetI2Cclient, DW9718SAF_Ioctl,
+	 DW9718SAF_Release, NULL, NULL},
+/*prize add for aw86014af zhuzhengjiang 20210722 end*/
+#if 0
+	{1, AFDRV_AK7371AF, AK7371AF_SetI2Cclient, AK7371AF_Ioctl,
+	 AK7371AF_Release, AK7371AF_GetFileName, NULL},
+#endif
 };
 
 static struct stAF_DrvList *g_pstAF_CurDrv;

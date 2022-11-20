@@ -1720,16 +1720,18 @@ static kal_uint32 get_imgsensor_id(UINT32 *sensor_id)
 
 	cam_pr_debug("E\n");
 
+        printk("[gc5035_camera_sensor ] imgsensor_info.sensor_id:%x\n",imgsensor_info.sensor_id);
 	while (imgsensor_info.i2c_addr_table[i] != 0xff) {
 		spin_lock(&imgsensor_drv_lock);
+                printk("[gc5035_camera_sensor ] imgsensor_info.i2c_addr_table[i]:%x\n",imgsensor_info.i2c_addr_table[i]);
 		imgsensor.i2c_write_id = imgsensor_info.i2c_addr_table[i];
 		spin_unlock(&imgsensor_drv_lock);
 		do {
 			*sensor_id = return_sensor_id();
+                        printk("[gc5035_camera_sensor ] get_imgsensor_id :%x\n",*sensor_id);
 			if (*sensor_id == imgsensor_info.sensor_id) {
 				gc5035_otp_identify();
-				cam_pr_debug("i2c write id: 0x%x, sensor id: 0x%x\n",
-					imgsensor.i2c_write_id, *sensor_id);
+                                printk("[gc5035_camera_sensor]i2c write id: 0x%x, sensor id: 0x%x\n", imgsensor.i2c_write_id, *sensor_id);
 				return ERROR_NONE;
 			}
 			cam_pr_debug("Read sensor id fail, write id: 0x%x, id: 0x%x\n",

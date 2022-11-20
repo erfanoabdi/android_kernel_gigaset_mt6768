@@ -1,0 +1,1169 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BUFFER_SIZE	tpd_debug.c	98;"	d	file:
+CFG_CTS_CHARGER_DETECT_PERIOD	cts_config.h	104;"	d
+CFG_CTS_DEVICE_NAME	cts_plat_mtk_config.h	40;"	d
+CFG_CTS_DRIVER_BUILTIN_FIRMWARE	cts_config.h	35;"	d
+CFG_CTS_DRIVER_MAJOR_VERSION	cts_config.h	5;"	d
+CFG_CTS_DRIVER_MINOR_VERSION	cts_config.h	6;"	d
+CFG_CTS_DRIVER_NAME	cts_plat_mtk_config.h	41;"	d
+CFG_CTS_DRIVER_PATCH_VERSION	cts_config.h	7;"	d
+CFG_CTS_DRIVER_VERSION	cts_config.h	9;"	d
+CFG_CTS_DRIVER_VERSION	cts_tpd_driver.c	/^MODULE_VERSION(CFG_CTS_DRIVER_VERSION);$/;"	v
+CFG_CTS_ESD_FAILED_CONFIRM_CNT	cts_config.h	111;"	d
+CFG_CTS_ESD_PROTECTION_CHECK_PERIOD	cts_config.h	110;"	d
+CFG_CTS_FIRMWARE_FILENAME	cts_config.h	39;"	d
+CFG_CTS_FIRMWARE_FILENAME	cts_tpd_driver.c	/^MODULE_FIRMWARE(CFG_CTS_FIRMWARE_FILENAME);$/;"	v
+CFG_CTS_FIRMWARE_FILEPATH	cts_config.h	40;"	d
+CFG_CTS_FIRMWARE_IN_FS	cts_config.h	37;"	d
+CFG_CTS_GESTURE_KEYMAP	cts_config.h	82;"	d
+CFG_CTS_GESTURE_REPORT_KEY	cts_config.h	81;"	d
+CFG_CTS_GESTURE_REPORT_TRACE	cts_config.h	97;"	d
+CFG_CTS_HAS_RESET_PIN	cts_config.h	12;"	d
+CFG_CTS_HAS_RESET_PIN	cts_config.h	18;"	d
+CFG_CTS_KERNEL_BUILTIN_FIRMWARE	cts_config.h	36;"	d
+CFG_CTS_MAX_I2C_FIFO_XFER_SIZE	cts_plat_mtk_config.h	7;"	d
+CFG_CTS_MAX_I2C_XFER_SIZE	cts_plat_mtk_config.h	6;"	d
+CFG_CTS_MAX_I2C_XFER_SIZE	cts_plat_mtk_config.h	9;"	d
+CFG_CTS_MAX_SPI_XFER_SIZE	cts_plat_mtk_config.h	12;"	d
+CFG_CTS_MAX_TOUCH_NUM	cts_config.h	53;"	d
+CFG_CTS_MAX_VKEY_NUM	cts_config.h	58;"	d
+CFG_CTS_NUM_GESTURE	cts_config.h	80;"	d
+CFG_CTS_NUM_VKEY	cts_config.h	59;"	d
+CFG_CTS_OF_DEVICE_ID_NAME	cts_plat_mtk_config.h	47;"	d
+CFG_CTS_SPI_SPEED_KHZ	cts_config.h	21;"	d
+CFG_CTS_TOOL_PROC_FILENAME	cts_config.h	118;"	d
+CFG_CTS_UPDATE_CRCCHECK	cts_config.h	121;"	d
+CFG_CTS_VKEY_KEYCODES	cts_config.h	60;"	d
+CFG_CTS_WRAP_X	cts_plat_mtk_config.h	27;"	d
+CFG_CTS_WRAP_X	cts_plat_mtk_config.h	35;"	d
+CFG_CTS_WRAP_Y	cts_plat_mtk_config.h	28;"	d
+CFG_CTS_WRAP_Y	cts_plat_mtk_config.h	36;"	d
+COL_NUM_FORMAT_STR	cts_sysfs.c	16;"	d	file:
+COL_NUM_FORMAT_STR	cts_sysfs.c	2083;"	d	file:
+COL_NUM_FORMAT_STR	cts_test.c	304;"	d	file:
+COL_NUM_FORMAT_STR	cts_test.c	352;"	d	file:
+COMPAT_TPD_GET_FILTER_PARA	tpd_control.c	28;"	d	file:
+CONFIG_CTS_ESD_PROTECTION	cts_config.h	108;"	d
+CONFIG_CTS_I2C_HOST	cts_config.h	14;"	d
+CONFIG_CTS_LEGACY_TOOL	cts_config.h	45;"	d
+CONFIG_CTS_OF	cts_plat_mtk_config.h	44;"	d
+CONFIG_CTS_SLOTPROTOCOL	cts_config.h	115;"	d
+CREATE_TRACE_POINTS	tpd_debug.c	255;"	d	file:
+CREATE_TRACE_POINTS	tpd_debug.h	68;"	d
+CTS_CHIP_MAX_GESTURE_TRACE_POINT	cts_core.h	162;"	d
+CTS_CMD_CHARGER_PLUG_IN	cts_core.h	/^    CTS_CMD_CHARGER_PLUG_IN = 0x55,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_CHARGER_PLUG_OUT	cts_core.h	/^    CTS_CMD_CHARGER_PLUG_OUT = 0x66,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DEC_TX_VOL_1	cts_core.h	/^    CTS_CMD_DEC_TX_VOL_1 = 0x11,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DEC_TX_VOL_2	cts_core.h	/^    CTS_CMD_DEC_TX_VOL_2 = 0x12,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DEC_TX_VOL_3	cts_core.h	/^    CTS_CMD_DEC_TX_VOL_3 = 0x13,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DEC_TX_VOL_4	cts_core.h	/^    CTS_CMD_DEC_TX_VOL_4 = 0x14,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DEC_TX_VOL_5	cts_core.h	/^    CTS_CMD_DEC_TX_VOL_5 = 0x15,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DEC_TX_VOL_6	cts_core.h	/^    CTS_CMD_DEC_TX_VOL_6 = 0x16,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DISABLE_FW_LOG_REDIRECT	cts_core.h	/^    CTS_CMD_DISABLE_FW_LOG_REDIRECT = 0x87,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DISABLE_READ_CNEG	cts_core.h	/^    CTS_CMD_DISABLE_READ_CNEG  = 0x89,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_DISABLE_READ_RAWDATA	cts_core.h	/^    CTS_CMD_DISABLE_READ_RAWDATA = 0x21,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_ENABLE_FW_LOG_REDIRECT	cts_core.h	/^    CTS_CMD_ENABLE_FW_LOG_REDIRECT = 0x86,    $/;"	e	enum:cts_firmware_cmd
+CTS_CMD_ENABLE_READ_CNEG	cts_core.h	/^    CTS_CMD_ENABLE_READ_CNEG   = 0x88,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_ENABLE_READ_RAWDATA	cts_core.h	/^    CTS_CMD_ENABLE_READ_RAWDATA = 0x20,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_ENTER_WRITE_PARA_TO_FLASH_MODE	cts_core.h	/^    CTS_CMD_ENTER_WRITE_PARA_TO_FLASH_MODE = 3,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_FW_LOG_SHOW_FINISH	cts_core.h	/^    CTS_CMD_FW_LOG_SHOW_FINISH = 0xE0,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_QUIT_GESTURE_MONITOR	cts_core.h	/^    CTS_CMD_QUIT_GESTURE_MONITOR = 0x41,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_RECOVERY_TX_VOL	cts_core.h	/^    CTS_CMD_RECOVERY_TX_VOL = 0x10,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_RELASE_INT_TEST	cts_core.h	/^    CTS_CMD_RELASE_INT_TEST = 7,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_RESET	cts_core.h	/^    CTS_CMD_RESET = 1,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_SUSPEND	cts_core.h	/^    CTS_CMD_SUSPEND = 2,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_SUSPEND_WITH_GESTURE	cts_core.h	/^    CTS_CMD_SUSPEND_WITH_GESTURE = 0x40,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_WRITE_PARA_TO_FLASH	cts_core.h	/^    CTS_CMD_WRITE_PARA_TO_FLASH = 4,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_WRTITE_INT_HIGH	cts_core.h	/^    CTS_CMD_WRTITE_INT_HIGH = 5,$/;"	e	enum:cts_firmware_cmd
+CTS_CMD_WRTITE_INT_LOW	cts_core.h	/^    CTS_CMD_WRTITE_INT_LOW = 6,$/;"	e	enum:cts_firmware_cmd
+CTS_CONFIG_H	cts_config.h	2;"	d
+CTS_CORE_H	cts_core.h	2;"	d
+CTS_CRC16	cts_core.h	/^    CTS_CRC16 = 1,$/;"	e	enum:cts_crc_type
+CTS_CRC32	cts_core.h	/^    CTS_CRC32 = 2,$/;"	e	enum:cts_crc_type
+CTS_DDIPARAM_CRC_SECTION_OFFSET	cts_firmware.c	/^    CTS_DDIPARAM_CRC_SECTION_OFFSET = 0x1B000,$/;"	e	enum:cts_firmware_section_offset	file:
+CTS_DDIPARAM_SECTION_OFFSET	cts_firmware.c	/^    CTS_DDIPARAM_SECTION_OFFSET = 0x00019000,$/;"	e	enum:cts_firmware_section_offset	file:
+CTS_DEVICE_FW_REG_CHIP_TYPE	cts_core.h	/^    CTS_DEVICE_FW_REG_CHIP_TYPE = 0x000A,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_CMD	cts_core.h	/^    CTS_DEVICE_FW_REG_CMD = 0x0004,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_COMPENSATE_CAP	cts_core.h	/^    CTS_DEVICE_FW_REG_COMPENSATE_CAP = 0xA000,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_DATA_READY	cts_core.h	/^    CTS_DEVICE_FW_REG_DATA_READY = 0x0002,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_DDI_VERSION	cts_core.h	/^    CTS_DEVICE_FW_REG_DDI_VERSION = 0x0010,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_DEBUG_INTF	cts_core.h	/^    CTS_DEVICE_FW_REG_DEBUG_INTF = 0xF000,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_DIFF_DATA	cts_core.h	/^    CTS_DEVICE_FW_REG_DIFF_DATA = 0x3000,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_FW_LIB_MAIN_VERSION	cts_core.h	/^    CTS_DEVICE_FW_REG_FW_LIB_MAIN_VERSION = 0x09,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_FW_LIB_SUB_VERSION	cts_core.h	/^    CTS_DEVICE_FW_REG_FW_LIB_SUB_VERSION =  0x47,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_GESTURE_INFO	cts_core.h	/^    CTS_DEVICE_FW_REG_GESTURE_INFO = 0x7000,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_NUM_RX	cts_core.h	/^    CTS_DEVICE_FW_REG_NUM_RX = 0x8008,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_NUM_TX	cts_core.h	/^    CTS_DEVICE_FW_REG_NUM_TX = 0x8007,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_PANEL_PARAM	cts_core.h	/^    CTS_DEVICE_FW_REG_PANEL_PARAM = 0x8000,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_RAW_DATA	cts_core.h	/^    CTS_DEVICE_FW_REG_RAW_DATA = 0x2000,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_TOUCH_INFO	cts_core.h	/^    CTS_DEVICE_FW_REG_TOUCH_INFO = 0x1000,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_VERSION	cts_core.h	/^    CTS_DEVICE_FW_REG_VERSION = 0x000C,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_WORK_MODE	cts_core.h	/^    CTS_DEVICE_FW_REG_WORK_MODE = 0x0000,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_X_RESOLUTION	cts_core.h	/^    CTS_DEVICE_FW_REG_X_RESOLUTION = 0x8090,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_FW_REG_Y_RESOLUTION	cts_core.h	/^    CTS_DEVICE_FW_REG_Y_RESOLUTION = 0x8092,$/;"	e	enum:cts_device_fw_reg
+CTS_DEVICE_TOUCH_EVENT_DOWN	cts_core.h	118;"	d
+CTS_DEVICE_TOUCH_EVENT_MOVE	cts_core.h	119;"	d
+CTS_DEVICE_TOUCH_EVENT_NONE	cts_core.h	117;"	d
+CTS_DEVICE_TOUCH_EVENT_STAY	cts_core.h	120;"	d
+CTS_DEVICE_TOUCH_EVENT_UP	cts_core.h	121;"	d
+CTS_DEV_BOOT_MODE_FLASH	cts_core.h	/^    CTS_DEV_BOOT_MODE_FLASH = 1,$/;"	e	enum:cts_dev_boot_mode
+CTS_DEV_BOOT_MODE_I2C_PROGRAM	cts_core.h	/^    CTS_DEV_BOOT_MODE_I2C_PROGRAM = 2,$/;"	e	enum:cts_dev_boot_mode
+CTS_DEV_BOOT_MODE_MASK	cts_core.h	/^    CTS_DEV_BOOT_MODE_MASK = 7,$/;"	e	enum:cts_dev_boot_mode
+CTS_DEV_BOOT_MODE_SPI_PROGRAM	cts_core.h	/^    CTS_DEV_BOOT_MODE_SPI_PROGRAM = 5,$/;"	e	enum:cts_dev_boot_mode
+CTS_DEV_BOOT_MODE_SRAM	cts_core.h	/^    CTS_DEV_BOOT_MODE_SRAM = 3,$/;"	e	enum:cts_dev_boot_mode
+CTS_DEV_FWID_ANY	cts_core.h	/^    CTS_DEV_FWID_ANY = 0u,$/;"	e	enum:cts_dev_fwid
+CTS_DEV_FWID_ICNL9911	cts_core.h	/^    CTS_DEV_FWID_ICNL9911 = 0x9911u,$/;"	e	enum:cts_dev_fwid
+CTS_DEV_FWID_ICNL9911C	cts_core.h	/^    CTS_DEV_FWID_ICNL9911C = 0x9954u,$/;"	e	enum:cts_dev_fwid
+CTS_DEV_FWID_ICNL9911S	cts_core.h	/^    CTS_DEV_FWID_ICNL9911S = 0x9964u,$/;"	e	enum:cts_dev_fwid
+CTS_DEV_FWID_INVALID	cts_core.h	/^    CTS_DEV_FWID_INVALID = 0xFFFFu$/;"	e	enum:cts_dev_fwid
+CTS_DEV_HWID_ANY	cts_core.h	/^    CTS_DEV_HWID_ANY = 0,$/;"	e	enum:cts_dev_hwid
+CTS_DEV_HWID_ICNL9911	cts_core.h	/^    CTS_DEV_HWID_ICNL9911 = 0x990100u,$/;"	e	enum:cts_dev_hwid
+CTS_DEV_HWID_ICNL9911C	cts_core.h	/^    CTS_DEV_HWID_ICNL9911C = 0x991110u,$/;"	e	enum:cts_dev_hwid
+CTS_DEV_HWID_ICNL9911S	cts_core.h	/^    CTS_DEV_HWID_ICNL9911S = 0x990110u,$/;"	e	enum:cts_dev_hwid
+CTS_DEV_HWID_INVALID	cts_core.h	/^    CTS_DEV_HWID_INVALID = 0xFFFFFFFFu,$/;"	e	enum:cts_dev_hwid
+CTS_DEV_HW_REG_BOOT_MODE	cts_core.h	/^    CTS_DEV_HW_REG_BOOT_MODE = 0x30010u,$/;"	e	enum:cts_dev_hw_reg
+CTS_DEV_HW_REG_CLOCK_GATING	cts_core.h	/^    CTS_DEV_HW_REG_CLOCK_GATING = 0x30004u,$/;"	e	enum:cts_dev_hw_reg
+CTS_DEV_HW_REG_CURRENT_MODE	cts_core.h	/^	CTS_DEV_HW_REG_CURRENT_MODE = 0x30011u,$/;"	e	enum:cts_dev_hw_reg
+CTS_DEV_HW_REG_HARDWARE_ID	cts_core.h	/^    CTS_DEV_HW_REG_HARDWARE_ID = 0x30000u,$/;"	e	enum:cts_dev_hw_reg
+CTS_DEV_HW_REG_RESET_CONFIG	cts_core.h	/^    CTS_DEV_HW_REG_RESET_CONFIG = 0x30008u,$/;"	e	enum:cts_dev_hw_reg
+CTS_DEV_NORMAL_MODE_ADDR_WIDTH	cts_core.h	26;"	d
+CTS_DEV_NORMAL_MODE_I2CADDR	cts_core.h	24;"	d
+CTS_DEV_NORMAL_MODE_SPIADDR	cts_core.h	28;"	d
+CTS_DEV_PROGRAM_MODE_ADDR_WIDTH	cts_core.h	27;"	d
+CTS_DEV_PROGRAM_MODE_I2CADDR	cts_core.h	25;"	d
+CTS_DEV_PROGRAM_MODE_SPIADDR	cts_core.h	29;"	d
+CTS_FIRMWARE_CRC_SECTION_OFFSET	cts_firmware.c	/^    CTS_FIRMWARE_CRC_SECTION_OFFSET = 0x17000,$/;"	e	enum:cts_firmware_section_offset	file:
+CTS_FIRMWARE_H	cts_firmware.h	2;"	d
+CTS_FIRMWARE_MULTI_SECTION_FILE_SIZE	cts_firmware.c	20;"	d	file:
+CTS_FIRMWARE_SECTION_OFFSET	cts_firmware.c	/^    CTS_FIRMWARE_SECTION_OFFSET = 0x00000000,$/;"	e	enum:cts_firmware_section_offset	file:
+CTS_FIRMWARE_WORK_MODE_CONFIG	cts_test.c	9;"	d	file:
+CTS_FIRMWARE_WORK_MODE_FACTORY	cts_test.c	8;"	d	file:
+CTS_FIRMWARE_WORK_MODE_NORMAL	cts_test.c	7;"	d	file:
+CTS_FIRMWARE_WORK_MODE_TEST	cts_test.c	10;"	d	file:
+CTS_FLASH_ERASE_DEFAULT_RETRY	cts_spi_flash.h	16;"	d
+CTS_FLASH_READ_DEFAULT_RETRY	cts_spi_flash.h	15;"	d
+CTS_FW_LOG_BUF_LEN	cts_plat_mtk_config.h	15;"	d
+CTS_FW_LOG_REDIRECT_SIGN	cts_plat_mtk_config.h	14;"	d
+CTS_GESTURE_B	cts_core.h	151;"	d
+CTS_GESTURE_C	cts_core.h	145;"	d
+CTS_GESTURE_D_TAP	cts_core.h	158;"	d
+CTS_GESTURE_E	cts_core.h	149;"	d
+CTS_GESTURE_F	cts_core.h	154;"	d
+CTS_GESTURE_H	cts_core.h	153;"	d
+CTS_GESTURE_M	cts_core.h	147;"	d
+CTS_GESTURE_O	cts_core.h	146;"	d
+CTS_GESTURE_S	cts_core.h	150;"	d
+CTS_GESTURE_T	cts_core.h	152;"	d
+CTS_GESTURE_UP	cts_core.h	144;"	d
+CTS_GESTURE_V	cts_core.h	157;"	d
+CTS_GESTURE_W	cts_core.h	148;"	d
+CTS_GESTURE_X	cts_core.h	155;"	d
+CTS_GESTURE_Z	cts_core.h	156;"	d
+CTS_PLATFORM_H	cts_platform.h	2;"	d
+CTS_PLAT_MTK_CONFIG_H	cts_plat_mtk_config.h	2;"	d
+CTS_SECTION_ENABLE_FLAG	cts_firmware.c	21;"	d	file:
+CTS_SFCTRL_H	cts_sfctrl.h	2;"	d
+CTS_SHORT_TEST_BETWEEN_COLS	cts_test.c	16;"	d	file:
+CTS_SHORT_TEST_BETWEEN_GND	cts_test.c	18;"	d	file:
+CTS_SHORT_TEST_BETWEEN_ROWS	cts_test.c	17;"	d	file:
+CTS_SHORT_TEST_UNDEFINED	cts_test.c	15;"	d	file:
+CTS_SPI_FLASH_H	cts_spi_flash.h	2;"	d
+CTS_SYSFS_H	cts_sysfs.h	2;"	d
+CTS_TEST_H	cts_test.h	2;"	d
+CTS_TEST_OPEN	cts_test.c	13;"	d	file:
+CTS_TEST_SHORT	cts_test.c	12;"	d	file:
+CTS_TOOL_CMD_DOWNLOAD_FIRMWARE	cts_tool.c	/^    CTS_TOOL_CMD_DOWNLOAD_FIRMWARE = 5,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_DOWNLOAD_FIRMWARE_WITH_FILENAME	cts_tool.c	/^    CTS_TOOL_CMD_DOWNLOAD_FIRMWARE_WITH_FILENAME = 3,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_GET_DIFF_DATA	cts_tool.c	/^    CTS_TOOL_CMD_GET_DIFF_DATA = 6,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_GET_DOWNLOAD_STATUS	cts_tool.c	/^    CTS_TOOL_CMD_GET_DOWNLOAD_STATUS = 2,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_GET_DRIVER_INFO	cts_tool.c	/^    CTS_TOOL_CMD_GET_DRIVER_INFO = 26,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_GET_PANEL_PARAM	cts_tool.c	/^    CTS_TOOL_CMD_GET_PANEL_PARAM = 0,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_GET_RAW_DATA	cts_tool.c	/^    CTS_TOOL_CMD_GET_RAW_DATA = 4,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_HEADER_LENGTH	cts_tool.c	26;"	d	file:
+CTS_TOOL_CMD_I2C_DIRECT_READ	cts_tool.c	/^    CTS_TOOL_CMD_I2C_DIRECT_READ = 24,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_I2C_DIRECT_WRITE	cts_tool.c	/^    CTS_TOOL_CMD_I2C_DIRECT_WRITE = 19,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_READ_ADC_STATUS	cts_tool.c	/^    CTS_TOOL_CMD_READ_ADC_STATUS = 14,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_READ_GESTURE_INFO	cts_tool.c	/^    CTS_TOOL_CMD_READ_GESTURE_INFO = 16,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_READ_HOSTCOMM	cts_tool.c	/^    CTS_TOOL_CMD_READ_HOSTCOMM = 12,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_READ_HOSTCOMM_MULTIBYTE	cts_tool.c	/^    CTS_TOOL_CMD_READ_HOSTCOMM_MULTIBYTE = 18,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_READ_ICTYPE	cts_tool.c	/^    CTS_TOOL_CMD_READ_ICTYPE = 22,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_READ_PROGRAM_MODE_MULTIBYTE	cts_tool.c	/^    CTS_TOOL_CMD_READ_PROGRAM_MODE_MULTIBYTE = 20,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_UPDATE_PANEL_PARAM_IN_SRAM	cts_tool.c	/^    CTS_TOOL_CMD_UPDATE_PANEL_PARAM_IN_SRAM = 1,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_WRITE_HOSTCOMM	cts_tool.c	/^    CTS_TOOL_CMD_WRITE_HOSTCOMM = 11,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_WRITE_HOSTCOMM_MULTIBYTE	cts_tool.c	/^    CTS_TOOL_CMD_WRITE_HOSTCOMM_MULTIBYTE = 15,$/;"	e	enum:cts_tool_cmd_code	file:
+CTS_TOOL_CMD_WRITE_PROGRAM_MODE_MULTIBYTE	cts_tool.c	/^    CTS_TOOL_CMD_WRITE_PROGRAM_MODE_MULTIBYTE = 17,$/;"	e	enum:cts_tool_cmd_code	file:
+DATA_FORMAT_STR	cts_sysfs.c	17;"	d	file:
+DATA_FORMAT_STR	cts_sysfs.c	2084;"	d	file:
+DATA_FORMAT_STR	cts_test.c	305;"	d	file:
+DATA_FORMAT_STR	cts_test.c	353;"	d	file:
+DDIPARAM_CRC_SECTION	cts_firmware.c	52;"	d	file:
+DDIPARAM_CRC_SECTION_SIZE	cts_firmware.c	71;"	d	file:
+DDIPARAM_SECTION	cts_firmware.c	50;"	d	file:
+DDIPARAM_SECTION_CRC	cts_firmware.c	67;"	d	file:
+DDIPARAM_SECTION_CRC_ENABLE	cts_firmware.c	65;"	d	file:
+DDIPARAM_SECTION_ENABLE	cts_firmware.c	63;"	d	file:
+DDIPARAM_SECTION_SIZE	cts_firmware.c	69;"	d	file:
+DEFINE_SFCTRL_REG_ACCESS_FUNC	cts_sfctrlv2.c	71;"	d	file:
+DIFFDATA_BUFFER_SIZE	cts_sysfs.c	20;"	d	file:
+FIRMWARE_CRC_SECTION	cts_firmware.c	48;"	d	file:
+FIRMWARE_CRC_SECTION_SIZE	cts_firmware.c	61;"	d	file:
+FIRMWARE_SECTION	cts_firmware.c	46;"	d	file:
+FIRMWARE_SECTION_CRC	cts_firmware.c	55;"	d	file:
+FIRMWARE_SECTION_CRC_ENABLE	cts_firmware.c	59;"	d	file:
+FIRMWARE_SECTION_SIZE	cts_firmware.c	57;"	d	file:
+FIRMWARE_VERSION	cts_firmware.h	17;"	d
+FIRMWARE_VERSION_OFFSET	cts_firmware.h	16;"	d
+FLASH_SR_WIP	cts_sfctrlv2.c	150;"	d	file:
+FLASH_SR_WIP	cts_sfctrlv2.c	170;"	d	file:
+GESTURE_C	cts_config.h	67;"	d
+GESTURE_DOWN	cts_config.h	76;"	d
+GESTURE_D_TAP	cts_config.h	75;"	d
+GESTURE_E	cts_config.h	71;"	d
+GESTURE_LEFT	cts_config.h	77;"	d
+GESTURE_M	cts_config.h	69;"	d
+GESTURE_O	cts_config.h	68;"	d
+GESTURE_RIGHT	cts_config.h	78;"	d
+GESTURE_S	cts_config.h	72;"	d
+GESTURE_UP	cts_config.h	66;"	d
+GESTURE_V	cts_config.h	74;"	d
+GESTURE_W	cts_config.h	70;"	d
+GESTURE_Z	cts_config.h	73;"	d
+GTP_INT_PORT	tpd.h	159;"	d
+GTP_RST_PORT	tpd.h	158;"	d
+HW_STUB_ADDR	cts_sysfs.c	25;"	d	file:
+LOG_TAG	cts_core.c	1;"	d	file:
+LOG_TAG	cts_firmware.c	1;"	d	file:
+LOG_TAG	cts_i2c_driver.c	1;"	d	file:
+LOG_TAG	cts_platform.c	1;"	d	file:
+LOG_TAG	cts_platform.h	62;"	d
+LOG_TAG	cts_sfctrlv2.c	1;"	d	file:
+LOG_TAG	cts_spi_flash.c	1;"	d	file:
+LOG_TAG	cts_sysfs.c	1;"	d	file:
+LOG_TAG	cts_test.c	1;"	d	file:
+LOG_TAG	cts_tool.c	1;"	d	file:
+MATCH_FWID	cts_firmware.c	328;"	d	file:
+MATCH_FWID	cts_firmware.c	376;"	d	file:
+MATCH_HWID	cts_firmware.c	326;"	d	file:
+MATCH_HWID	cts_firmware.c	375;"	d	file:
+MAX_ARG_LENGTH	cts_sysfs.c	24;"	d	file:
+MAX_ARG_NUM	cts_sysfs.c	23;"	d	file:
+MET_touch	tpd_debug.c	/^noinline void MET_touch(int raw_x, int raw_y,$/;"	f
+NUM_DRIVER_BUILTIN_FIRMWARE	cts_firmware.c	17;"	d	file:
+PRINT_ROW_SIZE	cts_sysfs.c	110;"	d	file:
+PRINT_ROW_SIZE	cts_sysfs.c	176;"	d	file:
+PRINT_ROW_SIZE	cts_sysfs.c	195;"	d	file:
+PRINT_ROW_SIZE	cts_sysfs.c	268;"	d	file:
+PRINT_ROW_SIZE	cts_sysfs.c	842;"	d	file:
+PRINT_ROW_SIZE	cts_sysfs.c	856;"	d	file:
+RAWDATA_BUFFER_SIZE	cts_sysfs.c	1257;"	d	file:
+RAWDATA_BUFFER_SIZE	cts_sysfs.c	1348;"	d	file:
+RAWDATA_BUFFER_SIZE	cts_test.c	23;"	d	file:
+RDSR_XCHG_SRAM_ADDR	cts_sfctrlv2.c	125;"	d	file:
+RDSR_XCHG_SRAM_ADDR	cts_sfctrlv2.c	143;"	d	file:
+ROW_NUM_FORMAT_STR	cts_sysfs.c	15;"	d	file:
+ROW_NUM_FORMAT_STR	cts_sysfs.c	2082;"	d	file:
+ROW_NUM_FORMAT_STR	cts_test.c	303;"	d	file:
+ROW_NUM_FORMAT_STR	cts_test.c	351;"	d	file:
+SFCTRLv2_CMD_BE	cts_sfctrlv2.c	/^    SFCTRLv2_CMD_BE = 0x03u,$/;"	e	enum:sfctrlv2_cmd	file:
+SFCTRLv2_CMD_BE_FLAGS	cts_sfctrlv2.c	52;"	d	file:
+SFCTRLv2_CMD_FAST_READ	cts_sfctrlv2.c	/^    SFCTRLv2_CMD_FAST_READ = 0x01u,$/;"	e	enum:sfctrlv2_cmd	file:
+SFCTRLv2_CMD_FAST_READ_FLAGS	cts_sfctrlv2.c	62;"	d	file:
+SFCTRLv2_CMD_PP	cts_sfctrlv2.c	/^    SFCTRLv2_CMD_PP = 0x04u,$/;"	e	enum:sfctrlv2_cmd	file:
+SFCTRLv2_CMD_PP_FLAGS	cts_sfctrlv2.c	56;"	d	file:
+SFCTRLv2_CMD_RDID	cts_sfctrlv2.c	/^    SFCTRLv2_CMD_RDID = 0x06u$/;"	e	enum:sfctrlv2_cmd	file:
+SFCTRLv2_CMD_RDID_FLAGS	cts_sfctrlv2.c	40;"	d	file:
+SFCTRLv2_CMD_RDSR	cts_sfctrlv2.c	/^    SFCTRLv2_CMD_RDSR = 0x05u,$/;"	e	enum:sfctrlv2_cmd	file:
+SFCTRLv2_CMD_RDSR_FLAGS	cts_sfctrlv2.c	44;"	d	file:
+SFCTRLv2_CMD_SE	cts_sfctrlv2.c	/^    SFCTRLv2_CMD_SE = 0x02u,$/;"	e	enum:sfctrlv2_cmd	file:
+SFCTRLv2_CMD_SE_FLAGS	cts_sfctrlv2.c	48;"	d	file:
+SFCTRLv2_OPFLAG_READ	cts_sfctrlv2.c	/^    SFCTRLv2_OPFLAG_READ = BIT(0),$/;"	e	enum:sfctrlv2_opflags	file:
+SFCTRLv2_OPFLAG_SET_DATA_LENGTH	cts_sfctrlv2.c	/^    SFCTRLv2_OPFLAG_SET_DATA_LENGTH = BIT(3),$/;"	e	enum:sfctrlv2_opflags	file:
+SFCTRLv2_OPFLAG_SET_FLASH_ADDR	cts_sfctrlv2.c	/^    SFCTRLv2_OPFLAG_SET_FLASH_ADDR = BIT(1),$/;"	e	enum:sfctrlv2_opflags	file:
+SFCTRLv2_OPFLAG_SRAM_DATA_XCHG	cts_sfctrlv2.c	/^    SFCTRLv2_OPFLAG_SRAM_DATA_XCHG = BIT(2),$/;"	e	enum:sfctrlv2_opflags	file:
+SFCTRLv2_OPFLAG_WAIT_WIP_CLR	cts_sfctrlv2.c	/^    SFCTRLv2_OPFLAG_WAIT_WIP_CLR = BIT(4),$/;"	e	enum:sfctrlv2_opflags	file:
+SPEED_1MHZ	cts_platform.c	/^    SPEED_1MHZ = 1000,$/;"	e	enum:__anon1	file:
+SPEED_2MHZ	cts_platform.c	/^    SPEED_2MHZ = 2000,$/;"	e	enum:__anon1	file:
+SPEED_3MHZ	cts_platform.c	/^    SPEED_3MHZ = 3000,$/;"	e	enum:__anon1	file:
+SPEED_4MHZ	cts_platform.c	/^    SPEED_4MHZ = 4000,$/;"	e	enum:__anon1	file:
+SPEED_500KHZ	cts_platform.c	/^    SPEED_500KHZ = 500,$/;"	e	enum:__anon1	file:
+SPEED_6MHZ	cts_platform.c	/^    SPEED_6MHZ = 6000,$/;"	e	enum:__anon1	file:
+SPEED_8MHZ	cts_platform.c	/^    SPEED_8MHZ = 8000,$/;"	e	enum:__anon1	file:
+SPEED_KEEP	cts_platform.c	/^    SPEED_KEEP,$/;"	e	enum:__anon1	file:
+SPEED_UNSUPPORTED	cts_platform.c	/^    SPEED_UNSUPPORTED$/;"	e	enum:__anon1	file:
+SPI_SPEED	cts_platform.c	/^} SPI_SPEED;$/;"	t	typeref:enum:__anon1	file:
+SPLIT	tpd.h	38;"	d
+SPLIT_LINE_STR	cts_sysfs.c	13;"	d	file:
+SPLIT_LINE_STR	cts_sysfs.c	2081;"	d	file:
+SPLIT_LINE_STR	cts_test.c	301;"	d	file:
+SPLIT_LINE_STR	cts_test.c	350;"	d	file:
+SPLIT_LINE_STR	cts_test.c	360;"	d	file:
+SPLIT_LINE_STR	cts_test.c	387;"	d	file:
+TAG	cts_tpd_driver.c	1;"	d	file:
+TEST_RESULT_BUFFER_SIZE	cts_test.c	20;"	d	file:
+TOUCH_IOC_MAGIC	tpd_control.c	22;"	d	file:
+TPD_DEBUG	tpd.h	33;"	d
+TPD_DEBUG	tpd.h	36;"	d
+TPD_DEBUG_CODE	tpd.h	27;"	d
+TPD_DEBUG_H	tpd_debug.h	7;"	d
+TPD_DEBUG_OPEN	tpd.h	26;"	d
+TPD_DEBUG_PRINT_DOWN	tpd_debug.h	132;"	d
+TPD_DEBUG_PRINT_DOWN	tpd_debug.h	39;"	d
+TPD_DEBUG_PRINT_INT	tpd_debug.h	22;"	d
+TPD_DEBUG_PRINT_UP	tpd_debug.h	128;"	d
+TPD_DEBUG_PRINT_UP	tpd_debug.h	29;"	d
+TPD_DEBUG_SET_TIME	tpd_debug.h	124;"	d
+TPD_DEBUG_SET_TIME	tpd_debug.h	54;"	d
+TPD_DEVICE	tpd.h	41;"	d
+TPD_DOWN_DEBUG_TRACK	tpd_debug.h	111;"	d
+TPD_DOWN_DEBUG_TRACK	tpd_debug.h	140;"	d
+TPD_EM_PRINT	tpd_debug.h	81;"	d
+TPD_ERR	tpd.h	29;"	d
+TPD_FAT_TOUCH	tpd_default.h	7;"	d
+TPD_GET_FILTER_PARA	tpd_control.c	26;"	d	file:
+TPD_GET_VELOCITY_CUSTOM_X	tpd_control.c	24;"	d	file:
+TPD_GET_VELOCITY_CUSTOM_Y	tpd_control.c	25;"	d	file:
+TPD_INPUT_DEVICE	tpd.h	42;"	d
+TPD_MODE_FAV_HW	tpd.h	57;"	d
+TPD_MODE_FAV_SW	tpd.h	56;"	d
+TPD_MODE_KEYPAD	tpd.h	54;"	d
+TPD_MODE_NORMAL	tpd.h	53;"	d
+TPD_MODE_RAW_DATA	tpd.h	58;"	d
+TPD_MODE_SW	tpd.h	55;"	d
+TPD_RES_X	cts_config.h	127;"	d
+TPD_RES_X	tpd_setting.c	/^unsigned long TPD_RES_X = 480;$/;"	v
+TPD_RES_Y	cts_config.h	131;"	d
+TPD_RES_Y	tpd_setting.c	/^unsigned long TPD_RES_Y = 800;$/;"	v
+TPD_SUPPORT_I2C_DMA	cts_plat_mtk_config.h	5;"	d
+TPD_TYPE_FIST_LATENCY	tpd_debug.h	79;"	d
+TPD_TYPE_INT_DOWN	tpd_debug.h	74;"	d
+TPD_TYPE_INT_UP	tpd_debug.h	75;"	d
+TPD_TYPE_RAW_DATA	tpd_debug.h	73;"	d
+TPD_TYPE_REJECT1	tpd_debug.h	77;"	d
+TPD_TYPE_REJECT2	tpd_debug.h	78;"	d
+TPD_TYPE_TIMER	tpd_debug.h	76;"	d
+TPD_UP_DEBUG_TRACK	tpd_debug.h	106;"	d
+TPD_UP_DEBUG_TRACK	tpd_debug.h	136;"	d
+TPD_VIRTUAL_KEY_MAX	tpd.h	50;"	d
+TPD_WARP_CNT	tpd.h	49;"	d
+TPD_X	tpd.h	43;"	d
+TPD_Y	tpd.h	44;"	d
+TPD_Z1	tpd.h	45;"	d
+TPD_Z2	tpd.h	46;"	d
+TP_DELAY	tpd.h	47;"	d
+TP_DRV_MAX_COUNT	tpd.h	48;"	d
+TRACE_INCLUDE_FILE	met_ftrace_touch.h	54;"	d
+TRACE_INCLUDE_PATH	met_ftrace_touch.h	51;"	d
+TRACE_INCLUDE_PATH	met_ftrace_touch.h	53;"	d
+TRACE_SYSTEM	met_ftrace_touch.h	6;"	d
+TRACE_SYSTEM	met_ftrace_touch.h	7;"	d
+VECLOCITY_THRESHOLD	tpd.h	/^	unsigned int VECLOCITY_THRESHOLD[3];\/*filter speed custom settings*\/$/;"	m	struct:tpd_filter_t
+W_W	tpd.h	/^	int W_W[3][4];\/*filter custom setting prameters*\/$/;"	m	struct:tpd_filter_t
+__TPD_H	tpd.h	7;"	d
+__TRACE_MET_FTRACE_TOUCH_H__	met_ftrace_touch.h	10;"	d
+addr	cts_tool.c	/^    u8 addr[2];$/;"	m	struct:cts_tool_cmd	file:
+addr_len	cts_tool.c	/^    u8 addr_len;$/;"	m	struct:cts_tool_cmd	file:
+addr_width	cts_core.h	/^    int  addr_width;$/;"	m	struct:cts_device_rtdata
+argc	cts_sysfs.c	/^static int  argc;$/;"	v	file:
+argv	cts_sysfs.c	/^static char *argv[MAX_ARG_NUM];$/;"	v	file:
+attr	tpd.h	/^	struct device_attribute **attr;$/;"	m	struct:tpd_attrs	typeref:struct:tpd_attrs::device_attribute
+attrs	tpd.h	/^	struct tpd_attrs attrs;$/;"	m	struct:tpd_driver_t	typeref:struct:tpd_driver_t::tpd_attrs
+auto_compensate_show	cts_sysfs.c	/^static ssize_t auto_compensate_show(struct device *dev,$/;"	f	file:
+be	cts_sfctrl.h	/^    int (*be)(const struct cts_device *cts_dev, u32 sector_addr);$/;"	m	struct:cts_sfctrl_ops
+block_size	cts_spi_flash.h	/^    size_t  block_size;       \/* Block size by command 0x52, $/;"	m	struct:cts_flash
+btn_state	tpd.h	/^	int btn_state;$/;"	m	struct:tpd_device
+buffer	tpd_debug.c	/^	unsigned char *buffer;$/;"	m	struct:tpd_debug_log_buf	file:
+buffer_lock	tpd_debug.c	/^	spinlock_t buffer_lock;$/;"	m	struct:tpd_debug_log_buf	file:
+calc_crc_in_flash	cts_firmware.c	/^static int calc_crc_in_flash(const struct cts_device *cts_dev,$/;"	f	file:
+calc_flash_crc	cts_sfctrl.h	/^    int (*calc_flash_crc)(const struct cts_device *cts_dev,$/;"	m	struct:cts_sfctrl_ops
+calc_sram_crc	cts_sfctrl.h	/^    int (*calc_sram_crc)(const struct cts_device *cts_dev,$/;"	m	struct:cts_sfctrl_ops
+case_boot_mode	cts_core.c	1906;"	d	file:
+case_boot_mode	cts_core.c	1917;"	d	file:
+cfg_version	tpd.h	/^	const char *cfg_version;$/;"	m	struct:tpd_dts_info
+charger_detect_work	cts_core.h	/^    struct delayed_work charger_detect_work;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::delayed_work
+charger_detect_workqueue	cts_core.h	/^    struct workqueue_struct *charger_detect_workqueue;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::workqueue_struct
+charger_exist	cts_core.h	/^    bool charger_exist;$/;"	m	struct:cts_device_rtdata
+chipone-tddi-objs	Makefile	/^chipone-tddi-objs := cts_tpd_driver.o cts_i2c_driver.o cts_core.o cts_platform.o cts_sfctrlv2.o cts_spi_flash.o cts_firmware.o cts_tool.o cts_sysfs.o cts_test.o$/;"	m
+chipone_tpd_driver	cts_tpd_driver.c	/^static struct tpd_driver_t chipone_tpd_driver = {$/;"	v	typeref:struct:tpd_driver_t	file:
+chipone_tpd_driver_exit	cts_tpd_driver.c	/^module_exit(chipone_tpd_driver_exit);$/;"	v
+chipone_tpd_driver_exit	cts_tpd_driver.c	/^static void __exit chipone_tpd_driver_exit(void)$/;"	f	file:
+chipone_tpd_driver_init	cts_tpd_driver.c	/^module_init(chipone_tpd_driver_init);$/;"	v
+chipone_tpd_driver_init	cts_tpd_driver.c	/^static int __init chipone_tpd_driver_init(void)$/;"	f	file:
+chipone_tpd_local_init	cts_tpd_driver.c	/^static int chipone_tpd_local_init(void)$/;"	f	file:
+chipone_tpd_resume	cts_tpd_driver.c	/^static void chipone_tpd_resume(struct device *dev)$/;"	f	file:
+chipone_tpd_suspend	cts_tpd_driver.c	/^static void chipone_tpd_suspend(struct device *dev)$/;"	f	file:
+chipone_ts_data	cts_core.h	/^struct chipone_ts_data {$/;"	s
+chipone_ts_data	cts_tpd_driver.c	/^struct chipone_ts_data *chipone_ts_data = NULL;$/;"	v	typeref:struct:chipone_ts_data
+circle	cts_tool.c	/^    u8 circle;$/;"	m	struct:cts_tool_cmd	file:
+cmd	cts_tool.c	/^    u8 cmd;$/;"	m	struct:cts_tool_cmd	file:
+cmdline_param	cts_sysfs.c	/^static char cmdline_param[MAX_ARG_LENGTH + 1];$/;"	v	file:
+cnt	tpd_debug.c	/^	unsigned int cnt;$/;"	m	struct:tpd_debug_log_buf	file:
+cols	cts_core.h	/^    u8  cols;$/;"	m	struct:cts_device_fwdata
+cols_show	cts_sysfs.c	/^static ssize_t cols_show(struct device *dev,$/;"	f	file:
+compensate_cap_show	cts_sysfs.c	/^static ssize_t compensate_cap_show(struct device *dev,$/;"	f	file:
+compensate_cap_test_show	cts_sysfs.c	/^static ssize_t compensate_cap_test_show(struct device *dev,$/;"	f	file:
+compensate_cap_test_store	cts_sysfs.c	/^static ssize_t compensate_cap_test_store(struct device *dev,$/;"	f	file:
+cts_calc_sram_crc	cts_core.c	/^static int cts_calc_sram_crc(const struct cts_device *cts_dev,$/;"	f	file:
+cts_charger_detect_work	cts_core.c	/^static void cts_charger_detect_work(struct work_struct *work)$/;"	f	file:
+cts_charger_plugin	cts_core.c	/^int cts_charger_plugin(struct cts_device *cts_dev)$/;"	f
+cts_charger_plugin	cts_core.h	/^static inline int cts_charger_plugin(struct cts_device *cts_dev) {return 0;}$/;"	f
+cts_charger_plugout	cts_core.c	/^int cts_charger_plugout(struct cts_device *cts_dev)$/;"	f
+cts_charger_plugout	cts_core.h	/^static inline int cts_charger_plugout(struct cts_device *cts_dev) {return 0;}$/;"	f
+cts_clr_data_ready_flag	cts_core.c	/^int cts_clr_data_ready_flag(const struct cts_device *cts_dev)$/;"	f
+cts_compensate_cap_test	cts_test.c	/^int cts_compensate_cap_test(struct cts_device *cts_dev, u8 min_thres, u8 max_thres)$/;"	f
+cts_crc32	cts_firmware.c	/^u32 cts_crc32(const u8 *data, size_t len)$/;"	f
+cts_crc_type	cts_core.h	/^enum cts_crc_type {$/;"	g
+cts_dbg	cts_platform.h	71;"	d
+cts_deinit_charger_detect	cts_core.c	/^void cts_deinit_charger_detect(struct chipone_ts_data *cts_data)$/;"	f
+cts_deinit_charger_detect	cts_core.h	/^static inline void cts_deinit_charger_detect(struct chipone_ts_data *cts_data){}$/;"	f
+cts_deinit_esd_protection	cts_core.c	/^void cts_deinit_esd_protection(struct chipone_ts_data *cts_data)$/;"	f
+cts_deinit_esd_protection	cts_core.h	/^static inline void cts_deinit_esd_protection(struct chipone_ts_data *cts_data) {}$/;"	f
+cts_dev	cts_core.h	/^    struct cts_device cts_dev;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::cts_device
+cts_dev	cts_platform.h	/^    struct cts_device *cts_dev;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::cts_device
+cts_dev_attr_groups	cts_sysfs.c	/^static const struct attribute_group *cts_dev_attr_groups[] = {$/;"	v	typeref:struct:attribute_group	file:
+cts_dev_boot_mode	cts_core.h	/^enum cts_dev_boot_mode {$/;"	g
+cts_dev_boot_mode2str	cts_core.c	/^const char *cts_dev_boot_mode2str(u8 boot_mode)$/;"	f
+cts_dev_firmware_attr_group	cts_sysfs.c	/^static const struct attribute_group cts_dev_firmware_attr_group = {$/;"	v	typeref:struct:attribute_group	file:
+cts_dev_firmware_atts	cts_sysfs.c	/^static struct attribute *cts_dev_firmware_atts[] = {$/;"	v	typeref:struct:attribute	file:
+cts_dev_flash_attr_group	cts_sysfs.c	/^static const struct attribute_group cts_dev_flash_attr_group = {$/;"	v	typeref:struct:attribute_group	file:
+cts_dev_flash_attrs	cts_sysfs.c	/^static struct attribute *cts_dev_flash_attrs[] = {$/;"	v	typeref:struct:attribute	file:
+cts_dev_fwid	cts_core.h	/^enum cts_dev_fwid {$/;"	g
+cts_dev_hw_reg	cts_core.h	/^enum cts_dev_hw_reg {$/;"	g
+cts_dev_hwid	cts_core.h	/^enum cts_dev_hwid {$/;"	g
+cts_dev_misc_attr_group	cts_sysfs.c	/^static const struct attribute_group cts_dev_misc_attr_group = {$/;"	v	typeref:struct:attribute_group	file:
+cts_dev_misc_atts	cts_sysfs.c	/^static struct attribute *cts_dev_misc_atts[] = {$/;"	v	typeref:struct:attribute	file:
+cts_dev_readb	cts_core.c	/^static inline int cts_dev_readb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_dev_readl	cts_core.c	/^static inline int cts_dev_readl(const struct cts_device *cts_dev,$/;"	f	file:
+cts_dev_readsb	cts_core.c	/^static inline int cts_dev_readsb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_dev_readsb_delay_idle	cts_core.c	/^static inline int cts_dev_readsb_delay_idle(const struct cts_device *cts_dev,$/;"	f	file:
+cts_dev_readw	cts_core.c	/^static inline int cts_dev_readw(const struct cts_device *cts_dev,$/;"	f	file:
+cts_dev_test_attr_group	cts_sysfs.c	/^static const struct attribute_group cts_dev_test_attr_group = {$/;"	v	typeref:struct:attribute_group	file:
+cts_dev_test_atts	cts_sysfs.c	/^static struct attribute *cts_dev_test_atts[] = {$/;"	v	typeref:struct:attribute	file:
+cts_dev_writeb	cts_core.c	/^static inline int cts_dev_writeb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_dev_writel	cts_core.c	/^static inline int cts_dev_writel(const struct cts_device *cts_dev,$/;"	f	file:
+cts_dev_writesb	cts_core.c	/^static inline int cts_dev_writesb(const struct cts_device *cts_dev, u32 addr,$/;"	f	file:
+cts_dev_writew	cts_core.c	/^static inline int cts_dev_writew(const struct cts_device *cts_dev,$/;"	f	file:
+cts_device	cts_core.h	/^struct cts_device {$/;"	s
+cts_device_fw_reg	cts_core.h	/^enum cts_device_fw_reg {$/;"	g
+cts_device_fwdata	cts_core.h	/^struct cts_device_fwdata {$/;"	s
+cts_device_gesture_info	cts_core.h	/^struct cts_device_gesture_info {$/;"	s
+cts_device_gesture_point	cts_core.h	/^struct cts_device_gesture_point {$/;"	s
+cts_device_hwdata	cts_core.h	/^struct cts_device_hwdata {$/;"	s
+cts_device_hwdatas	cts_core.c	/^const static struct cts_device_hwdata cts_device_hwdatas[] = {$/;"	v	typeref:struct:cts_device_hwdata	file:
+cts_device_id_table	cts_i2c_driver.c	/^static const struct i2c_device_id cts_device_id_table[] = {$/;"	v	typeref:struct:i2c_device_id	file:
+cts_device_id_table	cts_i2c_driver.c	/^static const struct spi_device_id cts_device_id_table[] = {$/;"	v	typeref:struct:spi_device_id	file:
+cts_device_rtdata	cts_core.h	/^struct cts_device_rtdata {$/;"	s
+cts_device_touch_info	cts_core.h	/^struct cts_device_touch_info {$/;"	s
+cts_device_touch_msg	cts_core.h	/^struct cts_device_touch_msg {$/;"	s
+cts_disable_esd_protection	cts_core.c	/^void cts_disable_esd_protection(struct chipone_ts_data *cts_data)$/;"	f
+cts_disable_esd_protection	cts_core.h	/^static inline void cts_disable_esd_protection(struct chipone_ts_data *cts_data) {}$/;"	f
+cts_disable_fw_log_redirect	cts_core.c	/^int cts_disable_fw_log_redirect(struct cts_device *cts_dev)$/;"	f
+cts_disable_gesture_wakeup	cts_core.c	/^void cts_disable_gesture_wakeup(struct cts_device *cts_dev)$/;"	f
+cts_disable_get_compensate_cap	cts_core.c	/^int cts_disable_get_compensate_cap(const struct cts_device *cts_dev)$/;"	f
+cts_disable_get_rawdata	cts_core.c	/^int cts_disable_get_rawdata(const struct cts_device *cts_dev)$/;"	f
+cts_driver_builtin_firmwares	cts_builtin_firmware.h	/^const static struct cts_firmware cts_driver_builtin_firmwares[] = {$/;"	v	typeref:struct:cts_firmware
+cts_driver_exit	cts_i2c_driver.c	/^void cts_driver_exit(void)$/;"	f
+cts_driver_init	cts_i2c_driver.c	/^int cts_driver_init(void)$/;"	f
+cts_driver_probe	cts_i2c_driver.c	/^static int cts_driver_probe(struct i2c_client *client,$/;"	f	file:
+cts_driver_remove	cts_i2c_driver.c	/^static int cts_driver_remove(struct i2c_client *client)$/;"	f	file:
+cts_enable_esd_protection	cts_core.c	/^void cts_enable_esd_protection(struct chipone_ts_data *cts_data)$/;"	f
+cts_enable_esd_protection	cts_core.h	/^static inline void cts_enable_esd_protection(struct chipone_ts_data *cts_data) {}$/;"	f
+cts_enable_fw_log_redirect	cts_core.c	/^int cts_enable_fw_log_redirect(struct cts_device *cts_dev)$/;"	f
+cts_enable_gesture_wakeup	cts_core.c	/^void cts_enable_gesture_wakeup(struct cts_device *cts_dev)$/;"	f
+cts_enable_get_compensate_cap	cts_core.c	/^int cts_enable_get_compensate_cap(const struct cts_device *cts_dev)$/;"	f
+cts_enable_get_rawdata	cts_core.c	/^int cts_enable_get_rawdata(const struct cts_device *cts_dev)$/;"	f
+cts_enter_glove_mode	cts_core.c	/^int cts_enter_glove_mode(const struct cts_device *cts_dev)$/;"	f
+cts_enter_glove_mode	cts_core.h	/^static inline int cts_enter_glove_mode(struct cts_device *cts_dev) {return 0;}$/;"	f
+cts_enter_normal_mode	cts_core.c	/^int cts_enter_normal_mode(struct cts_device *cts_dev)$/;"	f
+cts_enter_program_mode	cts_core.c	/^int cts_enter_program_mode(struct cts_device *cts_dev)$/;"	f
+cts_erase_flash	cts_spi_flash.c	/^int cts_erase_flash(const struct cts_device *cts_dev, u32 addr, size_t size)$/;"	f
+cts_err	cts_platform.h	65;"	d
+cts_esd_protection_work	cts_core.c	/^static void cts_esd_protection_work(struct work_struct *work)$/;"	f	file:
+cts_exit_glove_mode	cts_core.c	/^int cts_exit_glove_mode(const struct cts_device *cts_dev)$/;"	f
+cts_exit_glove_mode	cts_core.h	/^static inline int cts_exit_glove_mode(struct cts_device *cts_dev) {return 0;}$/;"	f
+cts_firmware	cts_firmware.h	/^struct cts_firmware {$/;"	s
+cts_firmware_cmd	cts_core.h	/^enum cts_firmware_cmd {$/;"	g
+cts_firmware_sect_info	cts_firmware.c	/^struct cts_firmware_sect_info {$/;"	s	file:
+cts_firmware_section_offset	cts_firmware.c	/^enum cts_firmware_section_offset {$/;"	g	file:
+cts_flash	cts_spi_flash.h	/^struct cts_flash {$/;"	s
+cts_flashes	cts_spi_flash.c	/^static const struct cts_flash cts_flashes[] = {$/;"	v	typeref:struct:cts_flash	file:
+cts_fw_log_show_finish	cts_core.c	/^int cts_fw_log_show_finish(struct cts_device *cts_dev)$/;"	f
+cts_fw_reg_readb	cts_core.h	/^static inline int cts_fw_reg_readb(const struct cts_device *cts_dev, u32 reg_addr, u8 *b)$/;"	f
+cts_fw_reg_readb_retry	cts_core.c	/^int cts_fw_reg_readb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_readl	cts_core.h	/^static inline int cts_fw_reg_readl(const struct cts_device *cts_dev, u32 reg_addr, u32 *l)$/;"	f
+cts_fw_reg_readl_retry	cts_core.c	/^int cts_fw_reg_readl_retry(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_readsb	cts_core.h	/^static inline int cts_fw_reg_readsb(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_readsb_delay_idle	cts_core.h	/^static inline int cts_fw_reg_readsb_delay_idle(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_readsb_retry	cts_core.c	/^int cts_fw_reg_readsb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_readsb_retry_delay_idle	cts_core.c	/^int cts_fw_reg_readsb_retry_delay_idle(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_readw	cts_core.h	/^static inline int cts_fw_reg_readw(const struct cts_device *cts_dev, u32 reg_addr, u16 *w)$/;"	f
+cts_fw_reg_readw_retry	cts_core.c	/^int cts_fw_reg_readw_retry(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_writeb	cts_core.h	/^static inline int cts_fw_reg_writeb(const struct cts_device *cts_dev, u32 reg_addr, u8 b)$/;"	f
+cts_fw_reg_writeb_retry	cts_core.c	/^int cts_fw_reg_writeb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_writel	cts_core.h	/^static inline int cts_fw_reg_writel(const struct cts_device *cts_dev, u32 reg_addr, u32 l)$/;"	f
+cts_fw_reg_writel_retry	cts_core.c	/^int cts_fw_reg_writel_retry(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_writesb	cts_core.h	/^static inline int cts_fw_reg_writesb(const struct cts_device *cts_dev, u32 reg_addr,$/;"	f
+cts_fw_reg_writesb_retry	cts_core.c	/^int cts_fw_reg_writesb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_fw_reg_writew	cts_core.h	/^static inline int cts_fw_reg_writew(const struct cts_device *cts_dev, u32 reg_addr, u16 w)$/;"	f
+cts_fw_reg_writew_retry	cts_core.c	/^int cts_fw_reg_writew_retry(const struct cts_device *cts_dev,$/;"	f
+cts_get_compensate_cap	cts_core.c	/^int cts_get_compensate_cap(const struct cts_device *cts_dev, u8 *cap)$/;"	f
+cts_get_data_ready_flag	cts_core.c	/^int cts_get_data_ready_flag(const struct cts_device *cts_dev, u8 *flag)$/;"	f
+cts_get_ddi_version	cts_core.c	/^int cts_get_ddi_version(const struct cts_device *cts_dev, u8 *version)$/;"	f
+cts_get_dev_boot_mode	cts_core.c	/^static int cts_get_dev_boot_mode(const struct cts_device *cts_dev,$/;"	f	file:
+cts_get_diffdata	cts_core.c	/^int cts_get_diffdata(const struct cts_device *cts_dev, void *buf)$/;"	f
+cts_get_firmware_version	cts_core.c	/^int cts_get_firmware_version(const struct cts_device *cts_dev, u16 *version)$/;"	f
+cts_get_fwid	cts_core.c	/^int cts_get_fwid(struct cts_device *cts_dev, u16 *fwid)$/;"	f
+cts_get_gesture_info	cts_core.c	/^int cts_get_gesture_info(const struct cts_device *cts_dev,$/;"	f
+cts_get_hwid	cts_core.c	/^int cts_get_hwid(struct cts_device *cts_dev, u32 *hwid)$/;"	f
+cts_get_lib_version	cts_core.c	/^int cts_get_lib_version(const struct cts_device *cts_dev, u16 *lib_version)$/;"	f
+cts_get_num_cols	cts_core.c	/^int cts_get_num_cols(const struct cts_device *cts_dev, u8 *num_cols)$/;"	f
+cts_get_num_driver_builtin_firmware	cts_firmware.c	/^int cts_get_num_driver_builtin_firmware(void)$/;"	f
+cts_get_num_driver_builtin_firmware	cts_firmware.h	/^static inline int cts_get_num_driver_builtin_firmware(void) {return 0;}$/;"	f
+cts_get_num_rows	cts_core.c	/^int cts_get_num_rows(const struct cts_device *cts_dev, u8 *num_rows)$/;"	f
+cts_get_panel_param	cts_core.c	/^int cts_get_panel_param(const struct cts_device *cts_dev,$/;"	f
+cts_get_rawdata	cts_core.c	/^int cts_get_rawdata(const struct cts_device *cts_dev, void *buf)$/;"	f
+cts_get_touchinfo	cts_core.c	/^static int cts_get_touchinfo(const struct cts_device *cts_dev,$/;"	f	file:
+cts_get_work_mode	cts_core.c	/^int cts_get_work_mode(const struct cts_device *cts_dev, u8 *mode)$/;"	f
+cts_get_x_resolution	cts_core.c	/^int cts_get_x_resolution(const struct cts_device *cts_dev, u16 *resolution)$/;"	f
+cts_get_y_resolution	cts_core.c	/^int cts_get_y_resolution(const struct cts_device *cts_dev, u16 *resolution)$/;"	f
+cts_hw_reg_readb	cts_core.h	/^static inline int cts_hw_reg_readb(const struct cts_device *cts_dev, u32 reg_addr, u8 *b)$/;"	f
+cts_hw_reg_readb_retry	cts_core.c	/^int cts_hw_reg_readb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_hw_reg_readl	cts_core.h	/^static inline int cts_hw_reg_readl(const struct cts_device *cts_dev, u32 reg_addr, u32 *l)$/;"	f
+cts_hw_reg_readl_retry	cts_core.c	/^int cts_hw_reg_readl_retry(const struct cts_device *cts_dev,$/;"	f
+cts_hw_reg_readsb	cts_core.h	/^static inline int cts_hw_reg_readsb(const struct cts_device *cts_dev,$/;"	f
+cts_hw_reg_readsb_retry	cts_core.c	/^int cts_hw_reg_readsb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_hw_reg_readw	cts_core.h	/^static inline int cts_hw_reg_readw(const struct cts_device *cts_dev, u32 reg_addr, u16 *w)$/;"	f
+cts_hw_reg_readw_retry	cts_core.c	/^int cts_hw_reg_readw_retry(const struct cts_device *cts_dev,$/;"	f
+cts_hw_reg_writeb	cts_core.h	/^static inline int cts_hw_reg_writeb(const struct cts_device *cts_dev, u32 reg_addr, u8 b)$/;"	f
+cts_hw_reg_writeb_retry	cts_core.c	/^int cts_hw_reg_writeb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_hw_reg_writel	cts_core.h	/^static inline int cts_hw_reg_writel(const struct cts_device *cts_dev, u32 reg_addr, u32 l)$/;"	f
+cts_hw_reg_writel_retry	cts_core.c	/^int cts_hw_reg_writel_retry(const struct cts_device *cts_dev,$/;"	f
+cts_hw_reg_writesb	cts_core.h	/^static inline int cts_hw_reg_writesb(const struct cts_device *cts_dev, u32 reg_addr,$/;"	f
+cts_hw_reg_writesb_retry	cts_core.c	/^int cts_hw_reg_writesb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_hw_reg_writew	cts_core.h	/^static inline int cts_hw_reg_writew(const struct cts_device *cts_dev, u32 reg_addr, u16 w)$/;"	f
+cts_hw_reg_writew_retry	cts_core.c	/^int cts_hw_reg_writew_retry(const struct cts_device *cts_dev,$/;"	f
+cts_i2c_driver	cts_i2c_driver.c	/^static struct i2c_driver cts_i2c_driver = {$/;"	v	typeref:struct:i2c_driver	file:
+cts_i2c_driver_config_attrs	cts_i2c_driver.c	/^static struct attribute *cts_i2c_driver_config_attrs[] = {$/;"	v	typeref:struct:attribute	file:
+cts_i2c_driver_config_group	cts_i2c_driver.c	/^static const struct attribute_group cts_i2c_driver_config_group = {$/;"	v	typeref:struct:attribute_group	file:
+cts_i2c_driver_config_groups	cts_i2c_driver.c	/^static const struct attribute_group *cts_i2c_driver_config_groups[] = {$/;"	v	typeref:struct:attribute_group	file:
+cts_i2c_of_match_table	cts_i2c_driver.c	/^static const struct of_device_id cts_i2c_of_match_table[] = {$/;"	v	typeref:struct:of_device_id	file:
+cts_i2c_readb	cts_core.c	/^static int cts_i2c_readb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_i2c_readl	cts_core.c	/^static int cts_i2c_readl(const struct cts_device *cts_dev,$/;"	f	file:
+cts_i2c_readsb	cts_core.c	/^static int cts_i2c_readsb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_i2c_readw	cts_core.c	/^static int cts_i2c_readw(const struct cts_device *cts_dev,$/;"	f	file:
+cts_i2c_writeb	cts_core.c	/^static int cts_i2c_writeb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_i2c_writel	cts_core.c	/^static int cts_i2c_writel(const struct cts_device *cts_dev,$/;"	f	file:
+cts_i2c_writesb	cts_core.c	/^static int cts_i2c_writesb(const struct cts_device *cts_dev, u32 addr,$/;"	f	file:
+cts_i2c_writew	cts_core.c	/^static int cts_i2c_writew(const struct cts_device *cts_dev,$/;"	f	file:
+cts_info	cts_platform.h	69;"	d
+cts_init_charger_detect	cts_core.c	/^void cts_init_charger_detect(struct chipone_ts_data *cts_data)$/;"	f
+cts_init_charger_detect	cts_core.h	/^static inline void cts_init_charger_detect(struct chipone_ts_data *cts_data){}$/;"	f
+cts_init_device_hwdata	cts_core.c	/^static int cts_init_device_hwdata(struct cts_device *cts_dev,$/;"	f	file:
+cts_init_esd_protection	cts_core.c	/^void cts_init_esd_protection(struct chipone_ts_data *cts_data)$/;"	f
+cts_init_esd_protection	cts_core.h	/^static inline void cts_init_esd_protection(struct chipone_ts_data *cts_data) {}$/;"	f
+cts_init_fwdata	cts_core.c	/^static int cts_init_fwdata(struct cts_device *cts_dev)$/;"	f	file:
+cts_init_platform_data	cts_platform.c	/^int cts_init_platform_data(struct cts_platform_data *pdata,$/;"	f
+cts_init_rtdata_with_normal_mode	cts_core.c	/^static inline void cts_init_rtdata_with_normal_mode(struct cts_device *cts_dev)$/;"	f	file:
+cts_irq_handler	cts_core.c	/^int cts_irq_handler(struct cts_device *cts_dev)$/;"	f
+cts_is_charger_exist	cts_core.c	/^bool cts_is_charger_exist(struct cts_device *cts_dev)$/;"	f
+cts_is_charger_exist	cts_core.h	/^static inline bool cts_is_charger_exist(struct cts_device *cts_dev) {return false;}$/;"	f
+cts_is_device_enabled	cts_core.c	/^bool cts_is_device_enabled(const struct cts_device *cts_dev)$/;"	f
+cts_is_device_program_mode	cts_core.c	/^bool cts_is_device_program_mode(const struct cts_device *cts_dev)$/;"	f
+cts_is_device_suspended	cts_core.c	/^bool cts_is_device_suspended(const struct cts_device *cts_dev)$/;"	f
+cts_is_firmware_updating	cts_firmware.c	/^bool cts_is_firmware_updating(const struct cts_device *cts_dev)$/;"	f
+cts_is_fw_log_redirect	cts_core.c	/^bool cts_is_fw_log_redirect(struct cts_device *cts_dev)$/;"	f
+cts_is_fwid_valid	cts_core.c	/^bool cts_is_fwid_valid(u16 fwid)$/;"	f
+cts_is_gesture_wakeup_enabled	cts_core.c	/^bool cts_is_gesture_wakeup_enabled(const struct cts_device *cts_dev)$/;"	f
+cts_is_glove_enabled	cts_core.c	/^int cts_is_glove_enabled(const struct cts_device *cts_dev)$/;"	f
+cts_is_glove_enabled	cts_core.h	/^static inline int cts_is_glove_enabled(const struct cts_device *cts_dev)  {return 0;}$/;"	f
+cts_is_hwid_valid	cts_core.c	/^static bool cts_is_hwid_valid(u32 hwid)$/;"	f	file:
+cts_lock_device	cts_core.c	/^void cts_lock_device(const struct cts_device *cts_dev)$/;"	f
+cts_open_test	cts_test.c	/^int cts_open_test(struct cts_device *cts_dev, u16 threshold)$/;"	f
+cts_plat_deinit_gesture	cts_platform.c	/^void cts_plat_deinit_gesture(struct cts_platform_data *pdata)$/;"	f
+cts_plat_deinit_gesture	cts_platform.h	/^static inline void cts_plat_deinit_gesture(struct cts_platform_data *pdata)  {}$/;"	f
+cts_plat_deinit_touch_device	cts_platform.c	/^void cts_plat_deinit_touch_device(struct cts_platform_data *pdata)$/;"	f
+cts_plat_deinit_vkey_device	cts_platform.c	/^void cts_plat_deinit_vkey_device(struct cts_platform_data *pdata)$/;"	f
+cts_plat_deinit_vkey_device	cts_platform.h	/^static inline void cts_plat_deinit_vkey_device(struct cts_platform_data *pdata) {}$/;"	f
+cts_plat_disable_irq	cts_platform.c	/^int cts_plat_disable_irq(struct cts_platform_data *pdata)$/;"	f
+cts_plat_disable_irq_wake	cts_platform.c	/^int cts_plat_disable_irq_wake(struct cts_platform_data *pdata)$/;"	f
+cts_plat_enable_irq	cts_platform.c	/^int cts_plat_enable_irq(struct cts_platform_data *pdata)$/;"	f
+cts_plat_enable_irq_wake	cts_platform.c	/^int cts_plat_enable_irq_wake(struct cts_platform_data *pdata)$/;"	f
+cts_plat_free_irq	cts_platform.c	/^void cts_plat_free_irq(struct cts_platform_data *pdata)$/;"	f
+cts_plat_free_resource	cts_platform.c	/^void cts_plat_free_resource(struct cts_platform_data *pdata)$/;"	f
+cts_plat_get_fw_log_buf	cts_platform.c	/^u8 *cts_plat_get_fw_log_buf(struct cts_platform_data *pdata, $/;"	f
+cts_plat_get_i2c_xfer_buf	cts_platform.c	/^u8 *cts_plat_get_i2c_xfer_buf(struct cts_platform_data *pdata, $/;"	f
+cts_plat_get_max_fw_log_size	cts_platform.c	/^size_t cts_plat_get_max_fw_log_size(struct cts_platform_data *pdata)$/;"	f
+cts_plat_get_max_i2c_xfer_size	cts_platform.c	/^size_t cts_plat_get_max_i2c_xfer_size(struct cts_platform_data *pdata)$/;"	f
+cts_plat_get_max_spi_xfer_size	cts_platform.c	/^size_t cts_plat_get_max_spi_xfer_size(struct cts_platform_data *pdata)$/;"	f
+cts_plat_get_spi_xfer_buf	cts_platform.c	/^u8 *cts_plat_get_spi_xfer_buf(struct cts_platform_data *pdata, $/;"	f
+cts_plat_handle_irq	cts_platform.c	/^static void cts_plat_handle_irq(struct cts_platform_data *pdata)$/;"	f	file:
+cts_plat_i2c_read	cts_platform.c	/^int cts_plat_i2c_read(struct cts_platform_data *pdata, u8 i2c_addr,$/;"	f
+cts_plat_i2c_write	cts_platform.c	/^int cts_plat_i2c_write(struct cts_platform_data *pdata, u8 i2c_addr,$/;"	f
+cts_plat_init_dts	cts_platform.c	/^static int cts_plat_init_dts(struct cts_platform_data *pdata,$/;"	f	file:
+cts_plat_init_gesture	cts_platform.c	/^int cts_plat_init_gesture(struct cts_platform_data *pdata)$/;"	f
+cts_plat_init_gesture	cts_platform.h	/^static inline int cts_plat_init_gesture(struct cts_platform_data *pdata) {return 0;}$/;"	f
+cts_plat_init_touch_device	cts_platform.c	/^int cts_plat_init_touch_device(struct cts_platform_data *pdata)$/;"	f
+cts_plat_init_vkey_device	cts_platform.c	/^int cts_plat_init_vkey_device(struct cts_platform_data *pdata)$/;"	f
+cts_plat_init_vkey_device	cts_platform.h	/^static inline int cts_plat_init_vkey_device(struct cts_platform_data *pdata) {return 0;}$/;"	f
+cts_plat_irq_handler	cts_platform.c	/^static irqreturn_t cts_plat_irq_handler(int irq, void *dev_id)$/;"	f	file:
+cts_plat_is_i2c_online	cts_platform.c	/^int cts_plat_is_i2c_online(struct cts_platform_data *pdata, u8 i2c_addr)$/;"	f
+cts_plat_is_normal_mode	cts_platform.c	/^int cts_plat_is_normal_mode(struct cts_platform_data *pdata)$/;"	f
+cts_plat_power_down_device	cts_platform.c	/^int cts_plat_power_down_device(struct cts_platform_data *pdata)$/;"	f
+cts_plat_power_up_device	cts_platform.c	/^int cts_plat_power_up_device(struct cts_platform_data *pdata)$/;"	f
+cts_plat_process_gesture_info	cts_platform.c	/^int cts_plat_process_gesture_info(struct cts_platform_data *pdata,$/;"	f
+cts_plat_process_touch_msg	cts_platform.c	/^int cts_plat_process_touch_msg(struct cts_platform_data *pdata,$/;"	f
+cts_plat_process_vkey	cts_platform.c	/^int cts_plat_process_vkey(struct cts_platform_data *pdata, u8 vkey_state)$/;"	f
+cts_plat_process_vkey	cts_platform.h	/^static inline int cts_plat_process_vkey(struct cts_platform_data *pdata, u8 vkey_state) {return 0;}$/;"	f
+cts_plat_release_all_touch	cts_platform.c	/^int cts_plat_release_all_touch(struct cts_platform_data *pdata)$/;"	f
+cts_plat_release_all_vkey	cts_platform.c	/^int cts_plat_release_all_vkey(struct cts_platform_data *pdata)$/;"	f
+cts_plat_release_all_vkey	cts_platform.h	/^static inline int cts_plat_release_all_vkey(struct cts_platform_data *pdata) {return 0;}$/;"	f
+cts_plat_request_irq	cts_platform.c	/^int cts_plat_request_irq(struct cts_platform_data *pdata)$/;"	f
+cts_plat_request_resource	cts_platform.c	/^int cts_plat_request_resource(struct cts_platform_data *pdata)$/;"	f
+cts_plat_reset_device	cts_platform.c	/^int cts_plat_reset_device(struct cts_platform_data *pdata)$/;"	f
+cts_plat_reset_device	cts_platform.h	/^static inline int cts_plat_reset_device(struct cts_platform_data *pdata) {return 0;}$/;"	f
+cts_plat_set_cs	cts_platform.c	/^int cts_plat_set_cs(struct cts_platform_data *pdata, u8 val)$/;"	f
+cts_plat_set_reset	cts_platform.c	/^int cts_plat_set_reset(struct cts_platform_data *pdata, int val)$/;"	f
+cts_plat_spi_read	cts_platform.c	/^int cts_plat_spi_read(struct cts_platform_data *pdata, u8 dev_addr,$/;"	f
+cts_plat_spi_read_delay_idle	cts_platform.c	/^int cts_plat_spi_read_delay_idle(struct cts_platform_data *pdata, u8 dev_addr,$/;"	f
+cts_plat_spi_set_mode	cts_platform.c	/^void cts_plat_spi_set_mode(struct spi_device *spi, SPI_SPEED speed, int flag)$/;"	f
+cts_plat_spi_setup	cts_platform.c	/^int cts_plat_spi_setup(struct cts_platform_data *pdata)$/;"	f
+cts_plat_spi_write	cts_platform.c	/^int cts_plat_spi_write(struct cts_platform_data *pdata, u8 dev_addr,$/;"	f
+cts_plat_touch_dev_irq_work	cts_platform.c	/^static void cts_plat_touch_dev_irq_work(struct work_struct *work)$/;"	f	file:
+cts_plat_touch_event_timeout	cts_platform.c	/^static void cts_plat_touch_event_timeout(struct timer_list *t)$/;"	f	file:
+cts_platform_data	cts_platform.h	/^struct cts_platform_data {$/;"	s
+cts_post_flash_operation	cts_spi_flash.c	/^int cts_post_flash_operation(struct cts_device *cts_dev)$/;"	f
+cts_prepare_flash_operation	cts_spi_flash.c	/^int cts_prepare_flash_operation(struct cts_device *cts_dev)$/;"	f
+cts_probe_device	cts_core.c	/^int cts_probe_device(struct cts_device *cts_dev)$/;"	f
+cts_program_ddiparam	cts_firmware.c	/^static int cts_program_ddiparam(const struct cts_device *cts_dev,$/;"	f	file:
+cts_program_firmware	cts_firmware.c	/^static int cts_program_firmware(const struct cts_device *cts_dev,$/;"	f	file:
+cts_program_flash	cts_spi_flash.c	/^int cts_program_flash(const struct cts_device *cts_dev,$/;"	f
+cts_program_flash_from_sram	cts_spi_flash.c	/^int cts_program_flash_from_sram(const struct cts_device *cts_dev,$/;"	f
+cts_rawdata_test	cts_test.c	/^int cts_rawdata_test(struct cts_device *cts_dev, u16 min_thres, u16 max_thres)$/;"	f
+cts_read_flash	cts_spi_flash.h	/^static inline int cts_read_flash(const struct cts_device *cts_dev,$/;"	f
+cts_read_flash_retry	cts_spi_flash.c	/^int cts_read_flash_retry(const struct cts_device *cts_dev,$/;"	f
+cts_read_flash_to_sram	cts_spi_flash.h	/^static inline int cts_read_flash_to_sram(const struct cts_device *cts_dev,$/;"	f
+cts_read_flash_to_sram_check_crc	cts_spi_flash.h	/^static inline int cts_read_flash_to_sram_check_crc(const struct cts_device *cts_dev,$/;"	f
+cts_read_flash_to_sram_check_crc_retry	cts_spi_flash.c	/^int cts_read_flash_to_sram_check_crc_retry(const struct cts_device *cts_dev,$/;"	f
+cts_read_flash_to_sram_retry	cts_spi_flash.c	/^int cts_read_flash_to_sram_retry(const struct cts_device *cts_dev,$/;"	f
+cts_read_sram_normal_mode	cts_core.c	/^static int cts_read_sram_normal_mode(const struct cts_device *cts_dev,$/;"	f	file:
+cts_release_firmware	cts_firmware.c	/^void cts_release_firmware(const struct cts_firmware *firmware)$/;"	f
+cts_request_driver_builtin_firmware_by_index	cts_firmware.c	/^const struct cts_firmware *cts_request_driver_builtin_firmware_by_index(u32 index)$/;"	f
+cts_request_driver_builtin_firmware_by_index	cts_firmware.h	/^static inline const struct cts_firmware *cts_request_driver_builtin_firmware_by_index(u32 index) {return NULL;}$/;"	f
+cts_request_driver_builtin_firmware_by_name	cts_firmware.c	/^const struct cts_firmware *cts_request_driver_builtin_firmware_by_name(const char *name)$/;"	f
+cts_request_driver_builtin_firmware_by_name	cts_firmware.h	/^static inline const struct cts_firmware *cts_request_driver_builtin_firmware_by_name(const char *name) {return NULL;}$/;"	f
+cts_request_firmware	cts_firmware.c	/^const struct cts_firmware *cts_request_firmware($/;"	f
+cts_request_firmware_from_fs	cts_firmware.c	/^const struct cts_firmware *cts_request_firmware_from_fs(const char *filepath)$/;"	f
+cts_request_newer_driver_builtin_firmware	cts_firmware.c	/^static const struct cts_firmware * cts_request_newer_driver_builtin_firmware($/;"	f	file:
+cts_request_newer_firmware_from_fs	cts_firmware.c	/^const struct cts_firmware *cts_request_newer_firmware_from_fs($/;"	f
+cts_reset_test	cts_test.c	/^int cts_reset_test(struct cts_device *cts_dev)$/;"	f
+cts_resume	cts_i2c_driver.c	/^int cts_resume(struct chipone_ts_data *cts_data)$/;"	f
+cts_resume_device	cts_core.c	/^int cts_resume_device(struct cts_device *cts_dev)$/;"	f
+cts_send_command	cts_core.c	/^int cts_send_command(const struct cts_device *cts_dev, u8 cmd)$/;"	f
+cts_set_dev_boot_mode	cts_core.c	/^static int cts_set_dev_boot_mode(const struct cts_device *cts_dev,$/;"	f	file:
+cts_set_normal_addr	cts_core.h	/^static inline void cts_set_normal_addr(struct cts_device *cts_dev)$/;"	f
+cts_set_panel_param	cts_core.c	/^int cts_set_panel_param(const struct cts_device *cts_dev,$/;"	f
+cts_set_program_addr	cts_core.h	/^static inline void cts_set_program_addr(struct cts_device *cts_dev)$/;"	f
+cts_set_work_mode	cts_core.c	/^int cts_set_work_mode(const struct cts_device *cts_dev, u8 mode)$/;"	f
+cts_sfctrl	cts_sfctrl.h	/^struct cts_sfctrl {$/;"	s
+cts_sfctrl_ops	cts_sfctrl.h	/^struct cts_sfctrl_ops {$/;"	s
+cts_sfctrlv2_ops	cts_sfctrlv2.c	/^const struct cts_sfctrl_ops cts_sfctrlv2_ops = {$/;"	v	typeref:struct:cts_sfctrl_ops
+cts_short_test	cts_test.c	/^int cts_short_test(struct cts_device *cts_dev, u16 threshold)$/;"	f
+cts_show_debug_log	cts_i2c_driver.c	/^bool cts_show_debug_log = false;$/;"	v
+cts_show_fw_log	cts_core.c	/^void cts_show_fw_log(struct cts_device *cts_dev)$/;"	f
+cts_spi_conf_mt65xx	cts_platform.c	/^struct mt_chip_conf cts_spi_conf_mt65xx = {$/;"	v	typeref:struct:mt_chip_conf
+cts_spi_readb	cts_core.c	/^static int cts_spi_readb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_spi_readl	cts_core.c	/^static int cts_spi_readl(const struct cts_device *cts_dev,$/;"	f	file:
+cts_spi_readsb	cts_core.c	/^static int cts_spi_readsb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_spi_readsb_delay_idle	cts_core.c	/^static int cts_spi_readsb_delay_idle(const struct cts_device *cts_dev,$/;"	f	file:
+cts_spi_readw	cts_core.c	/^static int cts_spi_readw(const struct cts_device *cts_dev,$/;"	f	file:
+cts_spi_send_recv	cts_platform.c	/^int cts_spi_send_recv(struct cts_platform_data *pdata, size_t len , u8 *tx_buffer, u8 *rx_buffer)$/;"	f
+cts_spi_writeb	cts_core.c	/^static int cts_spi_writeb(const struct cts_device *cts_dev,$/;"	f	file:
+cts_spi_writel	cts_core.c	/^static int cts_spi_writel(const struct cts_device *cts_dev,$/;"	f	file:
+cts_spi_writesb	cts_core.c	/^static int cts_spi_writesb(const struct cts_device *cts_dev, u32 addr,$/;"	f	file:
+cts_spi_writew	cts_core.c	/^static int cts_spi_writew(const struct cts_device *cts_dev,$/;"	f	file:
+cts_sram_readb	cts_core.h	/^static inline int cts_sram_readb(const struct cts_device *cts_dev, u32 addr, u8 *b)$/;"	f
+cts_sram_readb_retry	cts_core.c	/^int cts_sram_readb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_readl	cts_core.h	/^static inline int cts_sram_readl(const struct cts_device *cts_dev, u32 addr, u32 *l)$/;"	f
+cts_sram_readl_retry	cts_core.c	/^int cts_sram_readl_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_readsb	cts_core.h	/^static inline int cts_sram_readsb(const struct cts_device *cts_dev,$/;"	f
+cts_sram_readsb_retry	cts_core.c	/^int cts_sram_readsb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_readw	cts_core.h	/^static inline int cts_sram_readw(const struct cts_device *cts_dev, u32 addr, u16 *w)$/;"	f
+cts_sram_readw_retry	cts_core.c	/^int cts_sram_readw_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_writeb	cts_core.h	/^static inline int cts_sram_writeb(const struct cts_device *cts_dev, u32 addr, u8 b)$/;"	f
+cts_sram_writeb_retry	cts_core.c	/^int cts_sram_writeb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_writel	cts_core.h	/^static inline int cts_sram_writel(const struct cts_device *cts_dev, u32 addr, u32 l)$/;"	f
+cts_sram_writel_retry	cts_core.c	/^int cts_sram_writel_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_writesb	cts_core.h	/^static inline int cts_sram_writesb(const struct cts_device *cts_dev, u32 addr,$/;"	f
+cts_sram_writesb_boot_crc_retry	cts_core.c	/^int cts_sram_writesb_boot_crc_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_writesb_check_crc_retry	cts_core.c	/^int cts_sram_writesb_check_crc_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_writesb_retry	cts_core.c	/^int cts_sram_writesb_retry(const struct cts_device *cts_dev,$/;"	f
+cts_sram_writew	cts_core.h	/^static inline int cts_sram_writew(const struct cts_device *cts_dev, u32 addr, u16 w)$/;"	f
+cts_sram_writew_retry	cts_core.c	/^int cts_sram_writew_retry(const struct cts_device *cts_dev,$/;"	f
+cts_start_charger_detect	cts_core.c	/^int cts_start_charger_detect(struct chipone_ts_data *cts_data)$/;"	f
+cts_start_charger_detect	cts_core.h	/^static inline int cts_start_charger_detect(struct chipone_ts_data *cts_data){return 0;}$/;"	f
+cts_start_device	cts_core.c	/^int cts_start_device(struct cts_device *cts_dev)$/;"	f
+cts_start_device_esdrecover	cts_core.c	/^int cts_start_device_esdrecover(struct cts_device *cts_dev)$/;"	f
+cts_stop_charger_detect	cts_core.c	/^int cts_stop_charger_detect(struct chipone_ts_data *cts_data)$/;"	f
+cts_stop_charger_detect	cts_core.h	/^static inline int cts_stop_charger_detect(struct chipone_ts_data *cts_data){return 0;}$/;"	f
+cts_stop_device	cts_core.c	/^int cts_stop_device(struct cts_device *cts_dev)$/;"	f
+cts_stop_device_esdrecover	cts_core.c	/^int cts_stop_device_esdrecover(struct cts_device *cts_dev)$/;"	f
+cts_suspend	cts_i2c_driver.c	/^int cts_suspend(struct chipone_ts_data *cts_data)$/;"	f
+cts_suspend_device	cts_core.c	/^int cts_suspend_device(struct cts_device *cts_dev)$/;"	f
+cts_sysfs_add_device	cts_sysfs.c	/^int cts_sysfs_add_device(struct device *dev)$/;"	f
+cts_sysfs_add_device	cts_sysfs.h	/^static inline int cts_sysfs_add_device(struct device *dev) {return -ENOTSUPP;}$/;"	f
+cts_sysfs_remove_device	cts_sysfs.c	/^void cts_sysfs_remove_device(struct device *dev)$/;"	f
+cts_sysfs_remove_device	cts_sysfs.h	/^static inline void cts_sysfs_remove_device(struct device *dev) {}$/;"	f
+cts_tool_cmd	cts_tool.c	/^static struct cts_tool_cmd cts_tool_cmd;$/;"	v	typeref:struct:cts_tool_cmd	file:
+cts_tool_cmd	cts_tool.c	/^struct cts_tool_cmd {$/;"	s	file:
+cts_tool_cmd_code	cts_tool.c	/^enum cts_tool_cmd_code {$/;"	g	file:
+cts_tool_deinit	cts_core.h	/^static inline void  cts_tool_deinit(struct chipone_ts_data *data) {}$/;"	f
+cts_tool_deinit	cts_tool.c	/^void cts_tool_deinit(struct chipone_ts_data *data)$/;"	f
+cts_tool_direct_access_addr	cts_tool.c	/^static u32 cts_tool_direct_access_addr = 0;$/;"	v	file:
+cts_tool_firmware_filepath	cts_tool.c	/^static char cts_tool_firmware_filepath[PATH_MAX];$/;"	v	file:
+cts_tool_fops	cts_tool.c	/^static struct file_operations cts_tool_fops = {$/;"	v	typeref:struct:file_operations	file:
+cts_tool_init	cts_core.h	/^static inline int   cts_tool_init(struct chipone_ts_data *cts_data) {return 0;}$/;"	f
+cts_tool_init	cts_tool.c	/^int cts_tool_init(struct chipone_ts_data *cts_data)$/;"	f
+cts_tool_open	cts_tool.c	/^static int cts_tool_open(struct inode *inode, struct file *file) $/;"	f	file:
+cts_tool_read	cts_tool.c	/^static ssize_t cts_tool_read(struct file *file,$/;"	f	file:
+cts_tool_write	cts_tool.c	/^static ssize_t cts_tool_write(struct file *file,$/;"	f	file:
+cts_unlock_device	cts_core.c	/^void cts_unlock_device(const struct cts_device *cts_dev)$/;"	f
+cts_update_firmware	cts_firmware.c	/^int cts_update_firmware(struct cts_device *cts_dev,$/;"	f
+cts_update_firmware_from_file	cts_firmware.c	/^int cts_update_firmware_from_file(struct cts_device *cts_dev,$/;"	f
+cts_warn	cts_platform.h	67;"	d
+cts_write_sram_normal_mode	cts_core.c	/^static int cts_write_sram_normal_mode(const struct cts_device *cts_dev,$/;"	f	file:
+curr_ddi_version_show	cts_sysfs.c	/^static ssize_t curr_ddi_version_show(struct device *dev,$/;"	f	file:
+curr_firmware_version_show	cts_sysfs.c	/^static ssize_t curr_firmware_version_show(struct device *dev,$/;"	f	file:
+data	cts_firmware.h	/^    u8 *data;$/;"	m	struct:cts_firmware
+data	cts_tool.c	/^    u8 data[PAGE_SIZE];$/;"	m	struct:cts_tool_cmd	file:
+data	tpd_debug.c	/^	char data[BUFFER_SIZE];$/;"	m	struct:tpd_em_log_struct	file:
+data_len	cts_tool.c	/^    u32 data_len;$/;"	m	struct:cts_tool_cmd	file:
+ddi_version	cts_core.h	/^    u8  ddi_version;$/;"	m	struct:cts_device_fwdata
+ddiparam_crc_sect	cts_firmware.c	/^    const u8 *ddiparam_crc_sect;$/;"	m	struct:cts_firmware_sect_info	file:
+ddiparam_crc_sect_size	cts_firmware.c	/^    size_t ddiparam_crc_sect_size;$/;"	m	struct:cts_firmware_sect_info	file:
+ddiparam_sect	cts_firmware.c	/^    const u8 *ddiparam_sect;$/;"	m	struct:cts_firmware_sect_info	file:
+ddiparam_sect_crc	cts_firmware.c	/^    u32 ddiparam_sect_crc;$/;"	m	struct:cts_firmware_sect_info	file:
+ddiparam_sect_size	cts_firmware.c	/^    size_t ddiparam_sect_size;$/;"	m	struct:cts_firmware_sect_info	file:
+dev	tpd.h	/^	struct input_dev *dev;$/;"	m	struct:tpd_device	typeref:struct:tpd_device::input_dev
+dev_lock	cts_platform.h	/^    struct rt_mutex dev_lock;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::rt_mutex
+diffdata_show	cts_sysfs.c	/^static ssize_t diffdata_show(struct device *dev,$/;"	f	file:
+disable_fw_auto_compensate	cts_test.c	/^static int disable_fw_auto_compensate(struct cts_device *cts_dev)$/;"	f	file:
+disable_fw_esd_protection	cts_test.c	/^static int disable_fw_esd_protection(struct cts_device *cts_dev)$/;"	f	file:
+disable_fw_monitor_mode	cts_test.c	/^static int disable_fw_monitor_mode(struct cts_device *cts_dev)$/;"	f	file:
+dma_available	cts_platform.h	/^    bool dma_available;$/;"	m	struct:cts_platform_data
+driver_builtin_firmware_show	cts_sysfs.c	/^static ssize_t driver_builtin_firmware_show(struct device *dev,$/;"	f	file:
+driver_builtin_firmware_store	cts_sysfs.c	/^static ssize_t driver_builtin_firmware_store(struct device *dev,$/;"	f	file:
+driver_info_show	cts_i2c_driver.c	/^static ssize_t driver_info_show(struct device_driver *dev, char *buf)$/;"	f	file:
+dump_test_data	cts_test.c	/^static void dump_test_data(struct cts_device *cts_dev, $/;"	f	file:
+eint_as_int	tpd_control.c	/^struct pinctrl_state *eint_as_int, *eint_output0,$/;"	v	typeref:struct:pinctrl_state
+eint_gpio_num	tpd.h	/^	int eint_gpio_num;$/;"	m	struct:tpd_dts_info
+eint_output0	tpd_control.c	/^struct pinctrl_state *eint_as_int, *eint_output0,$/;"	v	typeref:struct:
+eint_output1	tpd_control.c	/^		*eint_output1, *rst_output0, *rst_output1;$/;"	v	typeref:struct:
+enable	tpd.h	/^	int enable; \/*0: disable, 1: enable*\/$/;"	m	struct:tpd_filter_t
+enabled	cts_core.h	/^    bool enabled;$/;"	m	struct:cts_device
+erase_block	cts_spi_flash.c	/^static inline int erase_block(const struct cts_device *cts_dev,$/;"	f	file:
+erase_block_retry	cts_spi_flash.c	/^static int erase_block_retry(const struct cts_device *cts_dev,$/;"	f	file:
+erase_flash_store	cts_sysfs.c	/^static ssize_t erase_flash_store(struct device *dev,$/;"	f	file:
+erase_sector	cts_spi_flash.c	/^static inline int erase_sector(const struct cts_device *cts_dev,$/;"	f	file:
+erase_sector_retry	cts_spi_flash.c	/^static int erase_sector_retry(const struct cts_device *cts_dev,$/;"	f	file:
+esd_check_fail_cnt	cts_core.h	/^    int                 esd_check_fail_cnt;$/;"	m	struct:chipone_ts_data
+esd_enabled	cts_core.h	/^    bool                esd_enabled;$/;"	m	struct:chipone_ts_data
+esd_method	cts_core.h	/^	u8  esd_method;$/;"	m	struct:cts_device_fwdata
+esd_protection_show	cts_i2c_driver.c	/^static ssize_t esd_protection_show(struct device_driver *dev, char *buf)$/;"	f	file:
+esd_protection_show	cts_sysfs.c	/^static ssize_t esd_protection_show(struct device *dev,$/;"	f	file:
+esd_work	cts_core.h	/^    struct delayed_work esd_work;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::delayed_work
+esd_workqueue	cts_core.h	/^    struct workqueue_struct *esd_workqueue;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::workqueue_struct
+event	cts_core.h	/^    u8      event;$/;"	m	struct:cts_device_gesture_point
+event	cts_core.h	/^    u8      event;$/;"	m	struct:cts_device_touch_msg
+find_flash_by_jedec_id	cts_spi_flash.c	/^static const struct cts_flash *find_flash_by_jedec_id(u32 jedec_id)$/;"	f	file:
+firmware_crc_sect	cts_firmware.c	/^    const u8 *firmware_crc_sect;$/;"	m	struct:cts_firmware_sect_info	file:
+firmware_crc_sect_size	cts_firmware.c	/^    size_t firmware_crc_sect_size;$/;"	m	struct:cts_firmware_sect_info	file:
+firmware_sect	cts_firmware.c	/^    const u8 *firmware_sect;$/;"	m	struct:cts_firmware_sect_info	file:
+firmware_sect_crc	cts_firmware.c	/^    u32 firmware_sect_crc;$/;"	m	struct:cts_firmware_sect_info	file:
+firmware_sect_size	cts_firmware.c	/^    size_t firmware_sect_size;$/;"	m	struct:cts_firmware_sect_info	file:
+flag	cts_tool.c	/^    u8 flag;$/;"	m	struct:cts_tool_cmd	file:
+flash	cts_core.h	/^    const struct cts_flash           *flash;$/;"	m	struct:cts_device	typeref:struct:cts_device::cts_flash
+flash_info_show	cts_sysfs.c	/^static ssize_t flash_info_show(struct device *dev,$/;"	f	file:
+force_update_show	cts_i2c_driver.c	/^static ssize_t force_update_show(struct device_driver *dev, char *buf)$/;"	f	file:
+fw_log_buf	cts_platform.h	/^    u8 fw_log_buf[CTS_FW_LOG_BUF_LEN];  $/;"	m	struct:cts_platform_data
+fw_log_redirect_enabled	cts_core.h	/^    bool fw_log_redirect_enabled;$/;"	m	struct:cts_device_rtdata
+fw_log_redirect_show	cts_sysfs.c	/^static ssize_t fw_log_redirect_show(struct device *dev,$/;"	f	file:
+fw_log_redirect_store	cts_sysfs.c	/^static ssize_t fw_log_redirect_store(struct device *dev,$/;"	f	file:
+fwdata	cts_core.h	/^    struct cts_device_fwdata          fwdata;$/;"	m	struct:cts_device	typeref:struct:cts_device::cts_device_fwdata
+fwid	cts_core.h	/^    u16 fwid;$/;"	m	struct:cts_device_hwdata
+fwid	cts_firmware.h	/^    u16 fwid;$/;"	m	struct:cts_firmware
+g_tpd_drv	tpd_control.c	/^static struct tpd_driver_t *g_tpd_drv;$/;"	v	typeref:struct:tpd_driver_t	file:
+gesture_en_show	cts_sysfs.c	/^static ssize_t gesture_en_show(struct device *dev,$/;"	f	file:
+gesture_en_store	cts_sysfs.c	/^static ssize_t gesture_en_store(struct device *dev,$/;"	f	file:
+gesture_id	cts_core.h	/^    u8    gesture_id;$/;"	m	struct:cts_device_gesture_info
+gesture_keymap	cts_platform.h	/^    u8  gesture_keymap[CFG_CTS_NUM_GESTURE][2];$/;"	m	struct:cts_platform_data
+gesture_num	cts_platform.h	/^    u8  gesture_num;$/;"	m	struct:cts_platform_data
+gesture_show	cts_i2c_driver.c	/^static ssize_t gesture_show(struct device_driver *dev, char *buf)$/;"	f	file:
+gesture_wakeup_enabled	cts_core.h	/^    bool gesture_wakeup_enabled;$/;"	m	struct:cts_device_rtdata
+get_lcd_idx_index	cts_firmware.c	/^static int get_lcd_idx_index(void)$/;"	f	file:
+get_test_result	cts_test.c	/^static int get_test_result(struct cts_device *cts_dev, u16 *result)$/;"	f	file:
+get_unaligned_be24	cts_core.h	/^static inline u32 get_unaligned_be24(const void *p)$/;"	f
+get_unaligned_le24	cts_core.h	/^static inline u32 get_unaligned_le24(const void *p)$/;"	f
+glove_mode_enabled	cts_core.h	/^    bool glove_mode_enabled;$/;"	m	struct:cts_device_rtdata
+has_flash	cts_core.h	/^    bool has_flash;$/;"	m	struct:cts_device_rtdata
+head	tpd_debug.c	/^	unsigned int head;$/;"	m	struct:tpd_debug_log_buf	file:
+hwdata	cts_core.h	/^    const struct cts_device_hwdata   *hwdata;$/;"	m	struct:cts_device	typeref:struct:cts_device::cts_device_hwdata
+hwid	cts_core.h	/^    u32 hwid;$/;"	m	struct:cts_device_hwdata
+hwid	cts_firmware.h	/^    u32 hwid;$/;"	m	struct:cts_firmware
+i2c_client	cts_core.h	/^    struct i2c_client *i2c_client;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::i2c_client
+i2c_client	cts_platform.h	/^    struct i2c_client *i2c_client;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::i2c_client
+i2c_dma_buff_pa	cts_platform.h	/^    dma_addr_t i2c_dma_buff_pa;$/;"	m	struct:cts_platform_data
+i2c_dma_buff_va	cts_platform.h	/^    u8 *i2c_dma_buff_va;$/;"	m	struct:cts_platform_data
+i2c_fifo_buf	cts_platform.h	/^    u8 i2c_fifo_buf[CFG_CTS_MAX_I2C_XFER_SIZE];$/;"	m	struct:cts_platform_data
+ic_type_show	cts_sysfs.c	/^static ssize_t ic_type_show(struct device *dev,$/;"	f	file:
+icnl9911_driver_builtin_firmware	cts_builtin_firmware.h	/^static u8 icnl9911_driver_builtin_firmware[] = {$/;"	v
+icnl9911_sfctrl	cts_core.c	/^const static struct cts_sfctrl icnl9911_sfctrl = {$/;"	v	typeref:struct:cts_sfctrl	file:
+icnl9911c_driver_builtin_firmware	cts_builtin_firmware.h	/^static u8 icnl9911c_driver_builtin_firmware[] = {$/;"	v
+icnl9911c_driver_builtin_firmware_2	cts_builtin_firmware.h	/^static u8 icnl9911c_driver_builtin_firmware_2[] = {$/;"	v
+icnl9911c_driver_builtin_firmware_3	cts_builtin_firmware.h	/^static u8 icnl9911c_driver_builtin_firmware_3[] = {$/;"	v
+icnl9911s_sfctrl	cts_core.c	/^const static struct cts_sfctrl icnl9911s_sfctrl = {$/;"	v	typeref:struct:cts_sfctrl	file:
+id	cts_core.h	/^    u8      id;$/;"	m	struct:cts_device_touch_msg
+int_keep_time	cts_core.h	/^	u16 int_keep_time;$/;"	m	struct:cts_device_fwdata
+int_mode	cts_core.h	/^	u8  int_mode;$/;"	m	struct:cts_device_fwdata
+io_reg	tpd.h	/^	struct regulator *io_reg;$/;"	m	struct:tpd_device	typeref:struct:tpd_device::regulator
+irq	cts_platform.h	/^    int irq;$/;"	m	struct:cts_platform_data
+irq_info_show	cts_sysfs.c	/^static ssize_t irq_info_show(struct device *dev,$/;"	f	file:
+irq_is_disable	cts_platform.h	/^    bool            irq_is_disable;$/;"	m	struct:cts_platform_data
+irq_lock	cts_platform.h	/^    struct spinlock irq_lock;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::spinlock
+irq_pin_show	cts_sysfs.c	/^static ssize_t irq_pin_show(struct device *dev,$/;"	f	file:
+irq_wake_enabled	cts_platform.h	/^    bool irq_wake_enabled;$/;"	m	struct:cts_platform_data
+is_filesystem_mounted	cts_firmware.c	/^bool is_filesystem_mounted(const char *filepath)$/;"	f
+is_firmware_size_valid	cts_firmware.c	/^static bool is_firmware_size_valid(const struct cts_firmware *firmware)$/;"	f	file:
+is_firmware_valid	cts_firmware.c	/^static bool is_firmware_valid(const struct cts_firmware *firmware)$/;"	f	file:
+is_multi_section_firmware	cts_firmware.c	/^static bool is_multi_section_firmware(const struct cts_firmware *firmware)$/;"	f	file:
+is_multi_section_firmware_valid	cts_firmware.c	/^static bool is_multi_section_firmware_valid($/;"	f	file:
+is_single_section_firmware	cts_firmware.c	/^static bool is_single_section_firmware(const struct cts_firmware *firmware)$/;"	f	file:
+jedec_id	cts_spi_flash.h	/^    u32     jedec_id;         \/* Device ID by command 0x9F *\/$/;"	m	struct:cts_flash
+jitter_show	cts_sysfs.c	/^static ssize_t jitter_show(struct device *dev,$/;"	f	file:
+jitter_store	cts_sysfs.c	/^static ssize_t jitter_store(struct device *dev,$/;"	f	file:
+jitter_test_frame	cts_sysfs.c	/^static int jitter_test_frame = 10;         $/;"	v	file:
+key_height	tpd.h	/^	int key_height;$/;"	m	struct:tpd_key_dim_local
+key_width	tpd.h	/^	int key_width;$/;"	m	struct:tpd_key_dim_local
+key_x	tpd.h	/^	int key_x;$/;"	m	struct:tpd_key_dim_local
+key_y	tpd.h	/^	int key_y;$/;"	m	struct:tpd_key_dim_local
+kpd	tpd.h	/^	struct input_dev *kpd;$/;"	m	struct:tpd_device	typeref:struct:tpd_device::input_dev
+lcm_resolution	tpd.h	/^	int lcm_resolution[2];$/;"	m	struct:tpd_dts_info
+lib_version	cts_core.h	/^	u16 lib_version;$/;"	m	struct:cts_device_fwdata
+linux	met_ftrace_touch.h	52;"	d
+list	tpd_debug.c	/^	struct list_head list;$/;"	m	struct:tpd_em_log_struct	typeref:struct:tpd_em_log_struct::list_head	file:
+manualdiff_base	cts_sysfs.c	/^static s16 *manualdiff_base = NULL;       $/;"	v	file:
+manualdiffdata_show	cts_sysfs.c	/^static ssize_t manualdiffdata_show(struct device *dev,$/;"	f	file:
+manualdiffdata_store	cts_sysfs.c	/^static ssize_t manualdiffdata_store(struct device *dev,$/;"	f	file:
+max_touch_num_show	cts_i2c_driver.c	/^static ssize_t max_touch_num_show(struct device_driver *dev, char *buf)$/;"	f	file:
+max_xfer_size_show	cts_i2c_driver.c	/^static ssize_t max_xfer_size_show(struct device_driver *dev, char *buf)$/;"	f	file:
+monitor_mode_show	cts_sysfs.c	/^static ssize_t monitor_mode_show(struct device *dev,$/;"	f	file:
+monitor_mode_store	cts_sysfs.c	/^static ssize_t monitor_mode_store(struct device *dev,$/;"	f	file:
+msgs	cts_core.h	/^    struct cts_device_touch_msg msgs[CFG_CTS_MAX_TOUCH_NUM];$/;"	m	struct:cts_device_touch_info	typeref:struct:cts_device_touch_info::cts_device_touch_msg
+mtk_properties_attr_group	tpd_button.c	/^static struct attribute_group mtk_properties_attr_group = {$/;"	v	typeref:struct:attribute_group	file:
+mtk_properties_attrs	tpd_button.c	/^static struct attribute *mtk_properties_attrs[] = {$/;"	v	typeref:struct:attribute	file:
+mtk_virtual_keys_attr	tpd_button.c	/^static struct kobj_attribute mtk_virtual_keys_attr = {$/;"	v	typeref:struct:kobj_attribute	file:
+mtk_virtual_keys_show	tpd_button.c	/^static ssize_t mtk_virtual_keys_show(struct kobject *kobj,$/;"	f	file:
+name	cts_core.h	/^    const char *name;$/;"	m	struct:cts_device_hwdata
+name	cts_firmware.h	/^    const char *name;   \/* MUST set to non-NULL if driver builtin firmware *\/$/;"	m	struct:cts_firmware
+name	cts_spi_flash.h	/^    const char *name;$/;"	m	struct:cts_flash
+num	tpd.h	/^	int num;$/;"	m	struct:tpd_attrs
+num_col	cts_core.h	/^    u8  num_col;$/;"	m	struct:cts_device_hwdata
+num_msg	cts_core.h	/^    u8  num_msg;$/;"	m	struct:cts_device_touch_info
+num_points	cts_core.h	/^    u8  num_points;$/;"	m	struct:cts_device_gesture_info
+num_row	cts_core.h	/^    u8  num_row;$/;"	m	struct:cts_device_hwdata
+open_test_show	cts_sysfs.c	/^static ssize_t open_test_show(struct device *dev,$/;"	f	file:
+open_test_store	cts_sysfs.c	/^static ssize_t open_test_store(struct device *dev,$/;"	f	file:
+ops	cts_sfctrl.h	/^    const struct cts_sfctrl_ops *ops;$/;"	m	struct:cts_sfctrl	typeref:struct:cts_sfctrl::cts_sfctrl_ops
+page_size	cts_spi_flash.h	/^    size_t  page_size;        \/* Page size by command 0x02 *\/$/;"	m	struct:cts_flash
+parse_arg	cts_sysfs.c	/^static int parse_arg(const char *buf, size_t count)$/;"	f	file:
+parse_firmware	cts_firmware.c	/^static int parse_firmware(const struct cts_firmware *firmware, $/;"	f	file:
+parse_multi_section_firmware	cts_firmware.c	/^static void parse_multi_section_firmware($/;"	f	file:
+parse_single_section_firmware	cts_firmware.c	/^static void parse_single_section_firmware($/;"	f	file:
+pdata	cts_core.h	/^    struct cts_platform_data *pdata;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::cts_platform_data
+pdata	cts_core.h	/^    struct cts_platform_data *pdata;$/;"	m	struct:cts_device	typeref:struct:cts_device::cts_platform_data
+pinctrl1	cts_platform.h	/^    struct pinctrl *pinctrl1;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::pinctrl
+pinctrl1	tpd_control.c	/^struct pinctrl *pinctrl1;$/;"	v	typeref:struct:pinctrl
+pins_default	tpd_control.c	/^struct pinctrl_state *pins_default;$/;"	v	typeref:struct:pinctrl_state
+pixel_density	tpd.h	/^	int pixel_density; \/*XXX pixel\/cm*\/$/;"	m	struct:tpd_filter_t
+pmic_chrdet_status	cts_core.c	/^static bool pmic_chrdet_status(void)$/;"	f	file:
+points	cts_core.h	/^    struct cts_device_gesture_point points[CTS_CHIP_MAX_GESTURE_TRACE_POINT];$/;"	m	struct:cts_device_gesture_info	typeref:struct:cts_device_gesture_info::cts_device_gesture_point
+post_test	cts_test.c	/^static void post_test(struct cts_device *cts_dev)$/;"	f	file:
+prepare_test	cts_test.c	/^static int prepare_test(struct cts_device *cts_dev)$/;"	f	file:
+pressure	cts_core.h	/^    u8      pressure;$/;"	m	struct:cts_device_gesture_point
+pressure	cts_core.h	/^    u8      pressure;$/;"	m	struct:cts_device_touch_msg
+probe_flash	cts_spi_flash.c	/^static int probe_flash(struct cts_device *cts_dev)$/;"	f	file:
+procfs_entry	cts_core.h	/^    struct proc_dir_entry *procfs_entry;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::proc_dir_entry
+program	cts_sfctrl.h	/^    int (*program)(const struct cts_device *cts_dev,$/;"	m	struct:cts_sfctrl_ops
+program_addr_width	cts_core.h	/^    u8  program_addr_width;$/;"	m	struct:cts_device_hwdata
+program_from_sram	cts_sfctrl.h	/^    int (*program_from_sram)(const struct cts_device *cts_dev,$/;"	m	struct:cts_sfctrl_ops
+program_mode	cts_core.h	/^    bool program_mode;$/;"	m	struct:cts_device_rtdata
+program_mode_show	cts_sysfs.c	/^static ssize_t program_mode_show(struct device *dev,$/;"	f	file:
+program_mode_store	cts_sysfs.c	/^static ssize_t program_mode_store(struct device *dev,$/;"	f	file:
+properties_kobj	tpd_button.c	/^struct kobject *properties_kobj;$/;"	v	typeref:struct:kobject
+put_unaligned_be24	cts_core.h	/^static inline void put_unaligned_be24(u32 v, void *p)$/;"	f
+rSFCTRLv2_CMD_SEL	cts_sfctrlv2.c	8;"	d	file:
+rSFCTRLv2_CRC_RESULT	cts_sfctrlv2.c	15;"	d	file:
+rSFCTRLv2_DATA_LENGTH	cts_sfctrlv2.c	11;"	d	file:
+rSFCTRLv2_FLASH_ADDR	cts_sfctrlv2.c	9;"	d	file:
+rSFCTRLv2_FLASH_CRC_START	cts_sfctrlv2.c	17;"	d	file:
+rSFCTRLv2_HW_STATE	cts_sfctrlv2.c	14;"	d	file:
+rSFCTRLv2_RELEASE_FLASH	cts_sfctrlv2.c	13;"	d	file:
+rSFCTRLv2_SF_BUSY	cts_sfctrlv2.c	18;"	d	file:
+rSFCTRLv2_SRAM_ADDR	cts_sfctrlv2.c	10;"	d	file:
+rSFCTRLv2_SRAM_CRC_START	cts_sfctrlv2.c	16;"	d	file:
+rSFCTRLv2_START_DEXC	cts_sfctrlv2.c	12;"	d	file:
+rawdata_show	cts_sysfs.c	/^static ssize_t rawdata_show(struct device *dev,$/;"	f	file:
+rawdata_target	cts_core.h	/^	u16 rawdata_target;$/;"	m	struct:cts_device_fwdata
+rawdata_test_show	cts_sysfs.c	/^static ssize_t rawdata_test_show(struct device *dev,$/;"	f	file:
+rawdata_test_store	cts_sysfs.c	/^static ssize_t rawdata_test_store(struct device *dev,$/;"	f	file:
+rdid	cts_sfctrl.h	/^    int (*rdid)(const struct cts_device *cts_dev, u32 *id);$/;"	m	struct:cts_sfctrl_ops
+read	cts_sfctrl.h	/^    int (*read)(const struct cts_device *cts_dev,$/;"	m	struct:cts_sfctrl_ops
+read_firmware_register_show	cts_sysfs.c	/^static ssize_t read_firmware_register_show(struct device *dev,$/;"	f	file:
+read_firmware_register_store	cts_sysfs.c	/^static ssize_t read_firmware_register_store(struct device *dev,$/;"	f	file:
+read_flash_show	cts_sysfs.c	/^static ssize_t read_flash_show(struct device *dev,$/;"	f	file:
+read_flash_store	cts_sysfs.c	/^static ssize_t read_flash_store(struct device *dev,$/;"	f	file:
+read_hw_reg_show	cts_sysfs.c	/^static ssize_t read_hw_reg_show(struct device *dev,$/;"	f	file:
+read_hw_reg_store	cts_sysfs.c	/^static ssize_t read_hw_reg_store(struct device *dev,$/;"	f	file:
+read_to_sram	cts_sfctrl.h	/^    int (*read_to_sram)(const struct cts_device *cts_dev,$/;"	m	struct:cts_sfctrl_ops
+reg	tpd.h	/^	struct regulator *reg;$/;"	m	struct:tpd_device	typeref:struct:tpd_device::regulator
+reg_base	cts_sfctrl.h	/^    u32     reg_base;$/;"	m	struct:cts_sfctrl
+res_x	cts_core.h	/^    u16 res_x;$/;"	m	struct:cts_device_fwdata
+res_x_show	cts_sysfs.c	/^static ssize_t res_x_show(struct device *dev,$/;"	f	file:
+res_y	cts_core.h	/^    u16 res_y;$/;"	m	struct:cts_device_fwdata
+res_y_show	cts_sysfs.c	/^static ssize_t res_y_show(struct device *dev,$/;"	f	file:
+reset_pin_show	cts_i2c_driver.c	/^static ssize_t reset_pin_show(struct device_driver *driver, char *buf)$/;"	f	file:
+reset_pin_show	cts_sysfs.c	/^static ssize_t reset_pin_show(struct device *dev,$/;"	f	file:
+reset_pin_store	cts_sysfs.c	/^static ssize_t reset_pin_store(struct device *dev,$/;"	f	file:
+reset_test_show	cts_sysfs.c	/^static ssize_t reset_test_show(struct device *dev,$/;"	f	file:
+resume	tpd.h	/^	void (*resume)(struct device *h);$/;"	m	struct:tpd_driver_t
+retry	cts_tool.c	/^    u8 retry;$/;"	m	struct:cts_tool_cmd	file:
+rows	cts_core.h	/^    u8  rows;$/;"	m	struct:cts_device_fwdata
+rows_show	cts_sysfs.c	/^static ssize_t rows_show(struct device *dev,$/;"	f	file:
+rst_ext_gpio_num	tpd.h	/^	int rst_ext_gpio_num;$/;"	m	struct:tpd_dts_info
+rst_gpio_num	tpd.h	/^	int rst_gpio_num;$/;"	m	struct:tpd_dts_info
+rst_output0	tpd_control.c	/^		*eint_output1, *rst_output0, *rst_output1;$/;"	v	typeref:struct:
+rst_output1	tpd_control.c	/^		*eint_output1, *rst_output0, *rst_output1;$/;"	v	typeref:struct:
+rtdata	cts_core.h	/^    struct cts_device_rtdata          rtdata;$/;"	m	struct:cts_device	typeref:struct:cts_device::cts_device_rtdata
+se	cts_sfctrl.h	/^    int (*se)(const struct cts_device *cts_dev, u32 sector_addr);$/;"	m	struct:cts_sfctrl_ops
+sector_size	cts_spi_flash.h	/^    size_t  sector_size;      \/* Sector size by command 0x20 *\/$/;"	m	struct:cts_flash
+set_display_state	cts_test.c	/^static int set_display_state(struct cts_device *cts_dev, bool active)$/;"	f	file:
+set_fw_test_type	cts_test.c	/^static int set_fw_test_type(struct cts_device *cts_dev, u8 type)$/;"	f	file:
+set_fw_work_mode	cts_test.c	/^static int set_fw_work_mode(struct cts_device *cts_dev, u8 mode)$/;"	f	file:
+set_short_test_type	cts_test.c	/^static bool set_short_test_type(struct cts_device *cts_dev, u8 type)$/;"	f	file:
+sfctrl	cts_core.h	/^    const struct cts_sfctrl *sfctrl;$/;"	m	struct:cts_device_hwdata	typeref:struct:cts_device_hwdata::cts_sfctrl
+sfctrl_read_reg_check_ret	cts_sfctrlv2.c	95;"	d	file:
+sfctrl_reg_addr	cts_sfctrlv2.c	68;"	d	file:
+sfctrl_write_reg_check_ret	cts_sfctrlv2.c	84;"	d	file:
+sfctrlv2_be	cts_sfctrlv2.c	/^static int sfctrlv2_be(const struct cts_device *cts_dev, u32 block_addr)$/;"	f	file:
+sfctrlv2_calc_flash_crc	cts_sfctrlv2.c	/^int sfctrlv2_calc_flash_crc(const struct cts_device *cts_dev,$/;"	f
+sfctrlv2_calc_sram_crc	cts_sfctrlv2.c	/^int sfctrlv2_calc_sram_crc(const struct cts_device *cts_dev,$/;"	f
+sfctrlv2_cmd	cts_sfctrlv2.c	/^enum sfctrlv2_cmd {$/;"	g	file:
+sfctrlv2_opflags	cts_sfctrlv2.c	/^enum sfctrlv2_opflags {$/;"	g	file:
+sfctrlv2_pp	cts_sfctrlv2.c	/^static int sfctrlv2_pp(const struct cts_device *cts_dev,$/;"	f	file:
+sfctrlv2_program_flash_from_sram	cts_sfctrlv2.c	/^static int sfctrlv2_program_flash_from_sram(const struct cts_device *cts_dev,$/;"	f	file:
+sfctrlv2_rdid	cts_sfctrlv2.c	/^static int sfctrlv2_rdid(const struct cts_device *cts_dev, u32 *id)$/;"	f	file:
+sfctrlv2_rdsr	cts_sfctrlv2.c	/^static int sfctrlv2_rdsr(const struct cts_device *cts_dev, u8 *status)$/;"	f	file:
+sfctrlv2_read	cts_sfctrlv2.c	/^static int sfctrlv2_read(const struct cts_device *cts_dev,$/;"	f	file:
+sfctrlv2_read_flash_to_sram	cts_sfctrlv2.c	/^static int sfctrlv2_read_flash_to_sram(const struct cts_device *cts_dev,$/;"	f	file:
+sfctrlv2_se	cts_sfctrlv2.c	/^static int sfctrlv2_se(const struct cts_device *cts_dev, u32 sector_addr)$/;"	f	file:
+sfctrlv2_transfer	cts_sfctrlv2.c	/^static int sfctrlv2_transfer(const struct cts_device *cts_dev,$/;"	f	file:
+short_test_show	cts_sysfs.c	/^static ssize_t short_test_show(struct device *dev,$/;"	f	file:
+short_test_store	cts_sysfs.c	/^static ssize_t short_test_store(struct device *dev,$/;"	f	file:
+size	cts_firmware.h	/^    size_t size;$/;"	m	struct:cts_firmware
+slave_addr	cts_core.h	/^    u8   slave_addr;$/;"	m	struct:cts_device_rtdata
+slot_protocol_show	cts_i2c_driver.c	/^static ssize_t slot_protocol_show(struct device_driver *dev, char *buf)$/;"	f	file:
+spi_cache_buf	cts_platform.h	/^	u8 spi_cache_buf[ALIGN(CFG_CTS_MAX_SPI_XFER_SIZE+10,4)];$/;"	m	struct:cts_platform_data
+spi_client	cts_platform.h	/^	struct spi_device *spi_client;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::spi_device
+spi_cs_high	cts_platform.h	/^    struct pinctrl_state *spi_cs_low, *spi_cs_high;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::
+spi_cs_low	cts_platform.h	/^    struct pinctrl_state *spi_cs_low, *spi_cs_high;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::pinctrl_state
+spi_rx_buf	cts_platform.h	/^	u8 spi_rx_buf[ALIGN(CFG_CTS_MAX_SPI_XFER_SIZE+10,4)];$/;"	m	struct:cts_platform_data
+spi_speed	cts_platform.h	/^	u32 spi_speed;$/;"	m	struct:cts_platform_data
+spi_tx_buf	cts_platform.h	/^	u8 spi_tx_buf[ALIGN(CFG_CTS_MAX_SPI_XFER_SIZE+10,4)];$/;"	m	struct:cts_platform_data
+sram_size	cts_core.h	/^    u32 sram_size;$/;"	m	struct:cts_device_hwdata
+suspend	tpd.h	/^	void (*suspend)(struct device *h);$/;"	m	struct:tpd_driver_t
+suspended	cts_core.h	/^    bool suspended;$/;"	m	struct:cts_device_rtdata
+swap_xy_show	cts_i2c_driver.c	/^static ssize_t swap_xy_show(struct device_driver *dev, char *buf)$/;"	f	file:
+tail	tpd_debug.c	/^	unsigned int tail;$/;"	m	struct:tpd_debug_log_buf	file:
+tasklet	tpd.h	/^	struct tasklet_struct tasklet;$/;"	m	struct:tpd_device	typeref:struct:tpd_device::tasklet_struct
+test_short_between_cols	cts_test.c	/^static int test_short_between_cols(struct cts_device *cts_dev,$/;"	f	file:
+test_short_between_rows	cts_test.c	/^static int test_short_between_rows(struct cts_device *cts_dev,$/;"	f	file:
+test_short_to_gnd	cts_test.c	/^static int test_short_to_gnd(struct cts_device *cts_dev,$/;"	f	file:
+test_short_to_gnd_legacy	cts_test.c	/^static int test_short_to_gnd_legacy(struct cts_device *cts_dev,$/;"	f	file:
+testing	cts_core.h	/^    bool testing;$/;"	m	struct:cts_device_rtdata
+testing_show	cts_sysfs.c	/^static ssize_t testing_show(struct device *dev,$/;"	f	file:
+timer	tpd.h	/^	struct timer_list timer;$/;"	m	struct:tpd_device	typeref:struct:tpd_device::timer_list
+times	cts_tool.c	/^    u8 times;$/;"	m	struct:cts_tool_cmd	file:
+total_size	cts_spi_flash.h	/^    size_t  total_size;$/;"	m	struct:cts_flash
+touch_event_timeout_timer	cts_platform.h	/^	struct timer_list touch_event_timeout_timer;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::timer_list
+touch_filter	tpd.h	/^	struct tpd_filter_t touch_filter;$/;"	m	struct:tpd_dts_info	typeref:struct:tpd_dts_info::tpd_filter_t
+touch_info	cts_platform.h	/^    struct cts_device_touch_info touch_info;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::cts_device_touch_info
+touch_max_num	tpd.h	/^	int touch_max_num;$/;"	m	struct:tpd_dts_info
+touch_of_match	tpd_control.c	/^const struct of_device_id touch_of_match[] = {$/;"	v	typeref:struct:of_device_id
+touch_resume_work	tpd_control.c	/^static struct work_struct touch_resume_work;$/;"	v	typeref:struct:work_struct	file:
+touch_resume_workqueue	tpd_control.c	/^static struct workqueue_struct *touch_resume_workqueue;$/;"	v	typeref:struct:workqueue_struct	file:
+touch_resume_workqueue_callback	tpd_control.c	/^static void touch_resume_workqueue_callback(struct work_struct *work)$/;"	f	file:
+tpd	tpd_control.c	/^struct tpd_device *tpd;$/;"	v	typeref:struct:tpd_device
+tpd_attrs	tpd.h	/^struct tpd_attrs {$/;"	s
+tpd_buf	tpd_debug.c	/^struct tpd_debug_log_buf tpd_buf;$/;"	v	typeref:struct:tpd_debug_log_buf
+tpd_button	tpd_button.c	/^void tpd_button(unsigned int x, unsigned int y, unsigned int down)$/;"	f
+tpd_button_init	tpd_button.c	/^void tpd_button_init(void)$/;"	f
+tpd_button_setting	tpd_button.c	/^void tpd_button_setting(int keycnt, void *keys, void *keys_dim)$/;"	f
+tpd_calibrate_en	tpd_misc.c	/^int tpd_calibrate_en;$/;"	v
+tpd_calmat	tpd_setting.c	/^int tpd_calmat[8] = { 0 };$/;"	v
+tpd_calmat_size	tpd_setting.c	/^int tpd_calmat_size = 8;$/;"	v
+tpd_compat_ioctl	tpd_control.c	/^static long tpd_compat_ioctl($/;"	f	file:
+tpd_create_attributes	tpd_control.c	/^static void tpd_create_attributes(struct device *dev, struct tpd_attrs *attrs)$/;"	f	file:
+tpd_debug_log_buf	tpd_debug.c	/^struct tpd_debug_log_buf {$/;"	s	file:
+tpd_debug_log_dev	tpd_debug.c	/^static struct miscdevice tpd_debug_log_dev = {$/;"	v	typeref:struct:miscdevice	file:
+tpd_debug_log_fops	tpd_debug.c	/^static const struct file_operations tpd_debug_log_fops = {$/;"	v	typeref:struct:file_operations	file:
+tpd_debug_log_open	tpd_debug.c	/^static int tpd_debug_log_open(struct inode *inode, struct file *file)$/;"	f	file:
+tpd_debug_log_read	tpd_debug.c	/^static ssize_t tpd_debug_log_read(struct file *file, char __user *buffer,$/;"	f	file:
+tpd_debug_log_release	tpd_debug.c	/^static int tpd_debug_log_release(struct inode *inode, struct file *file)$/;"	f	file:
+tpd_debug_log_write	tpd_debug.c	/^static ssize_t tpd_debug_log_write(struct file *file, const char __user *buffer,$/;"	f	file:
+tpd_debug_nr	tpd_debug.c	/^int tpd_debug_nr;$/;"	v
+tpd_debug_set_time	tpd_debug.c	/^void tpd_debug_set_time(void)$/;"	f
+tpd_debug_time	tpd_debug.c	/^int tpd_debug_time;$/;"	v
+tpd_debug_touch_up	tpd_debug.c	/^int tpd_debug_touch_up;$/;"	v
+tpd_debug_track	tpd_debug.c	/^int tpd_debug_track;$/;"	v
+tpd_debug_track_color	tpd_debug.c	/^int tpd_debug_track_color;$/;"	v
+tpd_debuglog	tpd_debug.c	/^int tpd_debuglog;$/;"	v
+tpd_def_calmat	tpd_setting.c	/^int tpd_def_calmat[8] = { 0 };$/;"	v
+tpd_def_calmat_size	tpd_setting.c	/^int tpd_def_calmat_size = 8;$/;"	v
+tpd_dev	tpd.h	/^	struct device *tpd_dev;$/;"	m	struct:tpd_device	typeref:struct:tpd_device::device
+tpd_device	tpd.h	/^struct tpd_device {$/;"	s
+tpd_device	tpd_control.c	/^struct platform_device tpd_device = {$/;"	v	typeref:struct:platform_device
+tpd_device_exit	tpd_control.c	/^module_exit(tpd_device_exit);$/;"	v
+tpd_device_exit	tpd_control.c	/^static void __exit tpd_device_exit(void)$/;"	f	file:
+tpd_device_init	tpd_control.c	/^late_initcall(tpd_device_init);$/;"	v
+tpd_device_init	tpd_control.c	/^static int __init tpd_device_init(void)$/;"	f	file:
+tpd_device_name	tpd.h	/^	char *tpd_device_name;$/;"	m	struct:tpd_driver_t
+tpd_down_debug_track	tpd_debug.c	/^void tpd_down_debug_track(int x, int y)$/;"	f
+tpd_down_status	tpd_debug.c	/^int tpd_down_status;$/;"	v
+tpd_draw	tpd_debug.c	/^void tpd_draw(int x, int y)$/;"	f
+tpd_driver	tpd_control.c	/^static struct platform_driver tpd_driver = {$/;"	v	typeref:struct:platform_driver	file:
+tpd_driver_add	tpd_control.c	/^int tpd_driver_add(struct tpd_driver_t *tpd_drv)$/;"	f
+tpd_driver_list	tpd_control.c	/^static struct tpd_driver_t tpd_driver_list[TP_DRV_MAX_COUNT];	\/* = {0}; *\/$/;"	v	typeref:struct:tpd_driver_t	file:
+tpd_driver_remove	tpd_control.c	/^int tpd_driver_remove(struct tpd_driver_t *tpd_drv)$/;"	f
+tpd_driver_t	tpd.h	/^struct tpd_driver_t {$/;"	s
+tpd_dts_data	tpd_control.c	/^struct tpd_dts_info tpd_dts_data;$/;"	v	typeref:struct:tpd_dts_info
+tpd_dts_info	tpd.h	/^struct tpd_dts_info {$/;"	s
+tpd_em_asamp	tpd_setting.c	/^int tpd_em_asamp = 1;$/;"	v
+tpd_em_auto_time_interval	tpd_setting.c	/^int tpd_em_auto_time_interval = 10;$/;"	v
+tpd_em_debounce_time	tpd_setting.c	/^int tpd_em_debounce_time;	\/* =0 *\/$/;"	v
+tpd_em_debounce_time0	tpd_setting.c	/^int tpd_em_debounce_time0 = 1;$/;"	v
+tpd_em_debounce_time1	tpd_setting.c	/^int tpd_em_debounce_time1 = 4;$/;"	v
+tpd_em_log	tpd_debug.c	/^int tpd_em_log;$/;"	v
+tpd_em_log_first	tpd_debug.c	/^int tpd_em_log_first = 1;$/;"	v
+tpd_em_log_output	tpd_debug.c	/^void tpd_em_log_output(int raw_x, int raw_y,$/;"	f
+tpd_em_log_release	tpd_debug.c	/^void tpd_em_log_release(void)$/;"	f
+tpd_em_log_store	tpd_debug.c	/^void tpd_em_log_store(int raw_x, int raw_y,$/;"	f
+tpd_em_log_struct	tpd_debug.c	/^struct tpd_em_log_struct {$/;"	s	file:
+tpd_em_log_to_fs	tpd_debug.c	/^int tpd_em_log_to_fs;$/;"	v
+tpd_em_pressure_threshold	tpd_setting.c	/^int tpd_em_pressure_threshold;$/;"	v
+tpd_em_sample_cnt	tpd_setting.c	/^int tpd_em_sample_cnt = 16;$/;"	v
+tpd_em_spl_num	tpd_setting.c	/^int tpd_em_spl_num = 1;$/;"	v
+tpd_enable_em_log	tpd_debug.c	/^EXPORT_SYMBOL(tpd_enable_em_log);$/;"	v
+tpd_enable_em_log	tpd_debug.c	/^void tpd_enable_em_log(int enable)$/;"	f
+tpd_fail_count	tpd_debug.c	/^int tpd_fail_count;$/;"	v
+tpd_fb_notifier	tpd_control.c	/^static struct notifier_block tpd_fb_notifier;$/;"	v	typeref:struct:notifier_block	file:
+tpd_fb_notifier_callback	tpd_control.c	/^static int tpd_fb_notifier_callback($/;"	f	file:
+tpd_filter	tpd_control.c	/^struct tpd_filter_t tpd_filter;$/;"	v	typeref:struct:tpd_filter_t
+tpd_filter_t	tpd.h	/^struct tpd_filter_t {$/;"	s
+tpd_firmware_version	tpd_setting.c	/^int tpd_firmware_version[2] = { 0, 0 };$/;"	v
+tpd_firmware_version_size	tpd_setting.c	/^int tpd_firmware_version_size = 2;$/;"	v
+tpd_fops	tpd_control.c	/^static const struct file_operations tpd_fops = {$/;"	v	typeref:struct:file_operations	file:
+tpd_get_dts_info	tpd_control.c	/^void tpd_get_dts_info(void)$/;"	f
+tpd_get_gpio_info	tpd_control.c	/^int tpd_get_gpio_info(struct platform_device *pdev)$/;"	f
+tpd_gpio_as_int	tpd_control.c	/^void tpd_gpio_as_int(int pin)$/;"	f
+tpd_gpio_output	tpd_control.c	/^void tpd_gpio_output(int pin, int level)$/;"	f
+tpd_have_button	tpd.h	/^	int tpd_have_button;$/;"	m	struct:tpd_driver_t
+tpd_history_x	cts_platform.c	/^static int tpd_history_x, tpd_history_y;$/;"	v	file:
+tpd_history_y	cts_platform.c	/^static int tpd_history_x, tpd_history_y;$/;"	v	file:
+tpd_init_work	tpd_control.c	/^static struct work_struct tpd_init_work;$/;"	v	typeref:struct:work_struct	file:
+tpd_init_work_callback	tpd_control.c	/^static void tpd_init_work_callback(struct work_struct *work)$/;"	f	file:
+tpd_init_workqueue	tpd_control.c	/^static struct workqueue_struct *tpd_init_workqueue;$/;"	v	typeref:struct:workqueue_struct	file:
+tpd_int_gpio_index	cts_platform.c	/^int tpd_int_gpio_index = 1;$/;"	v
+tpd_key_dim_local	tpd.h	/^	struct tpd_key_dim_local tpd_key_dim_local[4];$/;"	m	struct:tpd_dts_info	typeref:struct:tpd_dts_info::tpd_key_dim_local
+tpd_key_dim_local	tpd.h	/^struct tpd_key_dim_local {$/;"	s
+tpd_key_local	tpd.h	/^	int tpd_key_local[4];$/;"	m	struct:tpd_dts_info
+tpd_key_num	tpd.h	/^	int tpd_key_num;$/;"	m	struct:tpd_dts_info
+tpd_keycnt	tpd_button.c	/^static unsigned int tpd_keycnt;$/;"	v	file:
+tpd_keys	tpd_button.c	/^static int tpd_keys[TPD_VIRTUAL_KEY_MAX] = { 0 };$/;"	v	file:
+tpd_keys_dim	tpd_button.c	/^static int tpd_keys_dim[TPD_VIRTUAL_KEY_MAX][4];	\/* = {0}; *\/$/;"	v	file:
+tpd_last_2_int_time	tpd_debug.c	/^long tpd_last_2_int_time[2] = { 0 };$/;"	v
+tpd_last_down_time	tpd_debug.c	/^long tpd_last_down_time;$/;"	v
+tpd_load_status	tpd_setting.c	/^int tpd_load_status;$/;"	v
+tpd_local_init	tpd.h	/^	int (*tpd_local_init)(void);$/;"	m	struct:tpd_driver_t
+tpd_log_exit	tpd_debug.c	/^EXPORT_SYMBOL_GPL(tpd_log_exit);$/;"	v
+tpd_log_exit	tpd_debug.c	/^void tpd_log_exit(void)$/;"	f
+tpd_log_find_buffer	tpd_debug.c	/^static unsigned char *tpd_log_find_buffer(void)$/;"	f	file:
+tpd_log_init	tpd_debug.c	/^EXPORT_SYMBOL_GPL(tpd_log_init);$/;"	v
+tpd_log_init	tpd_debug.c	/^int tpd_log_init(void)$/;"	f
+tpd_log_line_buffer	tpd_debug.c	/^int tpd_log_line_buffer = 128;	\/* per line 128 bytes *\/$/;"	v
+tpd_log_line_cnt	tpd_debug.c	/^int tpd_log_line_cnt = 1024 * 10;$/;"	v
+tpd_misc_device	tpd_control.c	/^static struct miscdevice tpd_misc_device = {$/;"	v	typeref:struct:miscdevice	file:
+tpd_misc_open	tpd_control.c	/^static int tpd_misc_open(struct inode *inode, struct file *file)$/;"	f	file:
+tpd_misc_release	tpd_control.c	/^static int tpd_misc_release(struct inode *inode, struct file *file)$/;"	f	file:
+tpd_mode	tpd_setting.c	/^int tpd_mode = TPD_MODE_NORMAL;$/;"	v
+tpd_mode_axis	tpd_setting.c	/^int tpd_mode_axis;$/;"	v
+tpd_mode_keypad_tolerance	tpd_setting.c	/^int tpd_mode_keypad_tolerance = 480 * 480 \/ 1600;$/;"	v
+tpd_mode_max	tpd_setting.c	/^int tpd_mode_max = 800;		\/* TPD_RES_Y; *\/$/;"	v
+tpd_mode_min	tpd_setting.c	/^int tpd_mode_min = 400;		\/* TPD_RES_Y\/2; *\/$/;"	v
+tpd_pm_ops	tpd_control.c	/^const struct dev_pm_ops tpd_pm_ops = {$/;"	v	typeref:struct:dev_pm_ops
+tpd_probe	tpd_control.c	/^static int tpd_probe(struct platform_device *pdev)$/;"	f	file:
+tpd_register_flag	tpd_control.c	/^int tpd_register_flag;$/;"	v
+tpd_remove	tpd_control.c	/^static int tpd_remove(struct platform_device *pdev)$/;"	f	file:
+tpd_resolution	tpd.h	/^	int tpd_resolution[2];$/;"	m	struct:tpd_dts_info
+tpd_rst_gpio_index	cts_platform.c	/^int tpd_rst_gpio_index = 0;$/;"	v
+tpd_show_version	tpd_misc.c	/^int tpd_show_version;$/;"	v
+tpd_start_profiling	tpd_debug.c	/^int tpd_start_profiling;$/;"	v
+tpd_suspend_flag	tpd_control.c	/^static int tpd_suspend_flag;$/;"	v	file:
+tpd_switch_multiple_mode	tpd_misc.c	/^EXPORT_SYMBOL(tpd_switch_multiple_mode);$/;"	v
+tpd_switch_multiple_mode	tpd_misc.c	/^void tpd_switch_multiple_mode(void)$/;"	f
+tpd_switch_normal_mode	tpd_misc.c	/^EXPORT_SYMBOL(tpd_switch_normal_mode);$/;"	v
+tpd_switch_normal_mode	tpd_misc.c	/^void tpd_switch_normal_mode(void)$/;"	f
+tpd_switch_single_mode	tpd_misc.c	/^EXPORT_SYMBOL(tpd_switch_single_mode);$/;"	v
+tpd_switch_single_mode	tpd_misc.c	/^void tpd_switch_single_mode(void)$/;"	f
+tpd_switch_sleep_mode	tpd_misc.c	/^EXPORT_SYMBOL(tpd_switch_sleep_mode);$/;"	v
+tpd_switch_sleep_mode	tpd_misc.c	/^void tpd_switch_sleep_mode(void)$/;"	f
+tpd_trembling_tolerance	tpd_default.c	/^int tpd_trembling_tolerance(int t, int p)$/;"	f
+tpd_trial_count	tpd_debug.c	/^int tpd_trial_count;$/;"	v
+tpd_type_cap	tpd_setting.c	/^int tpd_type_cap;$/;"	v
+tpd_unlocked_ioctl	tpd_control.c	/^static long tpd_unlocked_ioctl(struct file *file,$/;"	f	file:
+tpd_up_debug_track	tpd_debug.c	/^void tpd_up_debug_track(int x, int y)$/;"	f
+tpd_use_ext_gpio	tpd.h	/^	bool tpd_use_ext_gpio;$/;"	m	struct:tpd_dts_info
+tpd_v_magnify_x	tpd_setting.c	/^int tpd_v_magnify_x = 10;$/;"	v
+tpd_v_magnify_y	tpd_setting.c	/^int tpd_v_magnify_y = 10;$/;"	v
+ts_input_dev	cts_platform.h	/^    struct input_dev *ts_input_dev;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::input_dev
+ts_irq_work	cts_platform.h	/^    struct work_struct ts_irq_work;$/;"	m	struct:cts_platform_data	typeref:struct:cts_platform_data::work_struct
+update_firmware_from_file_store	cts_sysfs.c	/^static ssize_t update_firmware_from_file_store(struct device *dev,$/;"	f	file:
+updating	cts_core.h	/^    bool updating;$/;"	m	struct:cts_device_rtdata
+updating_show	cts_sysfs.c	/^static ssize_t updating_show(struct device *dev,$/;"	f	file:
+use_tpd_button	tpd.h	/^	int use_tpd_button;$/;"	m	struct:tpd_dts_info
+validate_flash_data	cts_firmware.c	/^static int validate_flash_data(const struct cts_device *cts_dev,$/;"	f	file:
+validate_test_result	cts_test.c	/^static int validate_test_result(struct cts_device *cts_dev,$/;"	f	file:
+version	cts_core.h	/^    u16 version;$/;"	m	struct:cts_device_fwdata
+vkey_num	cts_platform.h	/^    u8  vkey_num;$/;"	m	struct:cts_platform_data
+vkey_show	cts_i2c_driver.c	/^static ssize_t vkey_show(struct device_driver *dev, char *buf)$/;"	f	file:
+vkey_state	cts_core.h	/^    u8  vkey_state;$/;"	m	struct:cts_device_touch_info
+vkey_state	cts_platform.h	/^    u8  vkey_state;$/;"	m	struct:cts_platform_data
+wait_flash_wip_clear	cts_sfctrlv2.c	/^static int wait_flash_wip_clear(const struct cts_device *cts_dev)$/;"	f	file:
+wait_sfctrl_xfer_comp	cts_sfctrlv2.c	/^static int wait_sfctrl_xfer_comp(const struct cts_device *cts_dev)$/;"	f	file:
+wait_test_complete	cts_test.c	/^static int wait_test_complete(struct cts_device *cts_dev, int skip_frames)$/;"	f	file:
+workqueue	cts_core.h	/^    struct workqueue_struct *workqueue;$/;"	m	struct:chipone_ts_data	typeref:struct:chipone_ts_data::workqueue_struct
+wrap	cts_core.h	289;"	d
+wrap_x_show	cts_i2c_driver.c	/^static ssize_t wrap_x_show(struct device_driver *dev, char *buf)$/;"	f	file:
+wrap_y_show	cts_i2c_driver.c	/^static ssize_t wrap_y_show(struct device_driver *dev, char *buf)$/;"	f	file:
+write_firmware_register_store	cts_sysfs.c	/^static ssize_t write_firmware_register_store(struct device *dev,$/;"	f	file:
+write_hw_reg_store	cts_sysfs.c	/^static ssize_t write_hw_reg_store(struct device *dev,$/;"	f	file:
+x	cts_core.h	/^    __le16  x;$/;"	m	struct:cts_device_gesture_point
+x	cts_core.h	/^    __le16  x;$/;"	m	struct:cts_device_touch_msg
+x2x	tpd.h	/^	int x2x;$/;"	m	struct:tpd_dts_info
+xchg_sram_base	cts_sfctrl.h	/^    u32     xchg_sram_base;$/;"	m	struct:cts_sfctrl
+xchg_sram_size	cts_sfctrl.h	/^    size_t  xchg_sram_size;$/;"	m	struct:cts_sfctrl
+y	cts_core.h	/^    __le16  y;$/;"	m	struct:cts_device_gesture_point
+y	cts_core.h	/^    __le16  y;$/;"	m	struct:cts_device_touch_msg
+y2y	tpd.h	/^	int y2y;$/;"	m	struct:tpd_dts_info

@@ -22,8 +22,15 @@
 /* enable that soc = 0 , shutdown */
 #define SHUTDOWN_GAUGE0 1
 
+/* prize modified for disable mtk gauge SHUTDOWN_GAUGE1_XMINS feature if external fg support start */
+#ifdef CONFIG_MTK_CW2015_SUPPORT_OF
+/* disable that uisoc = 1 and wait xmins then shutdown feature if external fg supported */
+#define SHUTDOWN_GAUGE1_XMINS 0
+#else
 /* enable that uisoc = 1 and wait xmins then shutdown */
 #define SHUTDOWN_GAUGE1_XMINS 1
+#endif /*CONFIG_MTK_CW2015_SUPPORT_OF*/
+/* prize modified for disable mtk gauge SHUTDOWN_GAUGE1_XMINS feature if external fg support end */
 /* define Xmins to shutdown*/
 #define SHUTDOWN_1_TIME	5
 

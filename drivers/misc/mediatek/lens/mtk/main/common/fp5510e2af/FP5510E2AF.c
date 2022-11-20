@@ -36,7 +36,7 @@ static spinlock_t *g_pAF_SpinLock;
 static unsigned long g_u4AF_INF;
 static unsigned long g_u4AF_MACRO = 1023;
 static unsigned long g_u4CurrPosition;
-
+static unsigned long g_u4LastPosition = 0;
 
 static int s4AF_WriteReg(u16 a_u2Data)
 {
@@ -142,6 +142,7 @@ static inline int moveAF(unsigned long a_u4Position)
 
 	if (s4AF_WriteReg((unsigned short)a_u4Position) == 0) {
 		g_u4CurrPosition = a_u4Position;
+		g_u4LastPosition = g_u4CurrPosition;
 		ret = 0;
 	} else {
 		LOG_INF("set I2C failed when moving the motor\n");
@@ -211,7 +212,13 @@ int FP5510E2AF_Release(struct inode *a_pstInode, struct file *a_pstFile)
 
 	if (*g_pAF_Opened == 2) {
 		LOG_INF("Wait\n");
-		s4AF_WriteReg(0x80); /* Power down mode */
+		while(g_u4LastPosition > 50) {
+			g_u4LastPosition -= 50;
+			s4AF_WriteReg(g_u4LastPosition);
+			mdelay(5);
+		}
+		s4AF_WriteReg(0x00);
+//		s4AF_WriteReg(0x80); /* Power down mode */
 	}
 
 	if (*g_pAF_Opened) {

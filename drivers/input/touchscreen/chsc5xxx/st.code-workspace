@@ -1,0 +1,14 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "semi_touch_function.h": "c",
+            "basic_util.h": "c",
+            "semi_touch_custom.h": "c"
+        }
+    }
+}

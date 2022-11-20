@@ -733,8 +733,14 @@ struct simulator_log {
 #define SHUTDOWN_TIME 40
 #define AVGVBAT_ARRAY_SIZE 30
 #define INIT_VOLTAGE 3450
+//prize add by tangcong 20220323 start
+#ifdef CONFIG_PRIZE_BATTERY_HIGTEMP_CTRL
+#define BATTERY_SHUTDOWN_TEMPERATURE 65
+#define BATTERY_SHUTDOWN_LOW_TEMPERATURE -27
+#else
 #define BATTERY_SHUTDOWN_TEMPERATURE 60
-
+#endif
+//prize add by tangcong 20220323 end
 struct shutdown_condition {
 	bool is_overheat;
 	bool is_soc_zero_percent;

@@ -8,9 +8,17 @@ else ifeq ($(CONFIG_MACH_MT6771),y)
 obj-y += mediatek/
 else ifeq ($(CONFIG_MACH_MT6781),y)
 obj-y += mediatek/
+else ifeq ($(CONFIG_MACH_MT6785),y)
+obj-y += mediatek/
 else ifeq ($(CONFIG_MACH_MT6877),y)
 obj-y += mediatek/
 else ifeq ($(CONFIG_MACH_MT6833),y)
+obj-y += mediatek/
+else ifeq ($(CONFIG_MACH_MT6853),y)
+obj-y += mediatek/
+else ifeq ($(CONFIG_MACH_MT6873),y)
+obj-y += mediatek/
+else ifeq ($(CONFIG_MACH_MT6885),y)
 obj-y += mediatek/
 else ifeq ($(CONFIG_MACH_MT6893),y)
 obj-y += mediatek/
@@ -37,6 +45,20 @@ obj-$(CONFIG_MTK_PUMP_EXPRESS_PLUS_20_SUPPORT) += mtk_pe2.o mtk_pe2_hal.o
 obj-$(CONFIG_MTK_PUMP_EXPRESS_PLUS_SUPPORT) += mtk_pe.o mtk_pe_hal.o
 obj-$(CONFIG_MTK_PUMP_EXPRESS_40_SUPPORT) += mtk_pe4.o mtk_pe4_hal.o
 obj-$(CONFIG_CHARGER_MT6357) += mt6357-pulse-charger.o
+
+obj-$(CONFIG_MTK_CW2015_SUPPORT) += cw2015_fuel_gauge_v3.4.o
+#prize add by zhaopengge 20211215 start-----	
+obj-$(CONFIG_CHARGER_SGM41512) += sgm41512.o
+#prize add by zhaopengge 20211215 end-----	
+# prize add by zhaopengge----20201030---start
+obj-$(CONFIG_HL7005ALL_CHARGER_SUPPORT) += hl7005all.o
+# prize add by zhaopengge----20201030---end
+#//prize added by sunshuai, charge support, 20200507-start
+obj-$(CONFIG_PRIZE_MT5725_SUPPORT_15W) += mt5725_wireless_driver-15w.o
+#//prize added by sunshuai, charge support, 20200507-end
+# begin, prize-pengzhipeng-20210707, add fuel gauge cw2017
+obj-$(CONFIG_MTK_CW2017_SUPPORT_OF) += cw2017_fuel_gauge_base.o
+# end, prize-pengzhipeng-20210707, add fuel gauge cw2017
 endif
 
 
@@ -118,9 +140,13 @@ obj-$(CONFIG_CHARGER_BQ24190)	+= bq24190_charger.o
 obj-$(CONFIG_CHARGER_BQ24257)	+= bq24257_charger.o
 obj-$(CONFIG_CHARGER_BQ24735)	+= bq24735-charger.o
 obj-$(CONFIG_CHARGER_BQ25890)	+= bq25890_charger.o
+obj-$(CONFIG_CHARGER_SC8551)	+= sc8551.o
 obj-$(CONFIG_CHARGER_SMB347)	+= smb347-charger.o
 obj-$(CONFIG_CHARGER_TPS65090)	+= tps65090-charger.o
 obj-$(CONFIG_CHARGER_TPS65217)	+= tps65217_charger.o
 obj-$(CONFIG_AXP288_FUEL_GAUGE) += axp288_fuel_gauge.o
 obj-$(CONFIG_AXP288_CHARGER)	+= axp288_charger.o
 
+ifeq ($(CONFIG_CUSTOM_BATTERY_EXTERNAL_CHANNEL),y)
+	obj-y += k6885v1_64_alpha/
+endif

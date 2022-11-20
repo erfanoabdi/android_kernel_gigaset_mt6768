@@ -50,10 +50,13 @@ struct REGULATOR_CTRL regulator_control[REGULATOR_TYPE_MAX_NUM] = {
 	{"vcama"},
 	{"vcamd"},
 	{"vcamio"},
+	{"vcamaf"},
 };
 
 static struct REGULATOR reg_instance;
-
+/* prize add by zhuzhengjiang for otp 20210302 start*/
+static struct regulator *g_AFVDD_pregulator =NULL;
+/* prize add by zhuzhengjiang for otp 20210302 end*/
 static int regulator_oc_notify(
 	struct notifier_block *nb, unsigned long event, void *data)
 {
@@ -172,7 +175,15 @@ static enum IMGSENSOR_RETURN regulator_init(void *pinstance)
 		pdevice->of_node = pof_node;
 		return IMGSENSOR_RETURN_ERROR;
 	}
-
+    	/* prize add by zhuzhengjiang for otp 20201124 start*/
+	if (g_AFVDD_pregulator == NULL) {
+		g_AFVDD_pregulator =  regulator_get(pdevice, "camaf_afvdd");
+		if (IS_ERR(g_AFVDD_pregulator)) {
+			g_AFVDD_pregulator = NULL;
+			pr_err("cannot get regulator\n");
+		}
+	}
+	/* prize add by zhuzhengjiang for otp 20201124 end*/
 	for (j = IMGSENSOR_SENSOR_IDX_MIN_NUM;
 		j < IMGSENSOR_SENSOR_IDX_MAX_NUM;
 		j++) {
@@ -223,7 +234,25 @@ static enum IMGSENSOR_RETURN regulator_release(void *pinstance)
 	}
 	return IMGSENSOR_RETURN_SUCCESS;
 }
-
+/* prize add by zhuzhengjiang for otp 20201124 start*/
+void  regulator_afvdd_set(int status) {
+	int ret;
+	if(g_AFVDD_pregulator) {
+		pr_err("regulator afvdd enable status (%d)\n", status);
+		if (status) {
+			ret = regulator_enable(g_AFVDD_pregulator);
+			pr_err("regulator afvdd camaf_afvdd enable (%d)\n", ret);
+		} else  {
+			ret = regulator_disable(g_AFVDD_pregulator);
+			pr_err("regulator afvdd disable (%d)\n", ret);
+		}
+	}
+	else {
+			pr_err("regulator afvdd is NULL \n");
+	}
+		
+}
+/* prize add by zhuzhengjiang for otp 20201124 end*/
 static enum IMGSENSOR_RETURN regulator_set(
 	void *pinstance,
 	enum IMGSENSOR_SENSOR_IDX   sensor_idx,
@@ -238,8 +267,7 @@ static enum IMGSENSOR_RETURN regulator_set(
 	if (pin > IMGSENSOR_HW_PIN_DOVDD   ||
 	    pin < IMGSENSOR_HW_PIN_AVDD    ||
 	    pin_state < IMGSENSOR_HW_PIN_STATE_LEVEL_0 ||
-	    pin_state >= IMGSENSOR_HW_PIN_STATE_LEVEL_HIGH ||
-	    sensor_idx < 0)
+	    pin_state >= IMGSENSOR_HW_PIN_STATE_LEVEL_HIGH)
 		return IMGSENSOR_RETURN_ERROR;
 
 	reg_type_offset = REGULATOR_TYPE_VCAMA;

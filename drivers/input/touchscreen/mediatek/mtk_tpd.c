@@ -41,6 +41,9 @@ struct pinctrl *pinctrl1;
 struct pinctrl_state *pins_default;
 struct pinctrl_state *eint_as_int, *eint_output0,
 		*eint_output1, *rst_output0, *rst_output1;
+		
+unsigned int GPIO_TP_RST;
+unsigned int GPIO_TP_INT;
 const struct of_device_id touch_of_match[] = {
 	{ .compatible = "mediatek,touch", },
 	{ .compatible = "mediatek,mt8167-touch", },
@@ -140,13 +143,13 @@ void tpd_get_dts_info(void)
 }
 
 static DEFINE_MUTEX(tpd_set_gpio_mutex);
-void tpd_gpio_as_int(int pin)
+int tpd_gpio_as_int(void)
 {
-	mutex_lock(&tpd_set_gpio_mutex);
+	//mutex_lock(&tpd_set_gpio_mutex);
 	TPD_DEBUG("[tpd] %s\n", __func__);
-	if (pin == 1)
-		pinctrl_select_state(pinctrl1, eint_as_int);
-	mutex_unlock(&tpd_set_gpio_mutex);
+	//if (pin == 1)
+	return 	gpio_to_irq(GPIO_TP_INT);
+	//mutex_unlock(&tpd_set_gpio_mutex);
 }
 
 void tpd_gpio_output(int pin, int level)
@@ -155,9 +158,11 @@ void tpd_gpio_output(int pin, int level)
 	TPD_DEBUG("%s pin = %d, level = %d\n", __func__, pin, level);
 	if (pin == 1) {
 		if (level)
-			pinctrl_select_state(pinctrl1, eint_output1);
+			//pinctrl_select_state(pinctrl1, eint_output1);
+			gpio_direction_output(GPIO_TP_INT,1);
 		else
-			pinctrl_select_state(pinctrl1, eint_output0);
+			//pinctrl_select_state(pinctrl1, eint_output0);
+			gpio_direction_output(GPIO_TP_INT,0);
 	} else {
 		if (tpd_dts_data.tpd_use_ext_gpio) {
 #ifdef CONFIG_MTK_MT6306_GPIO_SUPPORT
@@ -168,9 +173,11 @@ void tpd_gpio_output(int pin, int level)
 #endif
 		} else {
 			if (level)
-				pinctrl_select_state(pinctrl1, rst_output1);
+				//pinctrl_select_state(pinctrl1, rst_output1);
+				gpio_direction_output(GPIO_TP_RST,1);
 			else
-				pinctrl_select_state(pinctrl1, rst_output0);
+				//pinctrl_select_state(pinctrl1, rst_output0);
+				gpio_direction_output(GPIO_TP_RST,0);
 		}
 	}
 	mutex_unlock(&tpd_set_gpio_mutex);
@@ -180,6 +187,24 @@ int tpd_get_gpio_info(struct platform_device *pdev)
 	int ret;
 
 	TPD_DEBUG("[tpd %d] mt_tpd_pinctrl+++++++++++++++++\n", pdev->id);
+	
+	GPIO_TP_RST = of_get_named_gpio(pdev->dev.of_node, "gpio_tp_rst", 0);
+	ret = gpio_request(GPIO_TP_RST, "gpio_tp_rst");
+	if (ret < 0)
+		pr_err("[GPIO_TP_RST][ERROR] Unable to request gpio_tp_rst\n");
+	else
+		pr_err("[GPIO_TP_RST][SUCCESS] success to request gpio_tp_rst\n");
+	
+	GPIO_TP_INT = of_get_named_gpio(pdev->dev.of_node, "gpio_tp_int", 0);
+	ret = gpio_request(GPIO_TP_INT, "gpio_tp_int");
+	if (ret < 0)
+		pr_err("[GPIO_TP_INT][ERROR] Unable to request gpio_tp_int\n");
+	else
+		pr_err("[GPIO_TP_INT][SUCCESS] success to request gpio_tp_int\n");
+	
+	return ret;
+	
+	
 	pinctrl1 = devm_pinctrl_get(&pdev->dev);
 	if (IS_ERR(pinctrl1)) {
 		ret = PTR_ERR(pinctrl1);

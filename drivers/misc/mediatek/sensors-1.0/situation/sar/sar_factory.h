@@ -24,6 +24,27 @@
 #include <hwmsensor.h>
 #include <sensors_io.h>
 
+//add Bob start
+struct SENSOR_DATA_DUL {
+    int x;
+    int y;
+    int z;
+    int x1; 
+    int y1; 
+    int z1; 
+};
+
+struct aw_i2c_data {
+    unsigned char len;
+    unsigned char flag;
+    unsigned char *buf;
+};
+
+struct SAR_SENSOR_DATA {
+    struct aw_i2c_data __user *data;
+    unsigned char num;
+};
+//add Bob end
 
 struct sar_factory_fops {
 	int (*enable_sensor)(bool enabledisable,
@@ -31,6 +52,7 @@ struct sar_factory_fops {
 	int (*get_data)(int32_t sensor_data[3]);
 	int (*enable_calibration)(void);
 	int (*get_cali)(int32_t data[3]);
+	int (*get_cfg_data)(unsigned char *, unsigned char); /* prize add for sar */
 };
 
 struct sar_factory_public {

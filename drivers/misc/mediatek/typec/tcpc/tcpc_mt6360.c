@@ -2775,7 +2775,7 @@ static int __init mt6360_init(void)
 
 	return i2c_add_driver(&mt6360_driver);
 }
-device_initcall_sync(mt6360_init);
+subsys_initcall(mt6360_init);//prize-Solve the problem that pe5.0 did not load successfully-pengzhipeng-20220514
 
 static void __exit mt6360_exit(void)
 {

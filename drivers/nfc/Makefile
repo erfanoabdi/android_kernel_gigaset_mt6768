@@ -17,3 +17,6 @@ obj-$(CONFIG_NFC_ST_NCI)	+= st-nci/
 obj-$(CONFIG_NFC_NXP_NCI)	+= nxp-nci/
 obj-$(CONFIG_NFC_S3FWRN5)	+= s3fwrn5/
 obj-$(CONFIG_NFC_ST95HF)	+= st95hf/
+#/*prize add by liuxuhui---20220531---start*/
+obj-$(CONFIG_MANUFACTOR_NFC_NXP533)              += nxp533/
+#/*prize add by liuxuhui---20220531---end*/

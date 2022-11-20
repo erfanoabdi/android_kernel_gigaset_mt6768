@@ -567,7 +567,7 @@ page_owner=on loop.max_part=7";
 	};
 
 	infracfg_ao: infracfg_ao@10001000 {
-		compatible = "mediatek,infracfg_ao", "syscon";
+		compatible = "mediatek,common-infracfg_ao","mediatek,infracfg_ao","syscon";
 		reg = <0 0x10001000 0 0x1000>;
 		interrupts = <GIC_SPI 71 IRQ_TYPE_EDGE_RISING>;
 		#clock-cells = <1>;
@@ -755,7 +755,7 @@ page_owner=on loop.max_part=7";
 				  "syscon", "simple-mfd";
 		reg = <0 0x10007000 0 0x1000>;
 		interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_LOW>;
-		mediatek,rg_dfd_timeout = <0xa0>;
+		mediatek,rg_dfd_timeout = <0x1ffff>;
 		#reset-cells = <1>;
 		reboot-mode {
 			compatible = "syscon-reboot-mode";
@@ -928,6 +928,7 @@ page_owner=on loop.max_part=7";
 			      "mediatek,mt6765-timer",
 			      "mediatek,sys_timer";
 		reg = <0 0x10017000 0 0x1000>;
+		reg-names = "sys_timer_base";
 		interrupts = <GIC_SPI 207 IRQ_TYPE_LEVEL_HIGH>;
 		clocks = <&clk13m>;
 	};
@@ -1679,6 +1680,12 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		compatible = "mediatek,goodix-fp";
 	};
 
+/* prize liaoxingen add fingerprint 20200831 start */
+	fpc: fpc {
+	compatible = "mediatek,mt6765-fpc";
+	};
+/* prize liaoxingen add fingerprint 20200831 end */
+
 	accdet: accdet {
 		compatible = "mediatek,pmic-accdet";
 	};
@@ -2156,6 +2163,13 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		pu_cfg = <0x70>;
 		rsel_cfg = <0x90>;
 		aed = <0x1a>;
+	//prize added by pengzhipeng, tps65132 support, 20200831-start
+		i2c_lcd_bias_mtk:i2c_lcd_bias@3e {
+			compatible = "ti,tps65132";
+			reg = <0x3e>;
+			status = "okay";
+		};
+	//prize added by pengzhipeng, tps65132 support, 20200831-end
 	};
 
 	i2c1: i2c1@11008000 {
@@ -2302,6 +2316,16 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		pu_cfg = <0x60>;
 		rsel_cfg = <0x90>;
 		aed = <0x1a>;
+/* prize add by liaoxingen 20210310 start */
+		aw881xx_smartpa: aw881xx_smartpa@34 {
+			compatible = "mediatek,aw881xx_smartpa";
+			#sound-dai-cells = <0>;
+			reg = <0x34>;
+			reset-gpio = <&pio 30 0>;
+			irq-gpio = <&pio 39 0>;
+			status = "okay";
+		};
+/* prize add by liaoxingen 20210310 end */
 	};
 
 	i2c8: i2c8@11005000 {
@@ -2315,6 +2339,17 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		clock-names = "main", "dma";
 		clock-div = <5>;
 		aed = <0x1a>;
+	};
+
+	spi2:spi2@11012000 {
+		compatible = "mediatek,mt6765-spi";
+		mediatek,pad-select = <0>;
+		reg = <0 0x11012000 0 0x1000>;
+		interrupts = <GIC_SPI 145 IRQ_TYPE_LEVEL_LOW>;
+		clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
+			 <&topckgen CLK_TOP_SPI_SEL>,
+			 <&infracfg_ao CLK_IFR_SPI2>;
+		clock-names = "parent-clk", "sel-clk", "spi-clk";
 	};
 
 	spi0:spi0@1100a000 {
@@ -2492,17 +2527,6 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
 			 <&topckgen CLK_TOP_SPI_SEL>,
 			 <&infracfg_ao CLK_IFR_SPI1>;
-		clock-names = "parent-clk", "sel-clk", "spi-clk";
-	};
-
-	spi2:spi2@11012000 {
-		compatible = "mediatek,mt6765-spi";
-		mediatek,pad-select = <0>;
-		reg = <0 0x11012000 0 0x1000>;
-		interrupts = <GIC_SPI 145 IRQ_TYPE_LEVEL_LOW>;
-		clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
-			 <&topckgen CLK_TOP_SPI_SEL>,
-			 <&infracfg_ao CLK_IFR_SPI2>;
 		clock-names = "parent-clk", "sel-clk", "spi-clk";
 	};
 
@@ -2736,11 +2760,11 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		compatible = "mediatek,mt6768-mt6358-sound";
 		mediatek,audio-codec = <&mt6358_snd>;
 		mediatek,platform = <&afe>;
-		mtk_spk_i2s_out = <3>;
-		mtk_spk_i2s_in = <0>;
+		mtk_spk_i2s_out = <1>; /*prize add*/
+		mtk_spk_i2s_in = <2>;/*prize add*/
 		/* mtk_spk_i2s_mck = <3>; */
 		mediatek,speaker-codec {
-			sound-dai = <&speaker_amp>;
+			sound-dai = <&aw881xx_smartpa>;/*prize add*/
 		};
 	};
 
@@ -3648,6 +3672,10 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 			"CLK_TOP_CAMTM_208_CG",
 			"CLK_SCP_SYS_CAM";
 	};
+	
+	camera_af_hw_node: camera_af_hw_node {
+		compatible = "mediatek,camera_af_lens";
+	};
 
 	flashlight_core: flashlight_core {
 		compatible = "mediatek,flashlight_core";
@@ -3667,6 +3695,17 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 			part = <0>;
 		};
 	};
+	/*prize add by zhuzhengjiang for flashlight 20210204 start*/
+	flashlights_aw36518: flashlights_aw36518 {
+		compatible = "mediatek,flashlights_aw36518";
+		decouple = <1>;  // 1: single flash 0:dual flash
+		channel@1 {
+			type = <0>;
+			ct = <0>;
+			part = <0>;
+		};
+	};
+/*prize add by zhuzhengjiang for flashlight 20210204 end*/
 
 	camsv1@1a050000 {
 		compatible = "mediatek,camsv1";
@@ -3758,7 +3797,8 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		/* enable_pe_plus; */
 		enable_pd20_reset;
 		power_path_support;
-		max_charger_voltage = <6500000>;
+		/* Wireless charge EPP Vout 9V support */
+		max_charger_voltage = <10000000>;
 		fast_charge_voltage = <3000000>;
 
 		/* charging current */
@@ -3792,7 +3832,8 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 
 		/* common */
 		battery_cv = <4350000>;
-		max_charger_voltage = <6500000>;
+		/* Wireless charge EPP Vout 9V support */
+		max_charger_voltage = <10000000>;
 		min_charger_voltage = <4600000>;
 
 		/* dynamic mivr */
@@ -3840,10 +3881,10 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		max_charge_temp_minus_x_degree = <47>;
 
 		/* PE */
-		ta_12v_support;
+//		ta_12v_support;             /*prize modify charge by liaoxingen 20200923 */
 		ta_9v_support;
 		pe_ichg_level_threshold = <1000000>; /* uA */
-		ta_ac_12v_input_current = <3200000>;
+//		ta_ac_12v_input_current = <3200000>;            /*prize modify charge by liaoxingen 20200923 */
 		ta_ac_9v_input_current = <3200000>;
 		ta_ac_7v_input_current = <3200000>;
 
@@ -3877,7 +3918,7 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		chg1_ta_ac_charger_current = <1500000>;
 		chg2_ta_ac_charger_current = <1500000>;
 		slave_mivr_diff = <100000>;
-		dual_polling_ieoc = <450000>;
+		dual_polling_ieoc = <250000>;  // <450000>; /* prize modify by liaoxingen for charge time according to 20201029 */
 
 		/* cable measurement impedance */
 		cable_imp_threshold = <699>;
@@ -3905,7 +3946,8 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 
 	extcon_usb: extcon_usb {
 		compatible = "mediatek,extcon-usb";
-		charger = <&mt6370_chg>;
+		/* prize modified for mt6370 not support */
+		charger = <&mt_charger>;
 		dev-conn = <&usb>;
 		mediatek,bypss-typec-sink = <1>;
 	};
@@ -3937,10 +3979,11 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		mediatek,clkbuf-driving-current = <1 1 1 1 1 1 1>;
 	};
 
+/* prize modify by liaoxingen start */
 	touch: touch {
-		compatible = "goodix,touch";
+		compatible = "mediatek,touch";
 	};
-
+/* prize modify by liaoxingen end */
 	nfc:nfc {
 		compatible = "mediatek,nfc-gpio-v2";
 		gpio-rst = <159>;
@@ -3966,6 +4009,11 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 
 	md1_sim2_hot_plug_eint: md1_sim2_hot_plug_eint {
 	};
+	/* begin, prize-lifenfen-20181206, add for lcm gpio pinctl */
+	    prize_disp: prize_disp{
+			compatible = "prize,dispsys_gpio";
+	    };
+	/* end, prize-lifenfen-20181206, add for lcm gpio pinctl */
 };
 
 &i2c7 {
@@ -4169,17 +4217,27 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 			pinmux = <PINMUX_GPIO143__FUNC_VOW_CLK_MISO>;
 		};
 	};
+	//prize added by pengzhipeng, ldo 1.8v-20200831-start
+	lcm_power_gpio: lcm_power_gpio {
+		compatible = "prize,lcm_power_gpio";
+	};
+	//prize added by pengzhipeng, ldo 1.8v-20200831-end
 };
 
 
 #include "mediatek/mt6358.dtsi"
 #include "mediatek/cust_mt6768_msdc.dtsi"
-#include "mediatek/mt6370.dtsi"
-#include "mediatek/mt6370_pd.dtsi"
-#include "mediatek/cust_mt6768_msdc.dtsi"
+/* prize modify by liaoxingen start */
+//#include "mediatek/mt6370.dtsi"
+//#include "mediatek/mt6370_pd.dtsi"
+/* prize modify by liaoxingen end */
+// #include "mediatek/cust_mt6768_msdc.dtsi"
 #ifdef CONFIG_CHARGER_RT9471
 #include "mediatek/rt9471.dtsi"
 #endif
+/* prize-sunshuai-20200901, add for charge start*/
+#include "mediatek/charge.dtsi"
+/* prize-sunshuai-20200901, add for charge end*/
 #ifdef CONFIG_TCPC_RT1711H
 #include "mediatek/tcpc_config.dtsi"
 #endif

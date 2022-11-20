@@ -1,6 +1,14 @@
-// SPDX-License-Identifier: GPL-2.0
 /*
- * Copyright (c) 2019 MediaTek Inc.
+ * Copyright (C) 2018 MediaTek Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See http://www.gnu.org/licenses/gpl-2.0.html for more details.
  */
 #define PFX "CAM_CAL"
 #define pr_fmt(fmt) PFX "[%s] " fmt, __func__
@@ -27,6 +35,13 @@
 #include <linux/fs.h>
 #include <linux/compat.h>
 #endif
+/*prize modify by zhuzhengjiang for gc08a3sub otp 20210730 start*/
+#include "../../../../imgsensor/inc/kd_imgsensor_define.h"
+#include "../../../../imgsensor/inc/kd_camera_typedef.h"
+#include "../../../../imgsensor/inc/kd_imgsensor.h"
+#include "../../../../imgsensor/src/common/v1/gc08a3sub_mipi_raw/gc08a3submipi_Sensor.h"
+extern struct imgsensor_otp_info_struct gc08a3sub_otp_info;
+/*prize modify by zhuzhengjiang for gc08a3sub otp 20210730 end*/
 
 
 
@@ -86,10 +101,10 @@ static int EEPROM_set_i2c_bus(unsigned int deviceID,
 	if (idx == IMGSENSOR_SENSOR_IDX_NONE)
 		return -EFAULT;
 
-	if (i2c_idx < I2C_DEV_IDX_1 || i2c_idx >= I2C_DEV_IDX_MAX)
+	if (i2c_idx >= I2C_DEV_IDX_MAX)
 		return -EFAULT;
 
-	client = g_pstI2Cclients[i2c_idx];
+	client = g_pstI2Cclients[(unsigned int)i2c_idx];
 	pr_debug("%s end! deviceID=%d index=%u client=%p\n",
 		 __func__, deviceID, idx, client);
 
@@ -524,9 +539,9 @@ int ov8856_af_mac;
 int ov8856_af_inf;
 int ov8856_af_lsb;
 
-int s5k4h7_af_mac;
-int s5k4h7_af_inf;
-int s5k4h7_af_lsb;
+// int s5k4h7_af_mac;
+// int s5k4h7_af_inf;
+// int s5k4h7_af_lsb;
 #define NEW_UNLOCK_IOCTL
 #ifndef NEW_UNLOCK_IOCTL
 static int EEPROM_drv_ioctl(struct inode *a_pstInode,
@@ -703,15 +718,47 @@ static long EEPROM_drv_ioctl(struct file *file,
 				else if ((ptempbuf->sensorID == 0x885a)
 				&& (ptempbuf->u4Offset == 0x7502))
 					*pu1Params = i4RetValue = ov8856_af_lsb;
-				else if ((ptempbuf->sensorID == 0x487b)
-				&& (ptempbuf->u4Offset == 0x7500))
-					*pu1Params = i4RetValue = s5k4h7_af_inf;
-				else if ((ptempbuf->sensorID == 0x487b)
-				&& (ptempbuf->u4Offset == 0x7501))
-					*pu1Params = i4RetValue = s5k4h7_af_mac;
-				else if ((ptempbuf->sensorID == 0x487b)
-				&& (ptempbuf->u4Offset == 0x7502))
-					*pu1Params = i4RetValue = s5k4h7_af_lsb;
+				// else if ((ptempbuf->sensorID == 0x487b)
+				// && (ptempbuf->u4Offset == 0x7500))
+					// *pu1Params = i4RetValue = s5k4h7_af_inf;
+				// else if ((ptempbuf->sensorID == 0x487b)
+				// && (ptempbuf->u4Offset == 0x7501))
+					// *pu1Params = i4RetValue = s5k4h7_af_mac;
+				// else if ((ptempbuf->sensorID == 0x487b)
+				// && (ptempbuf->u4Offset == 0x7502))
+					// *pu1Params = i4RetValue = s5k4h7_af_lsb;
+				/*prize modify by zhuzhengjiang for gc08a3sub otp 20210730 start*/
+				else if (ptempbuf->sensorID == GC08A3SUB_SENSOR_ID) {
+					if(ptempbuf->u4Offset == 0x0001) {
+						*pu1Params = i4RetValue = ((gc08a3sub_otp_info.info_flag & 0x15) > 0)? 1:0;;
+					}
+					else if(ptempbuf->u4Offset == 0x08) {
+						*pu1Params = i4RetValue = ((gc08a3sub_otp_info.awb.awb_flag & 0x15) > 0)? gc08a3sub_otp_info.awb.awb_flag & 0x15:0;
+					}
+					else if(ptempbuf->u4Offset == 0x09) {// Unit awb
+						*pu1Params = (gc08a3sub_otp_info.awb.unit_r_h << 8) | gc08a3sub_otp_info.awb.unit_r_l;
+						*(pu1Params+1) = (gc08a3sub_otp_info.awb.unit_gr_h << 8) | gc08a3sub_otp_info.awb.unit_gr_l;
+						*(pu1Params+2) = (gc08a3sub_otp_info.awb.unit_gb_h << 8) | gc08a3sub_otp_info.awb.unit_gb_l;
+						*(pu1Params+3) = (gc08a3sub_otp_info.awb.unit_b_h << 8) | gc08a3sub_otp_info.awb.unit_b_l;
+						i4RetValue = 1;
+						//printk("Unit awb: 0x%x 0x%x 0x%x 0x%x \n",*pu1Params,*(pu1Params+1),*(pu1Params+2),*(pu1Params+3));
+					}
+					else if(ptempbuf->u4Offset == 0x0d) { // golden awb
+
+						*pu1Params = (gc08a3sub_otp_info.awb.golden_r_h << 8) | gc08a3sub_otp_info.awb.golden_r_l;
+						*(pu1Params+1) = (gc08a3sub_otp_info.awb.golden_gr_h << 8) | gc08a3sub_otp_info.awb.golden_gr_l;
+						*(pu1Params+2) = (gc08a3sub_otp_info.awb.golden_gb_h << 8) | gc08a3sub_otp_info.awb.golden_gb_l;
+						*(pu1Params+3) = (gc08a3sub_otp_info.awb.golden_b_h << 8) | gc08a3sub_otp_info.awb.golden_b_l;
+						i4RetValue = 1;
+
+						//printk("golden awb: 0x%x 0x%x 0x%x 0x%x \n",*pu1Params,*(pu1Params+1),*(pu1Params+2),*(pu1Params+3));
+					}
+					else if(ptempbuf->u4Offset == 0x17) {// lsc
+						i4RetValue = ptempbuf->u4Length;
+						memcpy(pu1Params, (void *)&gc08a3sub_otp_info.lsc[0], ptempbuf->u4Length);
+					}
+				}
+				/*prize modify by zhuzhengjiang for gc08a3sub otp 20210730 start*/
 				else
 					i4RetValue =
 						pcmdInf->readCMDFunc(

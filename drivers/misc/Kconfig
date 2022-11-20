@@ -543,4 +543,9 @@ source "drivers/misc/cxl/Kconfig"
 source "drivers/misc/ocxl/Kconfig"
 source "drivers/misc/cardreader/Kconfig"
 source "drivers/misc/mediatek/Kconfig"
+
+#prize add by huarui, prize drv build support 20200327 start
+source "drivers/misc/prize/Kconfig"
+#prize add by huarui, prize drv build support 20200327 end
+
 endmenu

@@ -23,6 +23,7 @@ static struct workqueue_struct *gt1x_workqueue;
 
 u8 gt1x_config[GTP_CONFIG_MAX_LENGTH] = { 0 };
 
+#if defined(GTP_DRIVER_SEND_CFG)
 /* For 1080 * 1920 EVB */
 static u8 gt1151_cfg16[] = {
 0x1F, 0x38, 0x04, 0x80, 0x07, 0x05, 0x3D, 0x08, 0x00, 0x08,
@@ -153,6 +154,8 @@ static u8 gt1151_cfg_fhdp_amoled[] = {
 0x00, 0x00, 0x40, 0x32, 0x64, 0x00, 0x00, 0x88, 0x01, 0x14,
 0x00, 0x00, 0x23, 0x1E, 0x6D, 0x31, 0x0F, 0x32, 0x56, 0x65,
 0x20, 0x20, 0x28, 0x8D, 0x08, 0x1E, 0x4C, 0x00, 0x01, };
+
+#endif
 
 u32 gt1x_cfg_length = GTP_CONFIG_MAX_LENGTH;
 bool check_flag;
@@ -943,7 +946,7 @@ s32 gt1x_enter_sleep(void)
 			GTP_ERROR("[%s]Store bak ref failed.", __func__);
 	}
 #ifdef GTP_POWER_CTRL_SLEEP
-	gt1x_power_switch(SWITCH_OFF);
+	//gt1x_power_switch(SWITCH_OFF);
 	GTP_INFO("GTP enter sleep by poweroff!");
 	return 0;
 #endif

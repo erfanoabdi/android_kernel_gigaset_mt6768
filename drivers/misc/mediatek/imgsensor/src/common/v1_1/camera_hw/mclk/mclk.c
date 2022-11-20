@@ -133,9 +133,6 @@ static enum IMGSENSOR_RETURN mclk_set(
 	enum   IMGSENSOR_RETURN ret = IMGSENSOR_RETURN_SUCCESS;
 	enum MCLK_STATE state_index = MCLK_STATE_DISABLE;
 
-	if (sensor_idx < 0)
-		return IMGSENSOR_RETURN_ERROR;
-
 	if (pin_state < IMGSENSOR_HW_PIN_STATE_LEVEL_0 ||
 	    pin_state > IMGSENSOR_HW_PIN_STATE_LEVEL_HIGH) {
 		ret = IMGSENSOR_RETURN_ERROR;
@@ -144,11 +141,8 @@ static enum IMGSENSOR_RETURN mclk_set(
 		? pinst->drive_current[sensor_idx]
 		: MCLK_STATE_DISABLE;
 
-		if (state_index < 0)
-			return IMGSENSOR_RETURN_ERROR;
-
 		ppinctrl_state =
-			pinst->ppinctrl_state[sensor_idx][state_index];
+pinst->ppinctrl_state[(unsigned int)sensor_idx][(unsigned int)state_index];
 		/*
 		 * pr_debug(
 		 *	"%s : idx %d pin %d state %d driv_current %d\n",
@@ -173,6 +167,24 @@ static enum IMGSENSOR_RETURN mclk_set(
 				pinst->drive_current[sensor_idx]);
 
 		mutex_unlock(pinst->pmclk_mutex);
+		// prize add by linchong 20220309 start
+		#ifdef CONFIG_PRIZE_DUAL_CAMERA_ENABLE
+		 if(sensor_idx == 0) {
+			 ppinctrl_state = pinst->ppinctrl_state[sensor_idx+3][state_index];
+			 mutex_lock(pinst->pmclk_mutex);
+			 if (ppinctrl_state != NULL && !IS_ERR(ppinctrl_state))
+				 pinctrl_select_state(pinst->ppinctrl, ppinctrl_state);
+			 else
+				 pr_info(
+					 "%s : sensor_idx %d fail to set pinctrl, PinIdx %d, Val %d\n",
+					 __func__,
+					 sensor_idx+1,
+					 pin,
+					 pin_state);
+			 mutex_unlock(pinst->pmclk_mutex);
+		 }
+		#endif
+		// prize add by linchong 20220309 end
 	}
 	return ret;
 }

@@ -39,7 +39,8 @@
 #define SPLIT ", "
 
 /* register, address, configurations */
-#define TPD_DEVICE            "mtk-tpd"
+#define TPD_DEVICE            "ilitek"
+#define TPD_INPUT_DEVICE      "mtk-tpd"
 #define TPD_X                  0
 #define TPD_Y                  1
 #define TPD_Z1                 2

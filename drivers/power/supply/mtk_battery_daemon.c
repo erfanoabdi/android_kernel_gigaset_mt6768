@@ -3692,8 +3692,8 @@ void mtk_battery_netlink_handler(struct sk_buff *skb)
 
 	kvfree(fgd_ret_msg);
 }
-
-
+//prize-add by tangcong for E2 customer highTemperature  20220328 start
+#ifdef CONFIG_PRIZE_BATTERY_HIGTEMP_CTRL
 unsigned int TempConverBattThermistor(struct mtk_battery *gm, int temp)
 {
 	int RES1 = 0, RES2 = 0;
@@ -3705,15 +3705,15 @@ unsigned int TempConverBattThermistor(struct mtk_battery *gm, int temp)
 	ptable = gm->tmp_table;
 
 
-	if (temp >= ptable[20].BatteryTemp) {
-		TBatt_R_Value = ptable[20].TemperatureR;
+	if (temp >= ptable[22].BatteryTemp) {//prize add by tangcong 20220324 start
+		TBatt_R_Value = ptable[22].TemperatureR;//prize add by tangcong 20220324 start
 	} else if (temp <= ptable[0].BatteryTemp) {
 		TBatt_R_Value = ptable[0].TemperatureR;
 	} else {
 		RES1 = ptable[0].TemperatureR;
 		TMP1 = ptable[0].BatteryTemp;
 
-		for (i = 0; i <= 20; i++) {
+		for (i = 0; i <= 22; i++) {//prize add by tangcong 20220324 start
 			if (temp <= ptable[i].BatteryTemp) {
 				RES2 = ptable[i].TemperatureR;
 				TMP2 = ptable[i].BatteryTemp;
@@ -3737,7 +3737,52 @@ unsigned int TempConverBattThermistor(struct mtk_battery *gm, int temp)
 
 	return TBatt_R_Value;
 }
+#else
+unsigned int TempConverBattThermistor(struct mtk_battery *gm, int temp)
+{
+	int RES1 = 0, RES2 = 0;
+	int TMP1 = 0, TMP2 = 0;
+	int i;
+	unsigned int TBatt_R_Value = 0xffff;
+	struct fuelgauge_temperature *ptable;
 
+	ptable = gm->tmp_table;
+
+
+	if (temp >= ptable[20].BatteryTemp) {//prize add by tangcong 20220324 start
+		TBatt_R_Value = ptable[20].TemperatureR;//prize add by tangcong 20220324 start
+	} else if (temp <= ptable[0].BatteryTemp) {
+		TBatt_R_Value = ptable[0].TemperatureR;
+	} else {
+		RES1 = ptable[0].TemperatureR;
+		TMP1 = ptable[0].BatteryTemp;
+
+		for (i = 0; i <= 20; i++) {//prize add by tangcong 20220324 start
+			if (temp <= ptable[i].BatteryTemp) {
+				RES2 = ptable[i].TemperatureR;
+				TMP2 = ptable[i].BatteryTemp;
+				break;
+			}
+			{	/* hidden else */
+				RES1 = ptable[i].TemperatureR;
+				TMP1 = ptable[i].BatteryTemp;
+			}
+		}
+
+
+		TBatt_R_Value = interpolation(TMP1, RES1, TMP2, RES2, temp);
+	}
+
+	bm_trace(
+		"[%s] [%d] %d %d %d %d %d\n",
+		__func__,
+		TBatt_R_Value, TMP1,
+		RES1, TMP2, RES2, temp);
+
+	return TBatt_R_Value;
+}
+#endif
+//prize-add by tangcong for E2 customer highTemperature  20220328 end
 unsigned int TempToBattVolt(struct mtk_battery *gm, int temp, int update)
 {
 	unsigned int R_NTC = TempConverBattThermistor(gm, temp);

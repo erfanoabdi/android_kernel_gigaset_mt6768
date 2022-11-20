@@ -154,6 +154,15 @@ config MTK_LENS_DW9714A_SUPPORT
 	  lens driver for the camera sensor module
 	  Set as y if the driver is used in this project
 
+config MTK_LENS_DW9714KAF_SUPPORT
+	tristate "DW9714KAF Lens Driver"
+        depends on MTK_LENS
+	help
+	  DW9714KAF Lens Driver
+	  This config is used to enable the corresponding
+	  lens driver for the camera sensor module
+	  Set as y if the driver is used in this project
+
 config MTK_LENS_DW9814AF_SUPPORT
 	tristate "DW9814AF Lens Driver"
         depends on MTK_LENS
@@ -217,6 +226,15 @@ config MTK_LENS_FP5510E2AF_SUPPORT
 	  lens driver for the camera sensor module
 	  Set as y if the driver is used in this project
 
+config MTK_LENS_FP5510FE4AF_SUPPORT
+	tristate "FP5510FE4AF Lens Driver"
+        depends on MTK_LENS
+	help
+	  FM50AF Lens Driver
+	  This config is used to enable the corresponding
+	  lens driver for the camera sensor module
+	  Set as y if the driver is used in this project
+	  
 config MTK_LENS_MT9P017AF_SUPPORT
 	tristate "MT9P017AF Lens Driver"
 	help
@@ -277,3 +295,31 @@ config MTK_LENS_WV511AAF_SUPPORT
 	  This config is used to enable the corresponding
 	  lens driver for the camera sensor module
 	  Set as y if the driver is used in this project
+
+config MTK_LENS_GT9767AF_SUPPORT
+	bool "GT9767AF Lens Driver"
+	default n
+	help
+	  GT9767AF Lens Driver
+	  This config is used to enable the corresponding
+	  lens driver for the camera sensor module
+	  Set as y if the driver is used in this project
+
+config MTK_LENS_GT9772AF_SUPPORT
+	tristate "GT9772AF Lens Driver"
+        depends on MTK_LENS
+	help
+	  GT9772AF Lens Driver
+	  This config is used to enable the corresponding
+	  lens driver for the camera sensor module
+	  Set as y if the driver is used in this project
+#/*prize  add  by zhuzhengjiang    20220318 start*/
+config MTK_LENS_DW9781CAF_SUPPORT
+	bool "DW9781CAF Lens Driver"
+	default n
+	help
+	  DW9781CAF Lens Driver
+	  This config is used to enable the corresponding
+	  lens driver for the camera sensor module
+	  Set as y if the driver is used in this project
+#/*prize  add  by zhuzhengjiang    20220318 end*/

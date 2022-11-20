@@ -87,6 +87,37 @@ const struct flashlight_device_id flashlight_id[] = {
 	/* {TYPE, CT, PART, "NAME", CHANNEL, DECOUPLE} */
 	{0, 0, 0, "flashlights-sywt78", 0, 0},
 };
+/* prize add by zhuzhengjiang for flash ocp8111a 20211223 start*/
+/* prize add by zhuzhengjiang for flash aw3641e 20201224 start*/
+#elif defined(CONFIG_MTK_FLASHLIGHT_AW3641E_GPIO)
+	const struct flashlight_device_id flashlight_id[] = {
+		/* {TYPE, CT, PART, "NAME", CHANNEL, DECOUPLE} */
+		{0, 0, 0, "flashlights-aw3641e-gpio", 0, 1},
+	};
+/* prize add by zhuzhengjiang for flash aw3641e 20201224 end*/
+#elif defined(CONFIG_MTK_FLASHLIGHT_AW36515)
+	const struct flashlight_device_id flashlight_id[] = {
+		/* {TYPE, CT, PART, "NAME", CHANNEL, DECOUPLE} */
+		{0, 0, 0, "flashlights_aw36515", 0, 1},
+		//{0, 1, 0, "flashlights_aw36515", 1, 0},
+	};
+#elif defined(CONFIG_MTK_FLASHLIGHT_AW36518)
+	const struct flashlight_device_id flashlight_id[] = {
+		/* {TYPE, CT, PART, "NAME", CHANNEL, DECOUPLE} */
+		{0, 0, 0, "flashlights_aw36518", 0, 1},
+	};
+#elif defined(CONFIG_MTK_FLASHLIGHT_OCP8111A_GPIO)
+	const struct flashlight_device_id flashlight_id[] = {
+		/* {TYPE, CT, PART, "NAME", CHANNEL, DECOUPLE} */
+		{0, 0, 0, "flashlights-ocp8111a-gpio", 0, 1},
+	};
+#elif defined(CONFIG_MTK_FLASHLIGHT_MT6370)
+	const struct flashlight_device_id flashlight_id[] = {
+	/* {TYPE, CT, PART, "NAME", CHANNEL, DECOUPLE} */
+	{0, 0, 0, "flashlights-mt6370", 0, 1},
+//	{0, 1, 0, "flashlights-mt6370", 1, 0},
+};
+/* prize add by zhuzhengjiang for flash ocp8111a 20211223 end*/
 #else
 const struct flashlight_device_id flashlight_id[] = {
 	/* {TYPE, CT, PART, "NAME", CHANNEL, DECOUPLE} */

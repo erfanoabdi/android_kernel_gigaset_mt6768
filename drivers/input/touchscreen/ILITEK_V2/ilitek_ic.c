@@ -22,6 +22,12 @@
 
 #include "ilitek.h"
 
+//prize add by wangyongsheng 202210129 start
+//#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+//#include "../../../misc/mediatek/hardware_info/hardware_info.h"
+//extern struct hardware_info current_tp_info;
+//#endif
+//prize add by wangyongsheng 202210129 start
 #define PROTOCL_VER_NUM		8
 static struct ilitek_protocol_info protocol_info[PROTOCL_VER_NUM] = {
 	/* length -> fw, protocol, tp, key, panel, core, func, window, cdc, mp_info */
@@ -1177,6 +1183,14 @@ out:
 	ipio_info("Firmware MP version = %d.%d.%d.%d\n", buf[5], buf[6], buf[7], buf[8]);
 	idev->chip->fw_ver = buf[1] << 24 | buf[2] << 16 | buf[3] << 8 | buf[4];
 	idev->chip->fw_mp_ver = buf[5] << 24 | buf[6] << 16 | buf[7] << 8 | buf[8];
+//prize add  by wangyongsheng 2022101291 start	
+//	#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+//	sprintf(current_tp_info.chip, "ILI9881:0x%x",idev->chip->id);
+//	sprintf(current_tp_info.id,"FW_ver:%d.%d.%d.%d\n", buf[1], buf[2], buf[3], buf[4]);
+//	sprintf(current_tp_info.more,"touchpanel");
+//	sprintf(current_tp_info.vendor,"ilitek");
+//#endif
+//prize add  by wangyongsheng 202210129 end 
 	return ret;
 }
 

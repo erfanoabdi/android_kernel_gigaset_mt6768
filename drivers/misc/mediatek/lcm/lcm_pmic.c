@@ -12,7 +12,7 @@ static struct regulator *disp_bias_pos;
 static struct regulator *disp_bias_neg;
 static int regulator_inited;
 
-int display_bias_regulator_init(void)
+__weak int display_bias_regulator_init(void) //prize modified by huarui
 {
 	int ret = 0;
 
@@ -40,7 +40,7 @@ int display_bias_regulator_init(void)
 }
 EXPORT_SYMBOL(display_bias_regulator_init);
 
-int disp_late_bias_enable(void)
+__weak int disp_late_bias_enable(void) //prize modified by huarui
 {
 	int ret = 0;
 	int retval = 0;
@@ -63,7 +63,7 @@ int disp_late_bias_enable(void)
 }
 EXPORT_SYMBOL(disp_late_bias_enable);
 
-int display_bias_enable(void)
+__weak int display_bias_enable(void)
 {
 	int ret = 0;
 	int retval = 0;
@@ -98,7 +98,7 @@ int display_bias_enable(void)
 }
 EXPORT_SYMBOL(display_bias_enable);
 
-int display_bias_disable(void)
+__weak int display_bias_disable(void) //prize modified by huarui
 {
 	int ret = 0;
 	int retval = 0;
@@ -122,25 +122,25 @@ int display_bias_disable(void)
 EXPORT_SYMBOL(display_bias_disable);
 
 #else
-int display_bias_regulator_init(void)
+__weak int display_bias_regulator_init(void) //prize modified by huarui
 {
 	return 0;
 }
 EXPORT_SYMBOL(display_bias_regulator_init);
 
-int display_bias_enable(void)
+__weak int display_bias_enable(void) //prize modified by huarui
 {
 	return 0;
 }
 EXPORT_SYMBOL(display_bias_enable);
 
-int disp_late_bias_enable(void)
+__weak int disp_late_bias_enable(void)
 {
 	return 0;
 }
 EXPORT_SYMBOL(disp_late_bias_enable);
 
-int display_bias_disable(void)
+__weak int display_bias_disable(void) //prize modified by huarui
 {
 	return 0;
 }

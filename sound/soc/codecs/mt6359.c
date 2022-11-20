@@ -22,9 +22,11 @@
 
 #include <sound/soc.h>
 #include <sound/tlv.h>
-
-#include "registers.h"
-
+#ifdef CONFIG_MTK_PMIC_CHIP_MT6359P
+#include <linux/mfd/mt6359p/registers.h>
+#else
+#include <linux/mfd/mt6359/registers.h>
+#endif
 #ifdef CONFIG_MTK_ACCDET
 #include "accdet.h"
 #endif
@@ -45,7 +47,11 @@
 #endif
 
 #include "mt6359.h"
-
+//prize add by yantaotao for HAC  start
+#if defined(CONFIG_MTK_HAC_SUPPORT)
+#include <linux/gpio.h>
+#endif
+//prize add by yantaotao for HAC  end
 enum {
 	MT6359_AIF_1 = 0,	/* dl: hp, rcv, hp+lo */
 	MT6359_AIF_2,		/* dl: lo only */
@@ -678,6 +684,14 @@ static const char *const hp_dl_pga_gain[] = {
 	"-22Db", "-40Db"
 };
 
+//prize add by yantaotao for HAC  start
+#if defined(CONFIG_MTK_HAC_SUPPORT)
+static const char *const hac_state[] = {
+	"Off", "On",
+};
+#endif
+//prize add by yantaotao for HAC  end
+
 static void zcd_enable(struct mt6359_priv *priv, bool enable, int device)
 {
 	if (enable) {
@@ -925,6 +939,52 @@ static int dl_pga_set(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
+//prize add by yantaotao for HAC  start
+#if defined(CONFIG_MTK_HAC_SUPPORT)
+extern unsigned int HAC_GPIO_PIN;
+static void Receiver_Speaker_Switch_Change(bool enable)
+{
+//	int ret = 0;
+#ifndef CONFIG_FPGA_EARLY_PORTING
+#ifdef CONFIG_OF
+	printk("%s\n", __func__);
+	if (enable)
+	{		
+		gpio_set_value(HAC_GPIO_PIN, 1);	
+	}
+	else
+	{
+		gpio_set_value(HAC_GPIO_PIN, 0);
+	}
+#endif
+#endif
+}
+
+static int Receiver_Speaker_Switch_Get(struct snd_kcontrol *kcontrol,
+				       struct snd_ctl_elem_value *ucontrol)
+{
+	printk("%s()\n", __func__);
+
+	return 0;
+}
+static int Receiver_Speaker_Switch_Set(struct snd_kcontrol *kcontrol,
+				       struct snd_ctl_elem_value *ucontrol)
+{
+	printk("%s()\n", __func__);
+
+	if (ucontrol->value.integer.value[0] == true)
+	{
+		Receiver_Speaker_Switch_Change(true);
+	}
+	else
+	{
+		Receiver_Speaker_Switch_Change(false);
+	}
+	
+	return 0;
+}
+//prize add by yantaotao for HAC  end
+#endif
 static int mt6359_put_volsw(struct snd_kcontrol *kcontrol,
 			    struct snd_ctl_elem_value *ucontrol)
 {
@@ -992,6 +1052,11 @@ static const DECLARE_TLV_DB_SCALE(capture_tlv, 0, 600, 0);
 static const struct soc_enum dl_pga_enum[] = {
 	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(dl_pga_gain), dl_pga_gain),
 	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(hp_dl_pga_gain), hp_dl_pga_gain),
+	//prize add by yantaotao for HAC  start
+	#if defined(CONFIG_MTK_HAC_SUPPORT)
+	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(hac_state), hac_state),
+	#endif
+	//prize add by yantaotao for HAC  end
 };
 
 #define MT_SOC_ENUM_EXT_ID(xname, xenum, xhandler_get, xhandler_put, id) \
@@ -1027,6 +1092,13 @@ static const struct snd_kcontrol_new mt6359_snd_controls[] = {
 	MT_SOC_ENUM_EXT_ID("Lineout_PGAR_GAIN", dl_pga_enum[0],
 			   dl_pga_get, dl_pga_set,
 			   AUDIO_ANALOG_VOLUME_LINEOUTR),
+	//prize add by yantaotao for HAC  start
+	#if defined(CONFIG_MTK_HAC_SUPPORT)
+	SOC_ENUM_EXT("Receiver_Speaker_Switch", dl_pga_enum[2],
+		     Receiver_Speaker_Switch_Get,
+		     Receiver_Speaker_Switch_Set),
+	#endif
+	//prize add by yantaotao for HAC  end
 };
 
 /* ul pga gain */

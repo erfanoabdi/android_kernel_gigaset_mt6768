@@ -28,6 +28,12 @@
 #include <mt-plat/met_drv.h>
 #endif
 
+//prize anhengxuan for aw99703 i2c control,20220302 begin
+#if defined(CONFIG_BACKLIGHT_AW99703)
+extern int chargepump_set_backlight_level(int val);
+#endif
+//prize anhengxuan for aw99703 i2c control,20220302 end
+
 #define CONFIG_LEDS_BRIGHTNESS_CHANGED
 /****************************************************************************
  * variables
@@ -250,6 +256,11 @@ static int led_level_i2c_set(struct mtk_led_data *s_led, int level)
 #ifdef CONFIG_MTK_GATE_IC
 	_gate_ic_backlight_set(level);
 #endif
+//prize anhengxuan for aw99703 i2c control,20220302 begin
+	#if defined(CONFIG_BACKLIGHT_AW99703)
+	chargepump_set_backlight_level(level);
+	#endif
+//prize anhengxuan for aw99703 i2c control,20220302 end
 
 	s_led->hw_level = level;
 
@@ -291,7 +302,11 @@ static int led_data_init(struct device *dev, struct mtk_led_data *s_led,
 {
 	int ret;
 	int level;
-
+	//prize anhengxuan for aw99703 i2c control,20220302 begin
+	#if defined(CONFIG_BACKLIGHT_AW99703)
+	s_led->conf.cdev.default_trigger = NULL;
+	#endif
+	//prize anhengxuan for aw99703 i2c control,20220302 end
 	s_led->conf.cdev.flags = LED_CORE_SUSPENDRESUME;
 	s_led->conf.cdev.brightness_set_blocking = led_level_set;
 	level = brightness_maptolevel(&s_led->conf, brightness);
@@ -358,8 +373,15 @@ static int mtk_leds_parse_dt(struct device *dev, struct mtk_leds_info *m_leds)
 
 		ret = of_property_read_u32(child, "trans-bits", &(s_led->conf.trans_bits));
 		if (ret) {
-			dev_info(dev, "No trans-bits, use default value 10\n");
+	//prize anhengxuan for aw99703 i2c control,20220302 begin
+	#if defined(CONFIG_BACKLIGHT_AW99703)
+		dev_info(dev, "No trans-bits, use default value 11\n");
+			s_led->conf.trans_bits = 11;
+	#else
+		dev_info(dev, "No trans-bits, use default value 10\n");
 			s_led->conf.trans_bits = 10;
+	#endif
+	//prize anhengxuan for aw99703 i2c control,20220302 end
 		}
 
 		s_led->conf.max_level = (1 << s_led->conf.trans_bits) - 1;
@@ -373,7 +395,13 @@ static int mtk_leds_parse_dt(struct device *dev, struct mtk_leds_info *m_leds)
 			else
 				brightness = LED_OFF;
 		} else {
-			brightness = LED_FULL;
+	//prize anhengxuan for aw99703 i2c control,20220302 begin
+	#if defined(CONFIG_BACKLIGHT_AW99703)
+	   brightness = 205;
+	#else
+		brightness = LED_FULL;
+	#endif
+ //prize anhengxuan for aw99703 i2c control,20220302 end
 		}
 		dev_info(dev, "parse %d leds dt: %s, %d, %d, %d\n",
 						 num, s_led->conf.cdev.name,

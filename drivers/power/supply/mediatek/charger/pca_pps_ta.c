@@ -10,7 +10,7 @@
 #include <linux/of.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
-#include <mt-plat/prop_chgalgo_class.h>
+#include <mt-plat/v1/prop_chgalgo_class.h>//prize-Resolves an issue where header file errors cannot be found-pengzhipeng-20220514
 #include <tcpm.h>
 
 #define PCA_PPS_TA_VERSION	"2.0.0_G"
@@ -51,9 +51,21 @@ static struct apdo_pps_range apdo_pps_tbl[] = {
 
 static inline int check_typec_attached_snk(struct tcpc_device *tcpc)
 {
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
+	int typec_state = tcpm_inquire_typec_attach_state(tcpc);
+
+	PCA_DBG("check_typec_attached_snk typec_state = %d  TYPEC_ATTACHED_DBGACC_SNK = %d  TYPEC_ATTACHED_SNK = %d\n",
+		typec_state,TYPEC_ATTACHED_DBGACC_SNK,TYPEC_ATTACHED_SNK);
+	if ((typec_state != TYPEC_ATTACHED_SNK) && (typec_state != TYPEC_ATTACHED_DBGACC_SNK))
+		return -EINVAL;
+	return 0;
+#else
 	if (tcpm_inquire_typec_attach_state(tcpc) != TYPEC_ATTACHED_SNK)
 		return -EINVAL;
 	return 0;
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 }
 
 static int pca_pps_enable_charging(struct prop_chgalgo_device *pca, bool en,

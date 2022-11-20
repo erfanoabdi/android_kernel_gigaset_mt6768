@@ -645,11 +645,15 @@ static inline uint8_t pe_get_startup_state(
 
 	switch (pd_event->msg_sec) {
 	case TYPEC_ATTACHED_DBGACC_SNK:
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifndef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
 #ifdef CONFIG_USB_PD_CUSTOM_DBGACC
 		pd_port->custom_dbgacc = true;
 		startup_state = PE_DBG_READY;
 		break;
 #endif	/* CONFIG_USB_PD_CUSTOM_DBGACC */
+#endif
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 	case TYPEC_ATTACHED_SNK:
 		startup_state = PE_SNK_STARTUP;
 		break;

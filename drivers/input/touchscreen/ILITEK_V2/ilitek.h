@@ -106,7 +106,7 @@
 #define DRIVER_VERSION			"2.0.10.0.200801"
 
 /* Options */
-#define TDDI_INTERFACE			BUS_SPI /* BUS_I2C(0x18) or BUS_SPI(0x1C) */
+#define TDDI_INTERFACE			BUS_I2C /* BUS_I2C(0x18) or BUS_SPI(0x1C) */
 #define VDD_VOLTAGE			1800000
 #define VCC_VOLTAGE			1800000
 #define SPI_CLK                         1      /* follow by clk list */
@@ -137,7 +137,7 @@
 /* SPI Mode */
 #define SPI_ICE_MODE			0
 #define SPI_SLAVE_MODE			1
-#define SPI_MODE			SPI_SLAVE_MODE
+#define SPI_MODE			SPI_ICE_MODE
 #define SPI_MODE_DELAY			mdelay(1)
 
 /*if current interface is spi, must to hostdownload */
@@ -434,7 +434,7 @@ struct gesture_symbol {
 #define TOUCH_SCREEN_X_MIN			0
 #define TOUCH_SCREEN_Y_MIN			0
 #define TOUCH_SCREEN_X_MAX			720
-#define TOUCH_SCREEN_Y_MAX			1440
+#define TOUCH_SCREEN_Y_MAX			1520
 #define MAX_TOUCH_NUM				10
 #define ILITEK_KNUCKLE_ROI_FINGERS		2
 

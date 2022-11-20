@@ -25,11 +25,64 @@ struct REGULATOR_CTRL regulator_control[REGULATOR_TYPE_MAX_NUM] = {
 #ifdef CONFIG_REGULATOR_RT5133
 	{"vcama1"},
 #endif
+#if defined(IMGSENSOR_MT6781) || defined(IMGSENSOR_MT6877)
+	{"vcamaf"},
+#endif
 	{"vcamd"},
 	{"vcamio"},
 };
 
 static struct REGULATOR reg_instance;
+/*prize add by zhuzhengjiang for sham dual camera  20201208 start*/
+#ifdef CONFIG_PRIZE_DUAL_CAMERA_ENABLE
+static struct regulator *g_avdd_pregulator;
+static struct regulator *g_dvdd_pregulator;
+void set_avdd_regulator(int status)
+{
+	PK_INFO("set_avdd_regulator status=%d\n",status);
+	if(g_avdd_pregulator!=NULL){
+		if(status ==1)
+		{
+		if (regulator_set_voltage(g_avdd_pregulator,REGULATOR_VOLTAGE_2800,REGULATOR_VOLTAGE_2800)){
+			PK_INFO("[regulator]fail to regulator_set_voltage avdd\n");
+		}
+		if (regulator_enable(g_avdd_pregulator)) {
+			PK_INFO("[regulator]fail to regulator_enable, powertype\n");
+		}
+	}else{
+		if (regulator_disable(g_avdd_pregulator)) {
+			PK_INFO("[regulator]fail to avdd regulator_disable, powertype:\n");
+		}
+	}
+	}else{
+		PK_INFO("prize linchong g_avdd_pregulator is NULL\n");
+	}
+	
+}
+void set_dvdd_regulator(int status)
+{
+	PK_INFO("set_dvdd_regulator  status=%d\n",status);
+	if(g_dvdd_pregulator!=NULL){
+		if(status ==1)
+		{
+		if (regulator_set_voltage(g_dvdd_pregulator,REGULATOR_VOLTAGE_1800,REGULATOR_VOLTAGE_1800)){
+			PK_INFO("[regulator]fail to regulator_set_voltage avdd\n");
+		}
+		if (regulator_enable(g_dvdd_pregulator)) {
+			PK_INFO("[regulator]fail to regulator_enable, powertype\n");
+		}
+	}else{
+		if (regulator_disable(g_dvdd_pregulator)) {
+			PK_INFO("[regulator]fail to avdd regulator_disable, powertype:\n");
+		}
+	}
+	}else{
+		PK_INFO("prize linchong g_dvdd_pregulator is NULL\n");
+	}
+	
+}
+#endif
+/*prize add by zhuzhengjiang for sham dual camera  20201208 end*/
 
 static enum IMGSENSOR_RETURN regulator_init(
 	void *pinstance,
@@ -57,6 +110,19 @@ static enum IMGSENSOR_RETURN regulator_init(
 			preg->pregulator[idx][type] = regulator_get_optional(
 					&pcommon->pplatform_device->dev,
 					str_regulator_name);
+			/*prize add by zhuzhengjiang for sham dual camera  20201208 end*/
+			#ifdef CONFIG_PRIZE_DUAL_CAMERA_ENABLE
+			// if (type == IMGSENSOR_SENSOR_IDX_MAIN)
+			// {
+				// if(idx == REGULATOR_TYPE_VCAMA)
+					// g_avdd_pregulator = preg->pregulator[type][idx];
+				// if(idx == REGULATOR_TYPE_VCAMIO)
+					// g_dvdd_pregulator = preg->pregulator[type][idx];
+				
+			// }
+			#endif
+			/*prize add by zhuzhengjiang for sham dual camera  20201208 end*/
+			
 			if (IS_ERR(preg->pregulator[idx][type])) {
 				preg->pregulator[idx][type] = NULL;
 				PK_INFO("ERROR: regulator[%d][%d]  %s fail!\n",
@@ -108,8 +174,7 @@ static enum IMGSENSOR_RETURN regulator_set(
 	if (pin > IMGSENSOR_HW_PIN_DOVDD   ||
 	    pin < IMGSENSOR_HW_PIN_AVDD    ||
 	    pin_state < IMGSENSOR_HW_PIN_STATE_LEVEL_0 ||
-	    pin_state >= IMGSENSOR_HW_PIN_STATE_LEVEL_HIGH ||
-	    sensor_idx < 0)
+	    pin_state >= IMGSENSOR_HW_PIN_STATE_LEVEL_HIGH)
 		return IMGSENSOR_RETURN_ERROR;
 
 	reg_type_offset = REGULATOR_TYPE_VCAMA;

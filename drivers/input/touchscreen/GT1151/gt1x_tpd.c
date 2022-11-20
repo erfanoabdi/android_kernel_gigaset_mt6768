@@ -666,7 +666,7 @@ static int gt1x_ts_power_init(void)
 	GTP_INFO("Power init");
 	/* dev:i2c client device or spi slave device*/
 
-	tpd->reg = devm_regulator_get(tpd->tpd_dev, "vtouch");
+	tpd->reg = devm_regulator_get(tpd->tpd_dev, "vio28");
 	if (IS_ERR(tpd->reg)) {
 		GTP_ERROR("regulator_get() failed!\n");
 		tpd->reg = NULL;
@@ -1130,8 +1130,10 @@ static int tpd_local_init(void)
 		goto gpio_err;
 
 	ret = gt1x_ts_power_init();
-	if (ret < 0)
-		goto power_init_err;
+//prize modified by huarui, 20210318, start
+	//if (ret < 0)
+	//	goto power_init_err;
+//prize modified by huarui, 20210318, end
 
 #if TPD_SUPPORT_I2C_DMA
 		tpd->dev->dev.coherent_dma_mask = DMA_BIT_MASK(32);

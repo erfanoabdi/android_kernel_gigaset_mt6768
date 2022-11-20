@@ -58,6 +58,21 @@
 #include <linux/reboot.h>
 
 #include "mtk_charger.h"
+//prize add by lipengpeng 20210621 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW)
+extern int get_wireless_charge_current(struct charger_data *pdata);
+extern int get_MT5725_status(void);
+extern struct mtk_charger *mt5725_info;
+extern int get_mt5725_charge_protocol(void);
+#endif
+//prize add by lipengpeng 20210621 end  
+
+#if defined(CONFIG_PRIZE_CHARGE_CTRL_POLICY)
+#if defined(CONFIG_PRIZE_CHARGE_CTRL_POLICY_CURR_VAL)
+#include "prize_charge_ctrl_policy.h"
+#endif
+extern int g_charge_is_screen_on;
+#endif
 
 static int _uA_to_mA(int uA)
 {
@@ -189,10 +204,17 @@ static bool select_charging_current_limit(struct mtk_charger *info,
 		}
 	} else if (info->chr_type == POWER_SUPPLY_TYPE_USB_FLOAT) {
 		/* NONSTANDARD_CHARGER */
-		pdata->input_current_limit =
-			info->data.usb_charger_current;
-		pdata->charging_current_limit =
-			info->data.usb_charger_current;
+/*prize add by liuxuhui---20220528---start*/
+#ifdef CONFIG_PRIZE_SET_D5N_NON_STANDARD_CHG
+                pdata->input_current_limit =1500000;
+                pdata->charging_current_limit =1500000;
+#else
+                pdata->input_current_limit =
+                        info->data.usb_charger_current;
+                pdata->charging_current_limit =
+                        info->data.usb_charger_current;
+#endif
+/*prize add by liuxuhui---20220528---end*/
 		is_basic = true;
 	}
 
@@ -220,8 +242,15 @@ static bool select_charging_current_limit(struct mtk_charger *info,
 				pdata->charging_current_limit = 2000000;
 			} else {
 				chr_err("type-C: inquire rp error\n");
-				pdata->input_current_limit = 500000;
-				pdata->charging_current_limit = 500000;
+/*prize add by liuxuhui---20220528---start*/
+#ifdef CONFIG_PRIZE_SET_D5N_NON_STANDARD_CHG
+                                pdata->input_current_limit = 1500000;
+                                pdata->charging_current_limit = 1500000;
+#else
+                                pdata->input_current_limit = 500000;
+                                pdata->charging_current_limit = 500000;
+#endif
+/*prize add by liuxuhui---20220528---end*/
 			}
 
 			chr_err("type-C:%d current:%d\n",
@@ -242,6 +271,39 @@ static bool select_charging_current_limit(struct mtk_charger *info,
 			}
 		}
 	}
+	
+#if defined(CONFIG_PRIZE_CHARGE_CTRL_POLICY)
+		if (g_charge_is_screen_on){
+			#if defined(CONFIG_PRIZE_CHARGE_CTRL_POLICY_CURR_VAL)
+			if (pdata->charging_current_limit > PRIZE_CHARGE_CTRL_POLICY_CHARGING_CURR){
+				pdata->charging_current_limit = PRIZE_CHARGE_CTRL_POLICY_CHARGING_CURR;
+			}
+			if (pdata->input_current_limit > PRIZE_CHARGE_CTRL_POLICY_INPUT_CURR){
+				pdata->input_current_limit = PRIZE_CHARGE_CTRL_POLICY_INPUT_CURR;
+			}
+			#else
+			if (pdata->charging_current_limit > 1500000){
+				pdata->charging_current_limit = 1500000;
+			}
+			if (pdata->input_current_limit > 1500000){
+				pdata->input_current_limit = 1500000;
+			}
+			#endif
+
+
+		}
+		printk("PRIZE master  charge current %d:%d\n",pdata->input_current_limit,pdata->charging_current_limit);
+//end add by sunshuai for Bright screen current limit  for master charge  2019-0429
+#endif
+	
+//prize add by lipengpeng 20210621 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW)
+		if((info->chr_type == POWER_SUPPLY_TYPE_USB_FLOAT) && (get_MT5725_status() == 0)){
+			get_wireless_charge_current(pdata);
+			printk(" lpp---wireless charge current input_current_limit %d: charging_current_limit %d\n",pdata->input_current_limit,pdata->charging_current_limit);
+		}
+#endif
+//prize add by lipengpeng 20210621 end 	
 
 	if (pdata->thermal_charging_current_limit != -1) {
 		if (pdata->thermal_charging_current_limit <
@@ -431,6 +493,18 @@ static int do_algorithm(struct mtk_charger *info)
 		}
 	}
 	info->is_chg_done = chg_done;
+/*prize add by liuxuhui---20220528---start*/
+#if defined(CONFIG_HL7005ALL_CHARGER_SUPPORT)
+	if (strcmp("hl7005all",info->chg1_dev->props.alias_name) == 0){
+		charger_dev_kick_wdt(info->chg1_dev);
+	}
+	if (info->chg2_dev != NULL){
+		if (strcmp("hl7005all",info->chg2_dev->props.alias_name) == 0){
+			charger_dev_kick_wdt(info->chg2_dev);
+		}
+	}
+#endif
+/*prize add by liuxuhui---20220528---end*/
 
 	if (is_basic == true) {
 		charger_dev_set_input_current(info->chg1_dev,
@@ -455,6 +529,21 @@ static int do_algorithm(struct mtk_charger *info)
 
 	return 0;
 }
+//prize add by lipengpeng 20210621 start 
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW)
+ int wireless_charge_chage_current(void)
+{
+	if(mt5725_info==NULL){
+	printk("lpp----mt5725_info is null\n");
+	}else{
+	printk("lpp----set current start \n");	
+	 do_algorithm(mt5725_info);
+	}
+	return 0;
+}
+EXPORT_SYMBOL(wireless_charge_chage_current);
+#endif
+//prize add by lipengpeng 20210621 end 
 
 static int enable_charging(struct mtk_charger *info,
 						bool en)

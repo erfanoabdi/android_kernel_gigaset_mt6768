@@ -21,10 +21,11 @@
  */
 
 #include "ilitek.h"
+#include "tpd.h"
 
 #define DTS_INT_GPIO	"touch,irq-gpio"
 #define DTS_RESET_GPIO	"touch,reset-gpio"
-#define DTS_OF_NAME	"ilitek"
+#define DTS_OF_NAME	"mediatek,cap_touch"
 #define MTK_RST_GPIO	GTP_RST_PORT
 #define MTK_INT_GPIO	GTP_INT_PORT
 
@@ -184,6 +185,9 @@ static int ilitek_plat_gpio_register(void)
 	}
 
 	gpio_direction_input(idev->tp_int);
+	//add by wolf 20210405 start
+	 tpd_gpio_mode_set();
+	//add by wolf 20210405 end
 	return ret;
 }
 
@@ -238,6 +242,7 @@ static irqreturn_t ilitek_plat_isr_top_half(int irq, void *dev_id)
 		return IRQ_NONE;
 	}
 
+	ipio_debug("wolf:ilitek_plat_isr_top_half\n");
 	if (atomic_read(&idev->cmd_int_check) == ENABLE) {
 		atomic_set(&idev->cmd_int_check, DISABLE);
 		ipio_debug("MP INT detected, ignore\n");
@@ -277,6 +282,7 @@ static irqreturn_t ilitek_plat_isr_bottom_half(int irq, void *dev_id)
 		return IRQ_HANDLED;
 	}
 	mutex_lock(&idev->touch_mutex);
+	ipio_debug("wolf:ilitek_plat_isr_bottom_half\n");
 	ilitek_tddi_report_handler();
 	mutex_unlock(&idev->touch_mutex);
 	return IRQ_HANDLED;
@@ -330,8 +336,10 @@ static void tpd_resume(struct device *h)
 
 static void tpd_suspend(struct device *h)
 {
-	if (ilitek_tddi_sleep_handler(TP_DEEP_SLEEP) < 0)
-		ipio_err("TP suspend failed\n");
+//prize add by lipengpeng 20210720 start 
+	//if (ilitek_tddi_sleep_handler(TP_DEEP_SLEEP) < 0)
+	//	ipio_err("TP suspend failed\n");
+//prize add by lipengpeng 20210720 end 
 }
 
 static int ilitek_tp_pm_suspend(struct device *dev)
@@ -353,7 +361,7 @@ static int ilitek_tp_pm_resume(struct device *dev)
 	complete(&idev->pm_completion);
 	return 0;
 }
-
+int ilitek_probe_sucess=0;
 static int ilitek_plat_probe(void)
 {
 	ipio_info("platform probe\n");
@@ -373,7 +381,8 @@ static int ilitek_plat_probe(void)
 	tpd_load_status = 1;
 	idev->pm_suspend = false;
 	init_completion(&idev->pm_completion);
-
+    
+	ilitek_probe_sucess=1;
 	ipio_info("ILITEK Driver loaded successfully!");
 	return 0;
 }
@@ -440,11 +449,28 @@ static struct tpd_driver_t tpd_device_driver = {
 	.resume = tpd_resume,
 };
 
+//prize add by lipengpeng 20210902  start 
+//extern int is_check_lcm;
+//prize add by lipengpeng 20210902  end 
 static int __init ilitek_plat_dev_init(void)
 {
 	int ret = 0;
+//prize add by lipengpeng 20210902 start 
+	//int lcm_id_vol =0 ;
+
 
 	ipio_info("ILITEK TP driver init for MTK\n");
+    //   lcm_id_vol=lcm_auxadc_get_lcm_v(); //1.53
+	//printk("lpp---lcm_id_vol=%d\n",lcm_id_vol);
+//	if(is_check_lcm==1)
+//	{		
+//		printk("lpp---tp is ili9881\n");
+ //   }else{
+//		printk("lpp---tp is not ili9881\n");
+//		return 0;
+//	  }
+
+//prize add by lipengpeng 20210902 end 	
 	tpd_get_dts_info();
 	ret = tpd_driver_add(&tpd_device_driver);
 	if (ret < 0) {

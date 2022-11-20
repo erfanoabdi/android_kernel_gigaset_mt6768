@@ -81,6 +81,14 @@ source "sound/soc/codecs/Kconfig"
 
 # generic frame-work
 source "sound/soc/generic/Kconfig"
+#prize add by wuhui 20210623 start
+config SND_SMARTPA_AW881XX_V1_3_0
+        tristate "SoC Audio for awinic aw881xx series"
+        depends on I2C
+        default n
+        help
+          This option enables support for aw881xx series Smart PA.
+#prize add by wuhui 20210623 end
 
 endif	# SND_SOC
 

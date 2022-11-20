@@ -752,3 +752,77 @@ config DRM_RT4831A_I2C
 	depends on OF
 	help
 	  Say Y here if you want to enable support for rt4831a.
+	  
+#prize add by anhengxuan 20220226 start 
+config DRM_PANEL_FT8006AA_VDO
+	tristate "DRM_PANEL_FT8006AA_VDO"
+	depends on OF
+	depends on DRM_MIPI_DSI
+	depends on BACKLIGHT_CLASS_DEVICE
+	help
+	  Say Y here if you want to enable support for FT8006 DPHY
+	  vdo mode Full HD panel. The panel has a 720*1600
+	  resolution and uses 24-bits RGB per pixel. It provides a
+	  MIPI DSI interface to host.
+	  
+config DRM_PANEL_TRULY_TD4160_VDO
+        tristate "TRULY HDPLUS1680 video mode panel"
+        depends on OF
+        depends on DRM_MIPI_DSI
+        depends on BACKLIGHT_CLASS_DEVICE
+        help
+          Say Y here if you want to enable support for TRULY TD4160 VDO
+          mode Full HD Plus panel. The panel has a 720x1612 resolution
+          and uses 24-bits RGB per pixel. It provides a MIPI DSI interface
+          to host.
+
+
+config DRM_PANEL_CHIPONE_ICNL9911C_VDO
+	tristate "DRM_PANEL_CHIPONE_ICNL9911C_VDO"
+	depends on OF
+	depends on DRM_MIPI_DSI
+	depends on BACKLIGHT_CLASS_DEVICE
+	help
+	  Say Y here if you want to enable support for ICNL9911C DPHY
+	  vdo mode Full HD panel. The panel has a 720*1600
+	  resolution and uses 24-bits RGB per pixel. It provides a
+	  MIPI DSI interface to host.
+#prize add by anhengxuan 20220226 end
+
+#prize add by pengzhipeng 20220330 start 
+config DRM_PANEL_TRULY_GC7302_VDO_120HZ
+	tristate "TRULY FHD+ vdo mode panel"
+	depends on OF
+	depends on DRM_MIPI_DSI
+	depends on BACKLIGHT_CLASS_DEVICE
+	help
+	  Say Y here if you want to enable support for TRULY GC7302 VDO
+	  mode Full HD Plus panel. The panel has a 1080x2412 resolution
+	  and uses 24-bits RGB per pixel. It provides a MIPI DSI interface
+	  to host.
+
+config DRM_PANEL_TRULY_ILI7807S_VDO_120HZ
+	tristate "TRULY FHD+ vdo mode panel"
+	depends on OF
+	depends on DRM_MIPI_DSI
+	depends on BACKLIGHT_CLASS_DEVICE
+	help
+	  Say Y here if you want to enable support for TRULY ILI7807S VDO
+	  mode Full HD Plus panel. The panel has a 1080x2412 resolution
+	  and uses 24-bits RGB per pixel. It provides a MIPI DSI interface
+	  to host.
+#prize add by pengzhipeng 20220330 end 
+
+#prize  add by lipengpeng 20211026 start 
+
+config DRM_PANEL_SHARP_R63417_CMD
+	tristate "TRULY  FHD+ video mode panel"
+	depends on OF
+	depends on DRM_MIPI_DSI
+	depends on BACKLIGHT_CLASS_DEVICE
+	help
+	  Say Y here if you want to enable support for TRULY TD4330 VDO
+	  mode Full HD Plus panel. The panel has a 1080x2280 resolution
+	  and uses 24-bits RGB per pixel. It provides a MIPI DSI interface
+	  to host.
+#prize  add by lipengpeng 20211026 end 	

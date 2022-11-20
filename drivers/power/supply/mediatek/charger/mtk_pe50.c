@@ -8,7 +8,7 @@
 #include <linux/delay.h>
 #include <linux/time.h>
 #include <linux/slab.h>
-#include <mt-plat/prop_chgalgo_class.h>
+#include <mt-plat/v1/prop_chgalgo_class.h>//prize-Resolves an issue where header file errors cannot be found-pengzhipeng-20220514
 #include "mtk_intf.h"
 
 static struct pe50 *pe5;
@@ -101,8 +101,14 @@ int pe50_run(void)
 
 	case PE50_RUNNING:
 		running = prop_chgalgo_is_algo_running(pe5->pca_algo);
+
 		if (!running)
+		{
 			enable_vbus_ovp(true);
+//prize-After the end of the 30w fast charging, the main charge has no problem without work (MT6360)-pengzhipeng-20220518-start		
+			ret = 3;
+//prize-After the end of the 30w fast charging, the main charge has no problem without work (MT6360)-pengzhipeng-20220518-end			
+		}
 		break;
 	}
 

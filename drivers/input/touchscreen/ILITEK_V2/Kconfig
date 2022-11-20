@@ -1,0 +1,11 @@
+#
+# Himax Touchscreen driver configuration
+#
+
+config TOUCHSCREEN_MTK_ILITEK
+	bool "ILITEK chipset i2c touchscreen"
+	help
+	  This enables support for ILITEK CHIPSET over I2C based touchscreens.
+	  when turn this option on, TOUCHSCREEN_ILITEK_I2C touch driver
+	  will open.
+	  If unsure,say N.

@@ -31,6 +31,26 @@
 #include <linux/mfd/mt6357/core.h>
 #include "mt6357-accdet.h"
 #include "mt6357.h"
+#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/kthread.h>
+#include <linux/workqueue.h>
+#include <linux/platform_device.h>
+#include <linux/of_gpio.h>
+#include <linux/gpio.h>
+#include <linux/pm_wakeup.h>
+#include <linux/reboot.h>
+#include <linux/pm.h>
+#include <linux/delay.h>
+
+#include "tcpm.h"
+#include <linux/usb/tcpm.h>
+
+#include <mt6370_pmu.h>
+#include <mt6370_pmu_bled.h>
+#include "mt6357-accdet.h"
+#endif
 /* grobal variable definitions */
 #define REGISTER_VAL(x)	(x - 1)
 #define HAS_CAP(_c, _x)	(((_c) & (_x)) == (_x))
@@ -58,6 +78,44 @@
 
 #define RET_LT_5K			(-1)
 #define RET_GT_5K			(0)
+
+//add by liaojie,for typec accdet 20220714
+#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+//prize add by hanwei 20210414 start
+#define EINT_PIN_PLUG_OUT       (0)
+#define EINT_PIN_PLUG_IN        (1)
+
+/* Used to let accdet know if the pin has been fully plugged-in */
+#define EINT_PLUG_OUT			(0)
+#define EINT_PLUG_IN			(1)
+#define EINT_MOISTURE_DETECTED	(2)
+//prize add by hanwei 20210414 end
+
+//prize add by lipengpeng 20191129 start 
+#if defined (CONFIG_PRIZE_MT5725_SUPPORT)
+extern void set_typc_otg_gpio(int en);
+#endif
+//prize add by lipengpeng 20191129 start 
+struct pinctrl *accdet_pinctrl;
+struct pinctrl_state *alp_state_h;
+struct pinctrl_state *alp_state_l;
+static int mic_select_pin = 0;		/*SGM3798 0:FET2 1:FET1*/
+static unsigned int mic_detect_thr = 0;
+
+static struct tcpc_device *tcpc_dev;
+static struct notifier_block audio_nb;
+static char typec_eint_pending = 0;
+int mt6357_get_auxadc_value(void);
+void accdet_eint_func_extern(int state);
+int typec_accdet_mic_detect(void);
+#endif
+//add by liaojie,for typec accdet 20220714
+#if defined(CONFIG_MTK_SAR_HUB)
+//prize-ACCDET sar calibration-liaoxingen-2022830-start 
+void __attribute__ ((weak)) sar_sensor_calibration_to_hub(void);
+extern void sar_sensor_calibration_to_hub(void);
+//prize-ACCDET sar calibration-liaoxingen-2022830-end
+#endif
 
 /* Used to let accdet know if the pin has been fully plugged-in */
 #define EINT_PLUG_OUT			(0)
@@ -99,6 +157,12 @@ struct mt63xx_accdet_data {
 	/* when caps include ACCDET_AP_GPIO_EINT */
 	struct pinctrl *pinctrl;
 	struct pinctrl_state *pins_eint;
+//add by liaojie,for typec accdet 20220714
+#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+	struct pinctrl_state *mic1;
+	struct pinctrl_state *mic2;
+#endif
+//add by liaojie,for typec accdet 20220714
 	u32 gpiopin;
 	u32 gpio_hp_deb;
 	u32 gpioirq;
@@ -809,6 +873,12 @@ static void send_status_event(u32 cable_type, u32 status)
 		}
 		pr_info("accdet HEADPHONE(3-pole) %s\n",
 			status ? "PlugIn" : "PlugOut");
+#if defined(CONFIG_MTK_SAR_HUB)
+		//prize-ACCDET sar calibration-liaoxingen-2022830-start 
+		if(status)
+			sar_sensor_calibration_to_hub();
+		//prize-ACCDET sar calibration-liaoxingen-2022830-end 
+#endif		
 		break;
 	case HEADSET_MIC:
 		/* when plug 4-pole out, 3-pole plug out should also be
@@ -835,6 +905,12 @@ static void send_status_event(u32 cable_type, u32 status)
 		 * micbias, it will cause key no response
 		 */
 		del_timer_sync(&micbias_timer);
+#if defined(CONFIG_MTK_SAR_HUB)
+		//prize-ACCDET sar calibration-liaoxingen-2022830-start 
+		if(status)
+			sar_sensor_calibration_to_hub();
+		//prize-ACCDET sar calibration-liaoxingen-2022830-end 
+#endif
 		break;
 	case LINE_OUT_DEVICE:
 		if (status)
@@ -1140,6 +1216,15 @@ static void eint_work_callback(struct work_struct *work)
 				ACCDET_CMP_PWM_EN_SFT, 0x7, 0x7);
 
 		enable_accdet(0);
+
+//prize added by hanwei, headset support, 20210414-start
+	#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+	#if defined(CONFIG_PRIZE_SWITCH_SGM3798_SUPPORT)
+		pr_info("%s enter typec_accdet_mic_detect().\n", __func__);
+		typec_accdet_mic_detect();
+	#endif
+	#endif
+//prize added by hanwei, headset support, 20210414-end
 	} else {
 		mutex_lock(&accdet->res_lock);
 		accdet->eint_sync_flag = false;
@@ -1154,10 +1239,12 @@ static void eint_work_callback(struct work_struct *work)
 		disable_accdet();
 		headset_plug_out();
 	}
-
+//prize added by hanwei, headset support, 20210414-start
+	#if !defined(CONFIG_PRIZE_TYPEC_ACCDET)
 	if (HAS_CAP(accdet->data->caps, ACCDET_AP_GPIO_EINT))
 		enable_irq(accdet->gpioirq);
-
+    #endif
+//prize added by hanwei, headset support, 20210414-end
 }
 
 void accdet_set_debounce(int state, unsigned int debounce)
@@ -1201,12 +1288,21 @@ void accdet_set_debounce(int state, unsigned int debounce)
 static inline void check_cable_type(void)
 {
 	u32 cur_AB = 0;
-
+//prize added by hanwei, headset support, 20210417-start
+	#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+	u32 vol=0;
+	#endif
+//prize added by hanwei, headset support, 20210417-end
 	cur_AB = accdet_read(ACCDET_MEM_IN_ADDR) >> ACCDET_STATE_MEM_IN_OFFSET;
 		cur_AB = cur_AB & ACCDET_STATE_AB_MASK;
 
 	accdet->button_status = 0;
-
+//prize added by hanwei, headset support, 20210417-start
+	#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+	vol=accdet_get_auxadc();
+	pr_info("%s cur_AB=%d,accdet_status=%d.vol (%d)\n", __func__, cur_AB, accdet->accdet_status, vol);
+	#endif
+//prize added by hanwei, headset support, 20210417-end
 	switch (accdet->accdet_status) {
 	case PLUG_OUT:
 		if (cur_AB == ACCDET_STATE_AB_00) {
@@ -1214,6 +1310,34 @@ static inline void check_cable_type(void)
 			if (accdet->eint_sync_flag) {
 				accdet->cable_type = HEADSET_NO_MIC;
 				accdet->accdet_status = HOOK_SWITCH;
+//prize added by hanwei, headset support, 20210417-start
+				#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+				pinctrl_select_state(accdet_pinctrl,alp_state_h);
+				mdelay(2);
+				vol=accdet_get_auxadc();
+				pr_info("%s alp_state_h vol (%d)\n", __func__, vol);
+				if(vol > 600) {
+					accdet->accdet_status = MIC_BIAS;
+					accdet->cable_type = HEADSET_MIC;
+					accdet_set_debounce(accdet_state011,
+						cust_pwm_deb->debounce3 * 30);
+					mutex_unlock(&accdet->res_lock);
+					break;
+				}
+				pinctrl_select_state(accdet_pinctrl,alp_state_l);
+				mdelay(2);
+				vol=accdet_get_auxadc();
+				pr_info("%s  alp_state_l vol (%d)\n", __func__, vol);
+				if(vol > 600) {
+					accdet->accdet_status = MIC_BIAS;
+					accdet->cable_type = HEADSET_MIC;
+					accdet_set_debounce(accdet_state011,
+						cust_pwm_deb->debounce3 * 30);
+					mutex_unlock(&accdet->res_lock);
+					break;
+				}
+				#endif
+//prize added by hanwei, headset support, 20210417-end
 			} else
 				pr_notice("accdet hp has been plug-out\n");
 			mutex_unlock(&accdet->res_lock);
@@ -1707,7 +1831,8 @@ static int accdet_get_dts_data(void)
 		accdet->data->caps |= ACCDET_PMIC_EINT_IRQ;
 	else if (tmp == 1)
 		accdet->data->caps |= ACCDET_AP_GPIO_EINT;
-
+//prize added by hanwei, headset support, 20210417-start
+	#if !defined(CONFIG_PRIZE_TYPEC_ACCDET)
 	ret = of_property_read_u32(node,
 			"headset-eint-num", &tmp);
 	if (ret)
@@ -1718,7 +1843,8 @@ static int accdet_get_dts_data(void)
 		accdet->data->caps |= ACCDET_PMIC_EINT1;
 	else if (tmp == 2)
 		accdet->data->caps |= ACCDET_PMIC_BI_EINT;
-
+    #endif
+//prize added by hanwei, headset support, 20210417-end
 	ret = of_property_read_u32(node,
 			"headset-eint-trig-mode", &tmp);
 	if (ret)
@@ -1880,8 +2006,13 @@ static void accdet_init_once(void)
 	if (accdet_dts.mic_vol <= 7) {
 		/* micbias1 <= 2.7V */
 		accdet_write(RG_AUDPWDBMICBIAS1_ADDR,
-		reg | (accdet_dts.mic_vol<<RG_AUDMICBIAS1VREF_SFT));
+		reg | (accdet_dts.mic_vol<<RG_AUDMICBIAS1VREF_SFT));//|0x0001
 	}
+//prize added by hanwei, headset support, 20210414-end
+	#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+	pr_info("accdet_init_once =0x%x.\n", accdet_read(RG_AUDPWDBMICBIAS1_ADDR));
+	#endif
+//prize added by hanwei, headset support, 20210414-end
 	/* mic mode setting */
 	reg = accdet_read(RG_AUDACCDETMICBIAS0PULLLOW_ADDR);
 	if (accdet_dts.mic_mode == HEADSET_MODE_1) {
@@ -2217,13 +2348,16 @@ static int accdet_probe(struct platform_device *pdev)
 		ret = -1;
 		goto err_create_workqueue;
 	}
+//prize added by hanwei, headset support, 20210417-start
+	#if !defined(CONFIG_PRIZE_TYPEC_ACCDET)
 	if (HAS_CAP(accdet->data->caps, ACCDET_AP_GPIO_EINT)) {
 		accdet->accdet_eint_type = IRQ_TYPE_LEVEL_LOW;
 		ret = ext_eint_setup(pdev);
 		if (ret)
 			destroy_workqueue(accdet->eint_workqueue);
 	}
-
+    #endif
+//prize added by hanwei, headset support, 20210417-end
 	ret = accdet_create_attr(&accdet_driver.driver);
 	if (ret) {
 		pr_notice("%s create_attr fail, ret = %d\n", __func__, ret);
@@ -2290,6 +2424,197 @@ static struct platform_driver accdet_driver = {
 	},
 };
 
+//add by liaojie,for typec accdet 20220714
+#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+int mt6357_get_auxadc_value(void)
+{
+	int vol = 0, ret = 0;
+
+	ret = iio_read_channel_processed(accdet->accdet_auxadc, &vol);
+	if (ret < 0) {
+		pr_notice("Error: %s read fail (%d)\n", __func__, ret);
+		return ret;
+	}
+
+	pr_info("info: %s read vol=(%d)\n", __func__, vol);
+	return vol;
+}
+void accdet_eint_func_extern(int state)
+{
+	int ret = 0;
+
+	if (state == EINT_PIN_PLUG_OUT){	//OUT=0 IN=1
+		accdet->cur_eint_state = EINT_PIN_PLUG_OUT;
+		mod_timer(&micbias_timer, jiffies + MICBIAS_DISABLE_TIMER);
+	}else{
+		accdet->cur_eint_state = EINT_PIN_PLUG_IN;
+	}
+
+	pr_info("accdet %s(), cur_eint_state=%d\n", __func__, accdet->cur_eint_state);
+
+	ret = queue_work(accdet->eint_workqueue, &accdet->eint_work);
+	return;
+}
+int typec_accdet_mic_detect(void){
+	//static int sel_pin_state = 0;
+	unsigned int accdet_val;
+	printk(KERN_INFO"typec_accdet typec_eint_pending(%d)\n",typec_eint_pending);
+	if (!typec_eint_pending){	//check if typec headset event
+		return 0;
+	}
+	typec_eint_pending = 0;
+	printk(KERN_ERR"mic_select_pin=%d in typec_accdet_mic_detect\n",mic_select_pin);
+	
+	if (mic_select_pin > 0){
+		
+		mdelay(2);
+		accdet_val = mt6357_get_auxadc_value();
+		printk(KERN_ERR"check_cable_type accdet_val=%d in typec_accdet_mic_detect.\n",accdet_val);
+		if (accdet_val <= 230){
+			if (gpio_get_value(mic_select_pin)){
+				printk(KERN_INFO"gpio_get_value(g_mic_select_pin)=%d.\n", gpio_get_value(mic_select_pin) );
+				gpio_direction_output(mic_select_pin,0);
+			}else{
+				gpio_direction_output(mic_select_pin,1);
+			}
+		}
+		printk(KERN_INFO"typec_accdet AccdetVolt(%d) mic_pin reverse thr 230\n", accdet_val );
+	}
+	return 0;
+}
+
+
+static int audio_tcp_notifier_call(struct notifier_block *nb,
+					unsigned long event, void *data)
+{
+	struct tcp_notify *noti = data;
+
+	switch (event) {
+
+	case TCP_NOTIFY_TYPEC_STATE:
+		if (noti->typec_state.old_state == TYPEC_UNATTACHED && noti->typec_state.new_state == TYPEC_ATTACHED_AUDIO){
+			pr_info("%s audio accessory Plug in, pol = %d\n", __func__,	noti->typec_state.polarity);
+			typec_eint_pending = 1;
+			accdet_eint_func_extern(EINT_PIN_PLUG_IN);
+//prize add by lipengpeng 20191129 start
+#if defined (CONFIG_PRIZE_MT5725_SUPPORT)
+			set_typc_otg_gpio(0);
+#endif
+//prize add by lipengpeng 20191129 end
+		}else if(noti->typec_state.old_state == TYPEC_ATTACHED_AUDIO && noti->typec_state.new_state == TYPEC_UNATTACHED){
+			pr_info("%s audio accessory Plug out\n", __func__);
+			accdet_eint_func_extern(EINT_PIN_PLUG_OUT);
+		}
+		break;
+	default:
+		//printk("HH event %u,oldstate %d,newstate %d\n",event,noti->typec_state.old_state,noti->typec_state.new_state);
+		break;
+	};
+	return NOTIFY_OK;
+}
+
+static int typec_accdet_probe(struct platform_device *pdev)
+{
+	int ret = 0;
+	struct pinctrl_state *pin_default;
+	struct device_node *node;
+	
+	//get pin
+	accdet_pinctrl = devm_pinctrl_get(&pdev->dev);
+	if (!IS_ERR(accdet_pinctrl)){
+		pin_default = pinctrl_lookup_state(accdet_pinctrl,"typec_accdet_default");
+		if (IS_ERR(pin_default)){
+			printk(KERN_ERR"typec_accdet get pinctrl state typec_accdet_default fail %d\n",PTR_ERR(pin_default));
+		}
+
+		alp_state_h = pinctrl_lookup_state(accdet_pinctrl,"typec_accdet_alp_h");
+		if (IS_ERR(alp_state_h)){
+			printk(KERN_ERR"typec_accdet get pinctrl state alp_h fail %d\n",PTR_ERR(alp_state_h));
+		}
+		alp_state_l = pinctrl_lookup_state(accdet_pinctrl,"typec_accdet_alp_l");
+		if (IS_ERR(alp_state_l)){
+			printk(KERN_ERR"typec_accdet get pinctrl state alp_l fail %d\n",PTR_ERR(alp_state_l));
+		}
+	}else{
+		printk(KERN_ERR"typec_accdet get pinctrl fail %d\n",PTR_ERR(accdet_pinctrl));
+		return -EINVAL;
+	}
+	if (!IS_ERR(pin_default)){
+		pinctrl_select_state(accdet_pinctrl,pin_default);
+	}
+	
+
+	//get mic settings
+	node = pdev->dev.of_node;
+	if (!IS_ERR(node)){
+		//thr
+		ret = of_property_read_u32(node,"mic_detect_thr",&mic_detect_thr);
+		if (ret){
+			mic_detect_thr = 230;
+			printk(KERN_ERR"typec_accdet get mic_detect_thr fail %d, user default 300\n",ret);
+		}
+		
+		//mic_select_pin
+		mic_select_pin = of_get_named_gpio(node,"mic_select_pin",0);
+		if (mic_select_pin < 0){
+			printk(KERN_ERR"typec_accdet get mic_select_pin fail %d\n",mic_select_pin);
+		}else{
+			ret = gpio_request(mic_select_pin,"mic_select_pin");
+			if (ret < 0){
+				printk(KERN_ERR"typec_accdet gpio_request fail %d\n",ret);
+				mic_select_pin = -1;
+			}else{
+				if (gpio_get_value(mic_select_pin)){
+					gpio_direction_output(mic_select_pin,1);
+				}else{
+					gpio_direction_output(mic_select_pin,0);
+				}
+			}
+		}
+		printk(KERN_ERR"hanwei mic_select_pin=%d in typec_accdet_probe\n",mic_select_pin);
+	}
+	
+	tcpc_dev = tcpc_dev_get_by_name("type_c_port0");
+	if (!tcpc_dev) {
+		pr_err("%s get tcpc device type_c_port0 fail\n", __func__);
+		return -ENODEV;
+	}
+
+	audio_nb.notifier_call = audio_tcp_notifier_call;
+	ret = register_tcp_dev_notifier(tcpc_dev, &audio_nb, TCP_NOTIFY_TYPEC_STATE);
+	if (ret < 0) {
+		pr_err("%s: register tcpc notifer fail\n", __func__);
+		return -EINVAL;
+	}
+
+	pr_info("%s Done!!\n", __func__);
+	return ret;
+}
+
+static int typec_accdet_remove(struct platform_device *pdev)
+{
+	if (mic_select_pin > 0){
+		gpio_free(mic_select_pin);
+	}
+	return 0;
+}
+
+static const struct of_device_id typec_accdet_of_match[] = {
+	{ .compatible = "prize,typec_accdet" },
+	{ }
+};
+MODULE_DEVICE_TABLE(of, typec_accdet_of_match);
+
+static struct platform_driver typec_accdet_driver = {
+	.driver = {
+		.name = "typec_accdet",
+		.of_match_table = of_match_ptr(typec_accdet_of_match),
+	},
+	.probe = typec_accdet_probe,
+	.remove = typec_accdet_remove,
+};
+#endif
+//add by liaojie,for typec accdet 20220714
 static int __init accdet_soc_init(void)
 {
 	int ret = 0;
@@ -2297,11 +2622,23 @@ static int __init accdet_soc_init(void)
 	ret = platform_driver_register(&accdet_driver);
 	if (ret)
 		return -ENODEV;
+	//add by liaojie,for typec accdet 20220714
+	#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+	ret = platform_driver_register(&typec_accdet_driver);
+		if (ret)
+		return -ENODEV;
+	#endif
+	//add by liaojie,for typec accdet 20220714
 	return 0;
 }
 static void __exit accdet_soc_exit(void)
 {
 	platform_driver_unregister(&accdet_driver);
+	//add by liaojie,for typec accdet 20220714
+	#if defined(CONFIG_PRIZE_TYPEC_ACCDET)
+	platform_driver_unregister(&typec_accdet_driver);
+	#endif
+	//add by liaojie,for typec accdet 20220714
 }
 module_init(accdet_soc_init);
 module_exit(accdet_soc_exit);

@@ -32,6 +32,12 @@
 #define UNIT_TRANS_1000	1000
 #define UNIT_TRANS_60 60
 
+//prize add by wangfei for gigast customer 20210902 start 
+#if defined(CONFIG_PRIZE_CHARGE_CURRENT_CTRL_GIGAST)
+#define BATTERY_SHUTDOWN_LOW_TEMPERATURE (-10)
+#endif
+//prize add by wangfei for gigast customer 20210902 end
+
 #define MAX_TABLE 10
 #define MAX_CHARGE_RDC 5
 

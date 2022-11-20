@@ -52,6 +52,18 @@ static const char *const typec_wait_ps_name[] = {
 };
 #endif	/* TYPEC_INFO2_ENABLE */
 
+//prize add by lipengpeng 20220426 start 
+#if defined(CONFIG_PRIZE_NE6153_SUPPORT) || defined(CONFIG_PRIZE_WIRELESS_RECEIVER_MAXIC_MT5715) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW)
+extern int set_otg_gpio(int en);
+
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW)
+extern int turn_off_5725(int en);
+#endif
+
+#endif
+
+//prize add by lipengpeng 20220426 end 
+
 static inline void typec_wait_ps_change(struct tcpc_device *tcpc,
 					enum TYPEC_WAIT_PS_STATE state)
 {
@@ -300,6 +312,13 @@ static const char *const typec_attach_name[] = {
 };
 #endif /* TYPEC_INFO_ENABLE || TYPEC_DBG_ENABLE */
 
+//prize add by lipengpeng 20200315 start
+#ifdef CONFIG_PRIZE_TYPEC_POSITIVE_NEGATIVE
+int otgdetection=-1;
+int typeccharge_det=-1;
+#endif
+//prize add by lipengpeng 20200315 end
+
 static int typec_alert_attach_state_change(struct tcpc_device *tcpc)
 {
 	int ret = 0;
@@ -320,6 +339,88 @@ static int typec_alert_attach_state_change(struct tcpc_device *tcpc)
 	TYPEC_INFO("Attached-> %s\n",
 		   typec_attach_name[tcpc->typec_attach_new]);
 
+//prize add by lipengpeng 20200315 start
+#ifdef CONFIG_PRIZE_TYPEC_POSITIVE_NEGATIVE
+	printk("lpp---cc1=%d,cc2=%d  tcpc->typec_attach_new=%d\n",typec_get_cc1(),typec_get_cc2(),tcpc->typec_attach_new);
+/*if(tcpc->typec_attach_new==2)
+{
+	if(typec_get_cc1()==0&&typec_get_cc2()==2)
+		otgdetection=1;
+	else if(typec_get_cc1()==2&&typec_get_cc2()==0){
+			otgdetection=0;
+		}	
+	else{
+			otgdetection= -1;
+			printk("lpp----otg typec not detection\n");
+		}
+	}
+	*/
+//prize add by lipengpeng 20220223 start 
+if(tcpm_inquire_typec_attach_state(tcpc) == TYPEC_ATTACHED_SRC)
+{
+	if(tcpm_inquire_cc_polarity(tcpc)==1)
+		otgdetection=1;
+	else if(tcpm_inquire_cc_polarity(tcpc)==0)
+	    otgdetection=0;
+	else{
+		  otgdetection= -1;
+		  printk("lpp----otg typec not detection\n");
+	  }
+}
+//prize add by lipengpeng 20220223 end 
+#endif
+//prize add by lipengpeng 20200315 end
+
+//prize add by lipengpeng 20200324 start
+#ifdef CONFIG_PRIZE_TYPEC_POSITIVE_NEGATIVE
+/*if(tcpc->typec_attach_new==1)
+{
+	if(((typec_get_cc1()==0)&&(typec_get_cc2()==5))||((typec_get_cc1()==0)&&(typec_get_cc2()==7))||((typec_get_cc1()==0)&&(typec_get_cc2()==6))){
+		typeccharge_det=1;
+	}
+	else if(((typec_get_cc1()==5)&&(typec_get_cc2()==0))||((typec_get_cc1()==7)&&(typec_get_cc2()==0))||((typec_get_cc1()==6)&&(typec_get_cc2()==0))){
+			typeccharge_det=0;
+		}	
+	else{
+			typeccharge_det= -1;
+			printk("lpp----typeccharge typec not detection\n");
+		}
+	}
+
+
+if(tcpc->typec_attach_new==0)
+{
+	typeccharge_det= -1;
+	otgdetection= -1;
+
+}
+*/
+//prize add by lipengpeng 20220223 start 
+if ((tcpm_inquire_typec_attach_state(tcpc) == TYPEC_ATTACHED_SNK) ||
+(tcpm_inquire_typec_attach_state(tcpc) == TYPEC_ATTACHED_DBGACC_SNK) ||
+(tcpm_inquire_typec_attach_state(tcpc) == TYPEC_ATTACHED_CUSTOM_SRC))
+{
+	if(tcpm_inquire_cc_polarity(tcpc)==1)
+		typeccharge_det=1;
+	else if(tcpm_inquire_cc_polarity(tcpc)==0)
+	    typeccharge_det=0;
+	else{
+		  typeccharge_det= -1;
+		  printk("lpp----typeccharge typec not detection\n");
+	  }
+	
+}
+
+if(tcpc->typec_attach_new==0)
+{
+	typeccharge_det= -1;
+	otgdetection= -1;
+
+}
+
+//prize add by lipengpeng 20220223 end 
+#endif
+//prize add by lipengpeng 20200324 end	
 	/*Report function */
 	ret = tcpci_report_usb_port_changed(tcpc);
 
@@ -709,6 +810,11 @@ static inline void typec_source_attached_entry(struct tcpc_device *tcpc)
 	typec_enable_vconn(tcpc);
 	tcpci_source_vbus(tcpc,
 			TCP_VBUS_CTRL_TYPEC, TCPC_VBUS_SOURCE_5V, -1);
+//prize add by huarui, cc controller sgm7220, start
+#if defined(CONFIG_TCPC_SGM7220)||defined(CONFIG_TCPC_WUSB3801)
+	tcpc_enable_timer(tcpc, TYPEC_TIMER_VBUS_CHECK);
+#endif
+//prize add by huarui, cc controller sgm7220, end
 }
 
 static inline void typec_sink_attached_entry(struct tcpc_device *tcpc)
@@ -2057,6 +2163,16 @@ int tcpc_typec_handle_cc_change(struct tcpc_device *tcpc)
 		typec_wait_ps_change(tcpc, TYPEC_WAIT_PS_DISABLE);
 
 	if (typec_is_cc_attach(tcpc)) {
+//prize add by lipengpeng 20220426 start 		
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW)
+		turn_off_5725(1);
+#endif
+
+#if defined(CONFIG_PRIZE_NE6153_SUPPORT) || defined(CONFIG_PRIZE_WIRELESS_RECEIVER_MAXIC_MT5715) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+		set_otg_gpio(1);
+#endif
+//prize add by lipengpeng 20220426 end
+ 		
 		typec_disable_low_power_mode(tcpc);
 		typec_attach_wait_entry(tcpc);
 #ifdef CONFIG_WATER_DETECTION
@@ -2070,8 +2186,18 @@ int tcpc_typec_handle_cc_change(struct tcpc_device *tcpc)
 #endif /* CONFIG_WD_POLLING_ONLY */
 		}
 #endif /* CONFIG_WATER_DETECTION */
-	} else
+//prize add by lipengpeng 20220426 start 
+	} else{
+		#if defined(CONFIG_PRIZE_NE6153_SUPPORT) || defined(CONFIG_PRIZE_WIRELESS_RECEIVER_MAXIC_MT5715) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W)
+		set_otg_gpio(0);
+		#endif
+
+#if defined(CONFIG_PRIZE_MT5725_SUPPORT_15W) || defined(CONFIG_PRIZE_MT5725_SUPPORT_15W_NEW)
+		turn_off_5725(0);
+		#endif
 		typec_detach_wait_entry(tcpc);
+   }
+//prize add by lipengpeng 20220426 end 
 
 	return 0;
 }
@@ -2274,6 +2400,11 @@ static inline int typec_handle_role_swap_stop(struct tcpc_device *tcpc)
 }
 #endif	/* CONFIG_TYPEC_CAP_ROLE_SWAP */
 
+//prize add by huarui, cc controller sgm7220, start
+#if defined(CONFIG_TCPC_SGM7220)||defined(CONFIG_TCPC_WUSB3801)
+extern int battery_get_vbus(void);
+#endif
+//prize add by huarui, cc controller sgm7220, end
 int tcpc_typec_handle_timeout(struct tcpc_device *tcpc, uint32_t timer_id)
 {
 	int ret = 0;
@@ -2408,6 +2539,16 @@ int tcpc_typec_handle_timeout(struct tcpc_device *tcpc, uint32_t timer_id)
 #endif	/* CONFIG_TYPEC_LEGACY2_AUTO_RECYCLE */
 #endif	/* CONFIG_TYPEC_CHECK_LEGACY_CABLE2 */
 #endif	/* CONFIG_TYPEC_CHECK_LEGACY_CABLE */
+//prize add by huarui, cc controller sgm7220, start
+#if defined(CONFIG_TCPC_SGM7220)||defined(CONFIG_TCPC_WUSB3801)
+	case TYPEC_TIMER_VBUS_CHECK:
+		printk("HH %s: vbus:%d\n",__func__,battery_get_vbus());
+		if (battery_get_vbus() > 3500){
+			tcpc_typec_handle_ps_change(tcpc, TCPC_VBUS_VALID);
+		}
+		break;
+#endif	/* CONFIG_TYPEC_CAP_ROLE_SWAP */
+//prize add by huarui, cc controller sgm7220, end
 	}
 
 	return ret;
@@ -2492,9 +2633,16 @@ static inline int typec_handle_vbus_absent(struct tcpc_device *tcpc)
 
 	switch (tcpc->typec_state) {
 	case typec_attached_snk:
+/*prize add by sunshuai for A-C 30w charge 20201109-start */
+#ifdef CONFIG_PRIZE_ATOC_TYPEC_CHARGE
+	case typec_attached_dbgacc_snk:
+	case typec_attached_custom_src:
+#else
 #ifdef CONFIG_TYPEC_CAP_DBGACC_SNK
 	case typec_attached_dbgacc_snk:
 #endif	/* CONFIG_TYPEC_CAP_DBGACC_SNK */
+#endif  /* CONFIG_PRIZE_ATOC_TYPEC_CHARGE */
+/*prize add by sunshuai for A-C 30w charge 20201109-end */
 		typec_attached_snk_vbus_absent(tcpc);
 		break;
 	default:

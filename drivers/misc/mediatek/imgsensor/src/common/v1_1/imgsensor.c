@@ -52,6 +52,13 @@
 #include "imgsensor_ca.h"
 #endif
 
+/*prize add by zhaopengge-20201113----start*/
+#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+#include "../../../../hardware_info/hardware_info.h"
+extern struct hardware_info current_camera_info[5];
+#endif
+/*prize add by zhaopengge-20201113----end*/
+
 static DEFINE_MUTEX(gimgsensor_mutex);
 static DEFINE_MUTEX(gimgsensor_open_mutex);
 
@@ -99,8 +106,7 @@ void IMGSENSOR_PROFILE(struct timeval *ptv, char *tag)
 struct IMGSENSOR_SENSOR
 *imgsensor_sensor_get_inst(enum IMGSENSOR_SENSOR_IDX idx)
 {
-	if (idx < IMGSENSOR_SENSOR_IDX_MIN_NUM ||
-		idx >= IMGSENSOR_SENSOR_IDX_MAX_NUM)
+	if (idx >= IMGSENSOR_SENSOR_IDX_MAX_NUM)
 		return NULL;
 	else
 		return &gimgsensor.sensor[idx];
@@ -528,6 +534,17 @@ static inline int imgsensor_check_is_alive(struct IMGSENSOR_SENSOR *psensor)
 	MUINT32 retLen = sizeof(MUINT32);
 	struct IMGSENSOR *pimgsensor = &gimgsensor;
 	struct IMGSENSOR_SENSOR_INST *psensor_inst = &psensor->inst;
+	
+	/* Prize HanJiuping added 20211110 for add cameras module info into hardwareinfo start */
+	#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+	const char *cam_module[6] = {"TS-Precision Technology",
+				     "TS-Precision Technology",   
+				     "HeDaYuan Electronic", 
+				     "C&T Technology",
+					 "HeDaYuan Electronic",
+				     "HeDaYuan Electronic"};
+	#endif
+	/* Prize HanJiuping added 20211110 for add cameras module info into hardwareinfo end */
 
 	IMGSENSOR_PROFILE_INIT(&psensor_inst->profile_time);
 	ret = imgsensor_hw_power(&pimgsensor->hw,
@@ -546,6 +563,45 @@ static inline int imgsensor_check_is_alive(struct IMGSENSOR_SENSOR *psensor)
 		PK_DBG("Fail to get sensor ID %x\n", sensorID);
 		err = ERROR_SENSOR_CONNECT_FAIL;
 	} else {
+		/*prize add by zhaopengge-20201113----start*/
+	#if defined(CONFIG_PRIZE_HARDWARE_INFO)
+// prize modify by linchong 20210526 start 
+		if(psensor->inst.sensor_idx >= 0 && psensor->inst.sensor_idx < 5)
+// prize modify by linchong 20210526 end		
+		{
+			if (sensorID == 0x30a) {
+				strcpy(current_camera_info[2].chip,psensor_inst->psensor_list->name);
+				sprintf(current_camera_info[2].id,"0x%04x",sensorID);
+				strcpy(current_camera_info[2].vendor,"unknow");
+			}else {
+				strcpy(current_camera_info[psensor->inst.sensor_idx].chip,psensor_inst->psensor_list->name);
+				sprintf(current_camera_info[psensor->inst.sensor_idx].id,"0x%04x",sensorID);
+				/* Prize HanJiuping added 20211110 for add cameras module info into hardwareinfo start */
+				strcpy(current_camera_info[psensor->inst.sensor_idx].vendor, cam_module[psensor->inst.sensor_idx]);
+				/* Prize HanJiuping added 20211110 for add cameras module info into hardwareinfo end */
+			}
+			
+			 //prize modify by yantaotao for camera start
+			if (1){
+				MSDK_SENSOR_RESOLUTION_INFO_STRUCT sensorResolution;
+				imgsensor_sensor_get_resolution(psensor,&sensorResolution);
+				if (sensorID == 0x30a){
+					sprintf(current_camera_info[2].more,"%d*%d",sensorResolution.SensorFullWidth,sensorResolution.SensorFullHeight);
+				} else if (unlikely(0 == strcmp(psensor_inst->psensor_list->name, "ov16a1q_mipi_raw"))) {
+						/* ov16a1q_mipi_raw is 16MP sensor, effective resolution of 4608 x 3456 */
+							sprintf(current_camera_info[psensor->inst.sensor_idx].more,"%d*%d", 4608, 3456);
+				} else if (unlikely(0 == strcmp(psensor_inst->psensor_list->name, "ov64b40_mipi_raw"))) {
+						/* ov64b40_mipi_raw is 64MP sensor, effective resolution of 9248 x  6944 */
+							sprintf(current_camera_info[psensor->inst.sensor_idx].more,"%d*%d", 9248,  6944);
+				} else{
+				    sprintf(current_camera_info[psensor->inst.sensor_idx].more,"%d*%d",sensorResolution.SensorFullWidth,sensorResolution.SensorFullHeight);
+				}
+			}
+			
+
+		}
+		#endif
+/*prize add by zhaopengge-20201113----end*/
 		PK_DBG("Sensor found ID = 0x%x\n", sensorID);
 		err = ERROR_NONE;
 	}
@@ -931,7 +987,7 @@ static inline int adopt_CAMERA_HW_FeatureControl(void *pBuf)
 {
 	struct ACDK_SENSOR_FEATURECONTROL_STRUCT *pFeatureCtrl;
 	struct IMGSENSOR_SENSOR *psensor;
-	unsigned int FeatureParaLen, Patternmode = 0;
+	unsigned int FeatureParaLen = 0, Patternmode = 0;
 	void *pFeaturePara = NULL;
 	struct ACDK_KD_SENSOR_SYNC_STRUCT *pSensorSyncInfo = NULL;
 	signed int ret = 0;
@@ -1076,8 +1132,9 @@ static inline int adopt_CAMERA_HW_FeatureControl(void *pBuf)
 	{
 		struct IMGSENSOR_SENSOR_LIST *psensor_list =
 			(struct IMGSENSOR_SENSOR_LIST *)pFeaturePara;
-
-		if (FeatureParaLen < 1 * sizeof(struct IMGSENSOR_SENSOR_LIST)) {
+		/* NOTICE: MUINT32 (*init)(struct SENSOR_FUNCTION_STRUCT **pfFunc) */
+		/* Not used and don't use due to A32+K64 no support ioctl of address type */
+		if (FeatureParaLen < (1 * sizeof(MUINT32) + 32 * sizeof(MUINT8))) {
 			PK_DBG("FeatureParaLen is too small %d\n", FeatureParaLen);
 			kfree(pFeaturePara);
 			return -EINVAL;
@@ -1105,7 +1162,7 @@ static inline int adopt_CAMERA_HW_FeatureControl(void *pBuf)
 		pSensorSyncInfo =
 			(struct ACDK_KD_SENSOR_SYNC_STRUCT *) pFeaturePara;
 
-		if (FeatureParaLen < 1 * sizeof(struct ACDK_KD_SENSOR_SYNC_STRUCT)) {
+		if (FeatureParaLen < 4 * sizeof(unsigned long long)) {
 			PK_DBG("FeatureParaLen is too small %d\n", FeatureParaLen);
 			kfree(pFeaturePara);
 			return -EINVAL;
@@ -1868,7 +1925,7 @@ static inline int adopt_CAMERA_HW_FeatureControl(void *pBuf)
 			/* buffer size exam */
 			if ((sizeof(kal_uint8) * u4RegLen) >
 			    IMGSENSOR_FEATURE_PARA_LEN_MAX ||
-			    (u4RegLen > LSC_TBL_DATA_SIZE || u4RegLen < 0)) {
+			    (u4RegLen > LSC_TBL_DATA_SIZE)) {
 				kfree(pFeaturePara);
 				PK_PR_ERR(" buffer size (%u) is too large\n",
 					u4RegLen);
@@ -1955,7 +2012,9 @@ static inline int adopt_CAMERA_HW_FeatureControl(void *pBuf)
 					((void *)pData, (void __user *)usr_ptr,
 					sizeof(struct SET_SENSOR_PATTERN_SOLID_COLOR))) {
 					kfree(pData);
+					kfree(pFeaturePara);
 					PK_DBG("[CAMERA_HW]ERROR: copy_from_user fail\n");
+					return -EFAULT;
 				}
 				//pr_debug("%x %x %x %x",pData->COLOR_R,pData->COLOR_Gr,
 				//pData->COLOR_Gb,pData->COLOR_B);
@@ -2248,6 +2307,8 @@ static long imgsensor_ioctl(
 			i4RetValue = -ENOMEM;
 			goto CAMERA_HW_Ioctl_EXIT;
 		}
+
+		memset(pBuff, 0x0, _IOC_SIZE(a_u4Command));
 
 		if (_IOC_WRITE & _IOC_DIR(a_u4Command)) {
 			if (copy_from_user(pBuff, (void *)a_u4Param,

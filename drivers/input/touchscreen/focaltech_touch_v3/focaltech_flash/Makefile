@@ -1,0 +1,16 @@
+#obj-y += focaltech_upgrade_ft5x46.o
+#obj-y += focaltech_upgrade_ft5822.o
+#obj-y += focaltech_upgrade_ft6336gu.o
+#obj-y += focaltech_upgrade_ft8006.o
+#obj-y += focaltech_upgrade_ft8606.o
+obj-y += focaltech_upgrade_ft8756.o
+#obj-y += focaltech_upgrade_ft8607.o
+#obj-y += focaltech_upgrade_ft8716.o
+#obj-y += focaltech_upgrade_ft8736.o
+#obj-y += focaltech_upgrade_ft8006u.o
+#obj-y += focaltech_upgrade_ft5422u.o
+#obj-y += focaltech_upgrade_ft8719.o
+#obj-y += focaltech_upgrade_ft8739.o
+#obj-y += focaltech_upgrade_ft5452.o
+#obj-y += focaltech_upgrade_ft8006p.o
+#obj-y += focaltech_upgrade_ft5446u.o

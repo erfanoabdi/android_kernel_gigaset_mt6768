@@ -26,7 +26,12 @@
 
 static const char *const mt6768_spk_type_str[] = {MTK_SPK_NOT_SMARTPA_STR,
 						  MTK_SPK_RICHTEK_RT5509_STR,
-						  MTK_SPK_MEDIATEK_MT6660_STR};
+						  MTK_SPK_MEDIATEK_MT6660_STR
+						  /* prize modified by wyq, add awinic smartpa aw881xx, 20200103 begin */
+						  , MTK_SPK_AWINIC_AW8898_STR
+						  , MTK_SPK_AWINIC_AW881XX_STR
+						  /* prize modified by wyq, add awinic smartpa aw881xx, 20200103 end */
+						};
 static const char *const mt6768_spk_i2s_type_str[] = {MTK_SPK_I2S_0_STR,
 						      MTK_SPK_I2S_1_STR,
 						      MTK_SPK_I2S_2_STR,
@@ -70,6 +75,20 @@ static int mt6768_spk_i2s_in_type_get(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
+/* prize added by huarui, add aw87359, 20200918-start */
+#if defined(CONFIG_SND_SOC_AW87XXX)
+extern unsigned char aw87xxx_show_current_mode(int32_t channel);
+extern int aw87xxx_audio_scene_load(uint8_t mode, int32_t channel);
+enum aw87xxx_scene_mode {
+	AW87XXX_OFF_MODE = 0,
+	AW87XXX_MUSIC_MODE = 1,
+	AW87XXX_VOICE_MODE = 2,
+	AW87XXX_FM_MODE = 3,
+	AW87XXX_RCV_MODE = 4,
+	AW87XXX_MODE_MAX = 5,
+};
+#endif
+/* prize added by huarui, add aw87359, 20200918-end */
 static int mt6768_mt6358_spk_amp_event(struct snd_soc_dapm_widget *w,
 				       struct snd_kcontrol *kcontrol,
 				       int event)
@@ -82,9 +101,19 @@ static int mt6768_mt6358_spk_amp_event(struct snd_soc_dapm_widget *w,
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
 		/* spk amp on control */
+	/* prize added by huarui, add aw87359, 20200918-start */
+	#if defined(CONFIG_SND_SOC_AW87XXX)
+		aw87xxx_audio_scene_load(AW87XXX_MUSIC_MODE, 0);
+	#endif
+	/* prize added by huarui, add aw87359, 20200918-end */
 		break;
 	case SND_SOC_DAPM_PRE_PMD:
 		/* spk amp off control */
+	/* prize added by huarui, add aw87359, 20200918-start */
+	#if defined(CONFIG_SND_SOC_AW87XXX)
+		aw87xxx_audio_scene_load(AW87XXX_OFF_MODE, 0);
+	#endif
+	/* prize added by huarui, add aw87359, 20200918-end */
 		break;
 	default:
 		break;
@@ -560,8 +589,13 @@ static struct snd_soc_dai_link mt6768_mt6358_dai_links[] = {
 	{
 		.name = "I2S3",
 		.cpu_dai_name = "I2S3",
+#ifdef CONFIG_SND_SOC_FS16XX
+		.codec_dai_name = "fs16xx-aif",
+		.codec_name = "fs16xx",
+#else
 		.codec_dai_name = "snd-soc-dummy-dai",
 		.codec_name = "snd-soc-dummy",
+#endif
 		.no_pcm = 1,
 		.dpcm_playback = 1,
 		.ignore_suspend = 1,
@@ -570,8 +604,13 @@ static struct snd_soc_dai_link mt6768_mt6358_dai_links[] = {
 	{
 		.name = "I2S0",
 		.cpu_dai_name = "I2S0",
+#ifdef CONFIG_SND_SOC_FS16XX
+		.codec_dai_name = "fs16xx-aif",
+		.codec_name = "fs16xx",
+#else
 		.codec_dai_name = "snd-soc-dummy-dai",
 		.codec_name = "snd-soc-dummy",
+#endif
 		.no_pcm = 1,
 		.dpcm_capture = 1,
 		.ignore_suspend = 1,
@@ -580,8 +619,13 @@ static struct snd_soc_dai_link mt6768_mt6358_dai_links[] = {
 	{
 		.name = "I2S1",
 		.cpu_dai_name = "I2S1",
+#ifdef CONFIG_SND_SMARTPA_AW881XX_V1_3_0
+		.codec_dai_name = "aw881xx-aif-7-34",
+		.codec_name = "aw881xx_smartpa.7-0034",
+#else
 		.codec_dai_name = "snd-soc-dummy-dai",
 		.codec_name = "snd-soc-dummy",
+#endif
 		.no_pcm = 1,
 		.dpcm_playback = 1,
 		.ignore_suspend = 1,
@@ -590,8 +634,13 @@ static struct snd_soc_dai_link mt6768_mt6358_dai_links[] = {
 	{
 		.name = "I2S2",
 		.cpu_dai_name = "I2S2",
+#ifdef CONFIG_SND_SMARTPA_AW881XX_V1_3_0
+		.codec_dai_name = "aw881xx-aif-7-34",
+		.codec_name = "aw881xx_smartpa.7-0034",
+#else
 		.codec_dai_name = "snd-soc-dummy-dai",
 		.codec_name = "snd-soc-dummy",
+#endif
 		.no_pcm = 1,
 		.dpcm_capture = 1,
 		.ignore_suspend = 1,

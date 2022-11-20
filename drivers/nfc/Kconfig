@@ -58,4 +58,7 @@ source "drivers/nfc/st-nci/Kconfig"
 source "drivers/nfc/nxp-nci/Kconfig"
 source "drivers/nfc/s3fwrn5/Kconfig"
 source "drivers/nfc/st95hf/Kconfig"
+#/*prize add by liuxuhui---20220531---start*/
+source "drivers/nfc/nxp533/Kconfig"
+#/*prize add by liuxuhui---20220531---end*/
 endmenu

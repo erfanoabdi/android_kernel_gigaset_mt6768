@@ -1,0 +1,5 @@
+config PRIZE_CAMERA_LDO_WL2868C
+	bool "Support camera pmic wl2868c function"
+	default n
+	help
+		 Select Y to enable camera pmic wl2868c function

@@ -67,6 +67,19 @@ obj-$(CONFIG_DRM_PANEL_TRULY_FT8756_VDO) += panel-truly-ft8756-vdo.o
 obj-$(CONFIG_DRM_PANEL_TRULY_NT35595_CMD) += panel-truly-nt35595-cmd.o
 obj-$(CONFIG_DRM_PANEL_TRULY_NT35595_VDO) += panel-truly-nt35595-vdo.o
 obj-$(CONFIG_DRM_PANEL_TRULY_ILI9881H_VDO) += panel-truly-ili9881h-rt4801-vdo.o
+#prize add by lipengpeng 20211026 start 
+obj-$(CONFIG_DRM_PANEL_SHARP_R63417_CMD) += panel-sharp-r63417-cmd.o
+#obj-$(CONFIG_DRM_PANEL_CFGD_FT8719_JDI)+= panel-cfgd-ft8719-jdi.o
+#obj-$(CONFIG_DRM_PANEL_AUO_ILI7807Q_VDO)+= panel-auo-ili7807q-vdo.o
+#prize add by lipengpeng 20211026 end 
 obj-$(CONFIG_DRM_PANEL_TRULY_ILI9882N_VDO_90HZ) += panel-truly-ili9882n-rt4801-vdo-90hz.o
 obj-$(CONFIG_DRM_PANEL_RAYDIUM_RM692H0) += panel-raydium-rm692h0-cmd-120hz.o
-
+#prize add by anhengxuan 20220226 start 
+obj-$(CONFIG_DRM_PANEL_FT8006AA_VDO) += panel-focatech-ft8006aa-vdo.o
+obj-$(CONFIG_DRM_PANEL_TRULY_TD4160_VDO) += panel-truly-td4160-vdo.o
+obj-$(CONFIG_DRM_PANEL_CHIPONE_ICNL9911C_VDO) += panel-chipone-icnl9911c-vdo.o
+#prize add by anhengxuan 20220226 end 
+#prize add by pengzhipeng 20220330 start 
+obj-$(CONFIG_DRM_PANEL_TRULY_GC7302_VDO_120HZ) += panel-truly-gc7302-vdo-120hz.o
+obj-$(CONFIG_DRM_PANEL_TRULY_ILI7807S_VDO_120HZ) += panel-truly-ili7807s-vdo-120hz.o
+#prize add by pengzhipeng 20220330  end 

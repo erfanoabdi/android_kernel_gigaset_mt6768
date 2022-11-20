@@ -4,12 +4,10 @@ ifeq ($(CONFIG_SND_SOC_MT6359),y)
   MTK_PLATFORM := $(subst ",,$(CONFIG_MTK_PLATFORM))
   subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
   subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/accdet/mt6359
-  subdir-ccflags-y += -Werror -I$(srctree)/include/linux/mfd/mt6359
 else ifeq ($(CONFIG_SND_SOC_MT6359),m)
   MTK_PLATFORM := $(subst ",,$(CONFIG_MTK_PLATFORM))
   subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
   subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/accdet/mt6359
-  subdir-ccflags-y += -Werror -I$(srctree)/include/linux/mfd/mt6359
 endif
 
 snd-soc-88pm860x-objs := 88pm860x-codec.o
@@ -85,6 +83,7 @@ snd-soc-da9055-objs := da9055.o
 snd-soc-dmic-objs := dmic.o
 snd-soc-es7134-objs := es7134.o
 snd-soc-es7241-objs := es7241.o
+snd-soc-es7243e-objs := es7243e.o
 snd-soc-es8316-objs := es8316.o
 snd-soc-es8328-objs := es8328.o
 snd-soc-es8328-i2c-objs := es8328-i2c.o
@@ -357,10 +356,12 @@ obj-$(CONFIG_SND_SOC_DA9055)	+= snd-soc-da9055.o
 obj-$(CONFIG_SND_SOC_DMIC)	+= snd-soc-dmic.o
 obj-$(CONFIG_SND_SOC_ES7134)	+= snd-soc-es7134.o
 obj-$(CONFIG_SND_SOC_ES7241)	+= snd-soc-es7241.o
+obj-$(CONFIG_SND_SOC_ES7243E)	+= snd-soc-es7243e.o
 obj-$(CONFIG_SND_SOC_ES8316)    += snd-soc-es8316.o
 obj-$(CONFIG_SND_SOC_ES8328)	+= snd-soc-es8328.o
 obj-$(CONFIG_SND_SOC_ES8328_I2C)+= snd-soc-es8328-i2c.o
 obj-$(CONFIG_SND_SOC_ES8328_SPI)+= snd-soc-es8328-spi.o
+obj-$(CONFIG_SND_SOC_FS16XX)    += fs18xx/
 obj-$(CONFIG_SND_SOC_GTM601)    += snd-soc-gtm601.o
 obj-$(CONFIG_SND_SOC_HDAC_HDMI) += snd-soc-hdac-hdmi.o
 obj-$(CONFIG_SND_SOC_ICS43432)	+= snd-soc-ics43432.o
@@ -542,6 +543,7 @@ obj-$(CONFIG_SND_SOC_WM_ADSP)	+= snd-soc-wm-adsp.o
 obj-$(CONFIG_SND_SOC_WM_HUBS)	+= snd-soc-wm-hubs.o
 obj-$(CONFIG_SND_SOC_ZX_AUD96P22) += snd-soc-zx-aud96p22.o
 obj-$(CONFIG_SND_SOC_TFA9874)	+= tfa98xx/
+obj-$(CONFIG_SND_SOC_CS35L43)	+= cs35l43/
 
 # Amp
 obj-$(CONFIG_SND_SOC_MAX9877)	+= snd-soc-max9877.o
@@ -559,3 +561,20 @@ ifneq (, $(filter y,$(CONFIG_SND_SOC_MT6358) $(CONFIG_SND_SOC_MT6366)))
   subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
   subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/accdet/mt6358
 endif
+#prize-add smartpa aw883xx-pengzhipeng-20211206-start
+obj-$(CONFIG_SND_SMARTPA_AW883XX)    += aw883xx/
+#prize-add smartpa aw883xx-pengzhipeng-20211206-end
+#prize add by anhengxuan for HAC gpio driver 20220406 start
+obj-$(CONFIG_MTK_HAC_SUPPORT)	+= hac_gpio.o
+#prize add by anhengxuan for HAC gpio driver 20220406 end
+#prize-add smartpa aw87xxx-anhengxuan-20220402-start
+obj-$(CONFIG_SND_SOC_AW87XXX)	+= aw87xxx/
+#prize-add smartpa aw87xxx-anhengxuan-20220402-end
+
+#prize add by lipengpeng 20210330 start 
+obj-$(CONFIG_SND_SMARTPA_AW881XX_V2)    += aw881xx_v2/
+obj-$(CONFIG_SND_SMARTPA_AW881XX)    += aw881xx/
+obj-$(CONFIG_SND_SOC_AW8898)    += aw8898/
+obj-$(CONFIG_SND_SMARTPA_AW88194A_NEW)    += aw88194a/
+#prize add by lipengpeng 20210330 end 
+

@@ -15,6 +15,8 @@ else ifeq ($(CONFIG_MACH_MT6877),y)
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/v1
 else ifeq ($(CONFIG_MACH_MT6833),y)
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/v1
+else ifeq ($(CONFIG_MACH_MT6885),y)
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/v1
 else ifeq ($(CONFIG_MACH_MT6893),y)
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/v1
 else
@@ -85,7 +87,11 @@ obj-$(CONFIG_MTK_AEE_FEATURE) += aee/
 obj-$(CONFIG_MTK_CLK_BUFFER) += clkbuf/
 obj-$(CONFIG_MTK_QOS_FRAMEWORK) += qos/
 obj-$(CONFIG_MTK_SLBC) += slbc/
+ifneq ($(CONFIG_MACH_MT6893), y)
+ifneq ($(CONFIG_MACH_MT6771), y)
 obj-$(CONFIG_MTK_CM_MGR) += cm_mgr/
+endif
+endif
 ifneq ($(CONFIG_MTK_BASE_POWER), y)
 obj-$(CONFIG_MTK_PPM) += ppm_v3/
 endif
@@ -105,17 +111,15 @@ endif
 obj-$(CONFIG_MTK_SMI) += smi/
 obj-$(CONFIG_MTK_SMI_VARIANT) += smi/
 obj-$(CONFIG_MTK_LOW_POWER_MODULE) += lpm/
-ifneq ($(CONFIG_MTK_PLATFORM), "mt6771")
+#ifneq ($(CONFIG_MTK_PLATFORM), "mt6771")
 obj-$(CONFIG_MTK_PERFORMANCE_MODULE) += performance/
-endif
+#endif
 obj-y += mmdvfs/
 obj-$(CONFIG_MTK_IOMMU_MISC) += iommu/
 obj-$(CONFIG_INTERCONNECT_MTK_MMQOS_COMMON) += mmqos/
 obj-$(CONFIG_MTK_PERF_COMMON) += perf_common/
 obj-$(CONFIG_MTK_SYSTRACKER_V2) += systracker/
-ifneq ($(CONFIG_MTK_PLATFORM), "mt6771")
 obj-$(CONFIG_MTK_HANG_DETECT) += monitor_hang/
-endif
 ifeq ($(CONFIG_MTK_GAUGE_VERSION),30)
 obj-y += power/
 else
@@ -195,3 +199,21 @@ obj-$(CONFIG_MTK_MDDP_SUPPORT) += mddp/
 obj-$(CONFIG_MTK_GATE_IC) += gate_ic/
 obj-$(CONFIG_MTK_FREQ_HOPPING) += freqhopping/
 obj-$(CONFIG_MTK_TASK_TURBO) += task_turbo/
+
+#prize add by zhaopengge 20201113------start
+obj-$(CONFIG_PRIZE_HARDWARE_INFO) += hardware_info/
+#prize add by zhaopengge 20201113------end
+#/*prize add by zhuzhengjiang for sham dual camera  20201208 start*/
+obj-$(CONFIG_PRIZE_DUAL_CAMERA_ENABLE) += prize_dual_camera/
+#/*prize add by zhuzhengjiang for sham dual camera  20201208 end*/
+
+#prize-add prize-zhaopengge-20200827-start
+obj-$(CONFIG_PRIZE_AW9203) += aw9203/
+obj-$(CONFIG_PRIZE_DUAL_HALL_AS1800) += hall_as1800/
+obj-$(CONFIG_PRIZE_BASE_CHARGER) += base_charger/
+#prize-add prize-zhaopengge-20200827-end
+
+#prize add by wangyongsheng 20210104------start
+obj-$(CONFIG_PRIZE_UHF) += uhf/
+#prize add by wangyongsheng 20210104------end
+
