@@ -24,7 +24,7 @@ MTK_KPD_PLATFORM:=mt6893
 else
 MTK_KPD_PLATFORM:=$(CONFIG_MTK_PLATFORM)
 endif
-subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_KPD_PLATFORM)/include/
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_KPD_PLATFORM)/include/
 subdir-ccflags-y += -I$(srctree)/drivers/input/keyboard/mediatek/$(MTK_KPD_PLATFORM)/
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/
 obj-$(CONFIG_KEYBOARD_MTK) := kpd.o

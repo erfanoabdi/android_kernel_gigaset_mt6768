@@ -12,7 +12,7 @@ ccflags-y += -I$(srctree)/drivers/power/supply/mediatek/misc
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/usb_c/tcpc/inc
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/subpmic
 
-subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/pmic/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/pmic/include
 
 ifeq ($(CONFIG_MTK_TINYSYS_SSPM_SUPPORT), y)
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/sspm/v2

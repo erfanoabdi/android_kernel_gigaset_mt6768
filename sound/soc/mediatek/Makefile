@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
-subdir-ccflags-y := -Werror $(call cc-disable-warning, unused-but-set-variable)
+subdir-ccflags-y := $(call cc-disable-warning, unused-but-set-variable)
 
 # scp smartpa related code
 obj-$(CONFIG_MTK_AUDIO_SCP_SPKPROTECT_SUPPORT) += scp_spk/
@@ -50,8 +50,8 @@ MTK_CODEC := $(subst ",,$(CONFIG_MTK_SND_SOC_CODEC))
 
 # PMIC include path
 ifneq  ($(MTK_CODEC),)
-subdir-ccflags-y += -Werror -Werror -Icodec/$(MTK_CODEC)/
-subdir-ccflags-y += -Werror -I$(src)/common_int
+subdir-ccflags-y += -Icodec/$(MTK_CODEC)/
+subdir-ccflags-y += -I$(src)/common_int
 
 # Update pmic built flow to avoid codec init later than codec probe
 obj-y += codec/$(MTK_CODEC)/
@@ -61,13 +61,13 @@ MTK_PLATFORM := $(subst ",,$(CONFIG_MTK_PLATFORM))
 # flags for not ready feature, uncomment after ready
 subdir-ccflags-y += -D_GIT318_PMIC_READY
 subdir-ccflags-y += -DAUDIO_USING_WRAP_DRIVER
-subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
-subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/
 endif
 endif
 
 # include path
-subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
 
 # adsp
 ifeq ($(CONFIG_MTK_AURISYS_PHONE_CALL_SUPPORT),y)

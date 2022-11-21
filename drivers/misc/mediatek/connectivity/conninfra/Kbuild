@@ -25,7 +25,6 @@ ccflags-y += -I$(srctree)/drivers/gpu/drm/mediatek/mediatek_v2
 ccflags-y += -I$(srctree)/drivers/memory/mediatek/
 
 ###############################################################################
-ccflags-y += -Werror
 ccflags-y += -Wno-error=format
 ccflags-y += -Wno-error=format-extra-args
 

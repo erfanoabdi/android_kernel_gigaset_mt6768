@@ -1,4 +1,4 @@
-subdir-ccflags-y := -Wall -Werror $(call cc-disable-warning, unused-but-set-variable)
+subdir-ccflags-y := $(call cc-disable-warning, unused-but-set-variable)
 subdir-ccflags-y += -I$(srctree)/drivers/power/supply
 subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/usb_boost/
 obj-$(CONFIG_TCPC_MT6360)		+= tcpc_mt6360.o

@@ -230,7 +230,7 @@ obj-$(CONFIG_INTEL_SOC_PMIC)	+= intel-soc-pmic.o
 obj-$(CONFIG_INTEL_SOC_PMIC_BXTWC)	+= intel_soc_pmic_bxtwc.o
 obj-$(CONFIG_INTEL_SOC_PMIC_CHTWC)	+= intel_soc_pmic_chtwc.o
 ifneq (,$(filter $(CONFIG_MTK_PLATFORM), "mt6768" "mt6739" "mt6785" "mt6853"  "mt6771" "mt6873"))
-subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
 obj-$(CONFIG_MTK_MFD_SPMI_PMIC)	+= mtk-spmi-pmic.o
 obj-$(CONFIG_MFD_MT6358)	+= mt6358-core.o
 obj-$(CONFIG_MFD_MT6358)	+= mt635x-ot-debug.o
@@ -250,7 +250,7 @@ endif
 endif
 
 ifeq ($(CONFIG_MACH_MT6893),y)
-subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
 obj-$(CONFIG_MTK_MFD_SPMI_PMIC)	+= mtk-spmi-pmic.o
 obj-$(CONFIG_MFD_MT6358)	+= mt6358-core.o
 obj-$(CONFIG_MFD_MT6358)	+= mt635x-ot-debug.o
@@ -258,7 +258,7 @@ obj-$(CONFIG_MT6358_MISC)	+= mt6358-misc.o
 endif
 
 ifeq ($(CONFIG_MACH_MT6885),y)
-subdir-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
 obj-$(CONFIG_MTK_MFD_SPMI_PMIC)	+= mtk-spmi-pmic.o
 obj-$(CONFIG_MFD_MT6358)	+= mt6358-core.o
 obj-$(CONFIG_MFD_MT6358)	+= mt635x-ot-debug.o

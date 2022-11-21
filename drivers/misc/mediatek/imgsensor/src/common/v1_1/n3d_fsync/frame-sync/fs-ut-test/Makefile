@@ -2,7 +2,7 @@
 # Copyright (C) 2020 MediaTek Inc.
 
 # CROSS_COMPILE = aarch64-linux-gnu-
-CFLAGS = -DFS_UT -Werror -Wall -Wframe-larger-than=512 --static
+CFLAGS = -DFS_UT -Wframe-larger-than=512 --static
 LDFLAGS = --static
 
 INCS = -I ../ \

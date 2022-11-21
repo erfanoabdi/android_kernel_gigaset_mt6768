@@ -2,7 +2,6 @@ ccflags-y += -I$(srctree)/drivers/input/touchscreen/mediatek/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/
 ccflags-y += -I$(srctree)/drivers/input/touchscreen/ILITEK_V2/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include/
-subdir-ccflags-y += -Werror
 
 #obj-y   +=  tpd_control.o
 #obj-y   +=  tpd_button.o

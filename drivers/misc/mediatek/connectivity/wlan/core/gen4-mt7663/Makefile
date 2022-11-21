@@ -46,7 +46,6 @@ ccflags-y += -DWLAN_INCLUDE_PROC
 ccflags-y += -DCFG_SUPPORT_AGPS_ASSIST=1
 ccflags-y += -DCFG_SUPPORT_TSF_USING_BOOTTIME=1
 ccflags-y += -DARP_MONITER_ENABLE=1
-ccflags-y += -Werror
 #ccflags-y:=$(filter-out -U$(WLAN_CHIP_ID),$(ccflags-y))
 #ccflags-y += -DLINUX -D$(WLAN_CHIP_ID)
 ccflags-y += -DLINUX
@@ -309,7 +308,7 @@ ccflags-y += -I$(srctree)/drivers/misc/mediatek/thermal/common/inc
 
 ifeq ($(MTK_CPU_SCHED),y)
 ccflags-y += -DCFG_SUPPORT_MTK_CPU_SCHED=1
-ccflags-y += -Werror -I$(srctree)/drivers/misc/mediatek/sched/mtk_cpu_affinity
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/sched/mtk_cpu_affinity
 else
 ccflags-y += -DCFG_SUPPORT_MTK_CPU_SCHED=0
 endif

@@ -2,7 +2,6 @@ BUILD_INFAE := spi
 BUILD_PLATFORM := mtk
 BUILD_MODULE := n
 
-ccflags-y += -Wall
 
 ifeq ($(BUILD_PLATFORM),mtk)
 platform=ilitek_v3_mtk
