@@ -37,94 +37,71 @@
 # Software") have been modified by MediaTek Inc. All revisions are subject to
 # any receiver's applicable license agreements with MediaTek Inc.
 
-class EintData:
-    _count = 0
-    _debounce_enable_list = ['CUST_EINT_DEBOUNCE_DISABLE', 'CUST_EINT_DEBOUNCE_ENABLE']
-    _map_table = {}
-    _mode_map = {}
-    _int_eint = {}
-    _builtin_map = {}
-    _builtin_eint_count = 0
+class RfioData:
     def __init__(self):
-        self.__varName = ''
-        self.__debounce_time = ''
-        self.__polarity = ''
-        self.__sensitive_level = ''
-        self.__debounce_enable = ''
+        self.__padName = ''
+        self.__slaveMode = ''
+        self.__driving = ''
+        self.__pupd = 'NONE'
+        self.__dir = ''
+        self.__outDef = ''
+        self.__ies = False
+        self.__smt = False
+        self.__analogPad = False
 
-    def set_varName(self, varName):
-        self.__varName = varName
+    def set_padName(self, name):
+        self.__padName = name
 
-    def get_varName(self):
-        return self.__varName
+    def get_padName(self):
+        return self.__padName
 
-    def set_debounceTime(self, time):
-        self.__debounce_time = time
+    def set_slaveMode(self, name):
+        self.__slaveMode = name
 
-    def get_debounceTime(self):
-        return self.__debounce_time
+    def get_slaveMode(self):
+        return self.__slaveMode
 
-    def set_polarity(self, polarity):
-        self.__polarity = polarity
+    def set_driving(self, val):
+        self.__driving = val
 
-    def get_polarity(self):
-        return self.__polarity
+    def get_driving(self):
+        return self.__driving
 
-    def set_sensitiveLevel(self, level):
-        self.__sensitive_level = level
+    def get_defEnable(self):
+        return self.__driving
 
-    def get_sensitiveLevel(self):
-        return self.__sensitive_level
+    def set_pupd(self, val):
+        self.__pupd = val;
 
-    def set_debounceEnable(self, enable):
-        self.__debounce_enable = enable
+    def get_pupd(self):
+        return self.__pupd
 
-    def get_debounceEnable(self):
-        return self.__debounce_enable
+    def set_dir(self, val):
+        self.__dir = val
 
-    @staticmethod
-    def set_mapTable(map):
-        EintData._map_table = map
+    def get_dir(self):
+        return self.__dir
 
-    @staticmethod
-    def get_mapTable():
-        return EintData._map_table
+    def set_outDef(self, val):
+        self.__outDef = val
 
-    @staticmethod
-    def get_internalEint():
-        return EintData._int_eint
+    def get_outDef(self):
+        return self.__outDef
 
-    @staticmethod
-    def get_modeName(gpio_num, mode_idx):
-        key = 'gpio%s' %(gpio_num)
+    def set_ies(self, flag):
+        self.__ies = flag
 
-        if key in EintData._mode_map.keys():
-            list =  EintData._mode_map[key]
-            if mode_idx < len(list) and mode_idx >= 0:
-                return list[mode_idx]
+    def get_ies(self):
+        return self.__ies
 
-        return None
+    def set_smt(self, flag):
+        self.__smt = flag
 
-    @staticmethod
-    def set_modeMap(map):
-        for (key, value) in map.items():
-            list = []
-            for item in value:
-                list.append(item[6:len(item)-1])
-            map[key] = list
+    def get_smt(self):
+        return self.__smt;
 
-        EintData._mode_map = map
+    def set_analogPad(self, val):
+        self.__analogPad = val
 
-    @staticmethod
-    def get_modeMap():
-        return EintData._mode_map
-
-    @staticmethod
-    def get_gpioNum(num):
-        if len(EintData._map_table):
-            for (key,value) in EintData._map_table.items():
-                if num == value:
-                    return key
-
-        return -1
-
+    def get_analogPad(self):
+        return self.__analogPad

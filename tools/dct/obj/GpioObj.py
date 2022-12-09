@@ -1,16 +1,41 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2016 MediaTek Inc.
+# Copyright Statement:
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
+# This software/firmware and related documentation ("MediaTek Software") are
+# protected under relevant copyright laws. The information contained herein is
+# confidential and proprietary to MediaTek Inc. and/or its licensors. Without
+# the prior written permission of MediaTek inc. and/or its licensors, any
+# reproduction, modification, use or disclosure of MediaTek Software, and
+# information contained herein, in whole or in part, shall be strictly
+# prohibited.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See http://www.gnu.org/licenses/gpl-2.0.html for more details.
+# MediaTek Inc. (C) 2019. All rights reserved.
+#
+# BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+# THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+# RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+# ON AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL
+# WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+# NONINFRINGEMENT. NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH
+# RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+# INCORPORATED IN, OR SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES
+# TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+# RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+# OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN MEDIATEK
+# SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE
+# RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+# STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S
+# ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE
+# RELEASED HEREUNDER WILL BE, AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE
+# MEDIATEK SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+# CHARGE PAID BY RECEIVER TO MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+#
+# The following software/firmware and/or related documentation ("MediaTek
+# Software") have been modified by MediaTek Inc. All revisions are subject to
+# any receiver's applicable license agreements with MediaTek Inc.
 
 import re
 import os
@@ -624,12 +649,12 @@ class GpioObj(ModuleObj):
     def fill_init_default_dtsiFile(self):
         return ''
 
-class GpioObj_whitney(GpioObj):
+class GpioObj_MT6799(GpioObj):
     def __init__(self):
         GpioObj.__init__(self)
 
     def parse(self, node):
-        log(LogLevel.info, 'GpioObj_whitney parse')
+        log(LogLevel.info, 'GpioObj_MT6799 parse')
         GpioObj.parse(self, node)
 
     def gen_files(self):
@@ -762,3 +787,70 @@ class GpioObj_MT6763(GpioObj_MT6759):
         gen_str += ';'
         gen_str += '''\n};\n'''
         return gen_str
+
+class GpioObj_MT6768(GpioObj_MT6771):
+    def fill_pinctrl_hFile(self):
+        gen_str = '''#include "pinctrl-paris.h"\n\n'''
+        gen_str += '''static const struct mtk_pin_desc mtk_pins_%s[] = {\n''' % (ModuleObj.get_chipId().lower())
+
+        # sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
+        for key in sorted_key(ModuleObj.get_data(self).keys()):
+            # for key in sorted_list:
+            gen_str += '''\tMTK_PIN(\n'''
+            gen_str += '''\t\t%s, \"%s\",\n''' % (key[4:], key.upper())
+            eint_index = self.get_eint_index(key[4:])
+            if eint_index != -1:
+                gen_str += '''\t\tMTK_EINT_FUNCTION(%d, %d),\n''' % (0, eint_index)
+            else:
+                gen_str += '''\t\tMTK_EINT_FUNCTION(NO_EINT_SUPPORT, NO_EINT_SUPPORT),\n'''
+            gen_str += '''\t\tDRV_GRP4'''
+            for i in range(0, GpioData._modNum):
+                mode_name = GpioData.get_modeName(key, i)
+
+                if mode_name != '':
+                    lst = []
+                    if mode_name.find('//') != -1:
+                        lst = mode_name.split('//')
+                    else:
+                        lst.append(mode_name)
+                    for j in range(0, len(lst)):
+                        gen_str += ''',\n\t\tMTK_FUNCTION(%d, "%s")''' % (i + j * 8, lst[j])
+            gen_str += '''\n\t),\n'''
+
+        gen_str += '''};\n'''
+
+        return gen_str
+
+class GpioObj_MT6785(GpioObj_MT6771):
+    # change feature from light for pin control
+    def fill_pinctrl_hFile(self):
+        gen_str = '''#include "pinctrl-paris.h"\n\n'''
+        gen_str += '''static const struct mtk_pin_desc mtk_pins_%s[] = {\n''' % (ModuleObj.get_chipId().lower())
+
+        # sorted_list = sorted(ModuleObj.get_data(self).keys(), key = compare)
+        for key in sorted_key(ModuleObj.get_data(self).keys()):
+            # for key in sorted_list:
+            gen_str += '''\tMTK_PIN(\n'''
+            gen_str += '''\t\t%s, \"%s\",\n''' % (key[4:], key.upper())
+            eint_index = self.get_eint_index(key[4:])
+            if eint_index != -1:
+                gen_str += '''\t\tMTK_EINT_FUNCTION(%d, %d),\n''' % (0, eint_index)
+            else:
+                gen_str += '''\t\tMTK_EINT_FUNCTION(NO_EINT_SUPPORT, NO_EINT_SUPPORT),\n'''
+            gen_str += '''\t\tDRV_GRP4'''
+            for i in range(0, GpioData._modNum):
+                mode_name = GpioData.get_modeName(key, i)
+                smt_number = ModuleObj.get_data(self)[key].get_smtNum()
+
+                if mode_name != '':
+                    if smt_number != -1:
+                        gen_str += ''',\n\t\tMTK_FUNCTION(%d, "%s")''' % (i, mode_name)
+                    else:
+                        gen_str += ''',\n\t\tMTK_FUNCTION(%d, NULL)''' % (i)
+
+            gen_str += '''\n\t),\n'''
+
+        gen_str += '''};\n'''
+
+        return gen_str
+

@@ -1,17 +1,43 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2016 MediaTek Inc.
+# Copyright Statement:
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
+# This software/firmware and related documentation ("MediaTek Software") are
+# protected under relevant copyright laws. The information contained herein is
+# confidential and proprietary to MediaTek Inc. and/or its licensors. Without
+# the prior written permission of MediaTek inc. and/or its licensors, any
+# reproduction, modification, use or disclosure of MediaTek Software, and
+# information contained herein, in whole or in part, shall be strictly
+# prohibited.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See http://www.gnu.org/licenses/gpl-2.0.html for more details.
+# MediaTek Inc. (C) 2019. All rights reserved.
+#
+# BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+# THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+# RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+# ON AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL
+# WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+# NONINFRINGEMENT. NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH
+# RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+# INCORPORATED IN, OR SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES
+# TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+# RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+# OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN MEDIATEK
+# SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE
+# RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+# STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S
+# ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE
+# RELEASED HEREUNDER WILL BE, AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE
+# MEDIATEK SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+# CHARGE PAID BY RECEIVER TO MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+#
+# The following software/firmware and/or related documentation ("MediaTek
+# Software") have been modified by MediaTek Inc. All revisions are subject to
+# any receiver's applicable license agreements with MediaTek Inc.
 
+import os
 import re
 import string
 import ConfigParser
@@ -170,7 +196,7 @@ class ClkObj(ModuleObj):
         return gen_str
 
 
-class ClkObj_Everest(ClkObj):
+class ClkObj_MT6797(ClkObj):
     def __init__(self):
         ClkObj.__init__(self)
         self.__rf = 'RF'
@@ -270,7 +296,7 @@ class ClkObj_Everest(ClkObj):
 
         return gen_str
 
-class ClkObj_Olympus(ClkObj_Everest):
+class ClkObj_MT6757(ClkObj_MT6797):
 
     def __init__(self):
         ClkObj_Everest.__init__(self)
@@ -349,7 +375,7 @@ class ClkObj_Olympus(ClkObj_Everest):
 
         return gen_str
 
-class ClkObj_Rushmore(ClkObj):
+class ClkObj_MT6570(ClkObj):
 
     def __init__(self):
         ClkObj.__init__(self)
@@ -452,12 +478,13 @@ class ClkObj_Rushmore(ClkObj):
 class ClkObj_MT6779(ClkObj):
     def __init__(self):
         ClkObj.__init__(self)
+        self.__bbck_buf_cout = 0
 
     def read(self, node):
         nodes = node.childNodes
         for node in nodes:
             if node.nodeType == xml.dom.Node.ELEMENT_NODE:
-                if node.nodeName == 'count':
+                if node.nodeName == 'count' or node.nodeName == 'bbck_buf_count':
                     continue
 
                 key = re.findall(r'\D+', node.nodeName)[0].upper() + self._suffix + '%s' % (re.findall(r'\d+', node.nodeName)[0])
@@ -492,7 +519,7 @@ class ClkObj_MT6779(ClkObj):
 
         ops = cp.options('CLK_BUF')
         for op in ops:
-            if op == 'clk_buf_count':
+            if op == 'clk_buf_count' or op == 'bbck_buf_count':
                 continue
 
             value = cp.get('CLK_BUF', op)
@@ -643,3 +670,204 @@ class ClkObj_MT6779(ClkObj):
             return max_count
         else:
             return fig.getint('CLK_BUF', 'CLK_BUF_COUNT')
+
+class ClkObj_MT6879(ClkObj_MT6779):
+    def __init__(self):
+        ClkObj_MT6779.__init__(self)
+        self.__bbck_count = 5
+
+    def fill_hFile(self):
+        gen_str = '''typedef enum {\n'''
+        gen_str += '''\tCLOCK_BUFFER_DISABLE,\n'''
+        gen_str += '''\tCLOCK_BUFFER_SW_CONTROL,\n'''
+        gen_str += '''\tCLOCK_BUFFER_HW_CONTROL\n'''
+        gen_str += '''} MTK_CLK_BUF_STATUS;\n'''
+        gen_str += '''\n'''
+
+        gen_str += '''typedef enum {\n'''
+        gen_str += '''\tCLK_BUF_OUTPUT_IMPEDANCE_0,\n'''
+        gen_str += '''\tCLK_BUF_OUTPUT_IMPEDANCE_1,\n'''
+        gen_str += '''\tCLK_BUF_OUTPUT_IMPEDANCE_2,\n'''
+        gen_str += '''\tCLK_BUF_OUTPUT_IMPEDANCE_3,\n'''
+        gen_str += '''\tCLK_BUF_OUTPUT_IMPEDANCE_4,\n'''
+        gen_str += '''\tCLK_BUF_OUTPUT_IMPEDANCE_5,\n'''
+        gen_str += '''\tCLK_BUF_OUTPUT_IMPEDANCE_6,\n'''
+        gen_str += '''\tCLK_BUF_OUTPUT_IMPEDANCE_7\n'''
+        gen_str += '''} MTK_CLK_BUF_OUTPUT_IMPEDANCE;\n'''
+        gen_str += '''\n'''
+
+        gen_str += '''typedef enum {\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_0,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_1,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_2,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_3,\n'''
+        gen_str += '''} MTK_CLK_BUF_DRVING_STRENGTH;\n'''
+        gen_str += '''\n'''
+
+        index = 1
+
+        for key in sorted_key(ModuleObj.get_data(self).keys()):
+            value = ModuleObj.get_data(self)[key]
+            if index <= 5:
+                if len(value.get_varName()):
+                    gen_str += '''#define BBCK_BUF%d_STATUS_PMIC\t\tCLOCK_BUFFER_%s\n''' % (index, value.get_varName().upper())
+                if len(value.cur_buf_output_list) and len(value.cur_buf_output):
+                    idx = value.cur_buf_output_list.index(value.cur_buf_output)
+                    gen_str += '''#define BBCK_BUF%d_OUTPUT_IMPEDANCE\t\tCLK_BUF_OUTPUT_IMPEDANCE_%d\n''' % (index, idx+4)
+                if len(value.cur_driving_control_list) and len(value.cur_driving_control):
+                    idx = value.cur_driving_control_list.index(value.cur_driving_control)
+                    gen_str += '''#define BBCK_BUF%d_DRIVING_STRENGTH\t\tCLK_BUF_DRIVING_STRENGTH_%d\n''' % (index, idx)
+
+                gen_str += '''\n'''
+            else:
+                if index == 6:
+                    if len(value.get_varName()):
+                        gen_str += '''#define RFCK_BUF1A_STATUS_PMIC\t\tCLOCK_BUFFER_%s\n''' % (value.get_varName().upper())
+                    if len(value.cur_buf_output_list) and len(value.cur_buf_output):
+                        idx = value.cur_buf_output_list.index(value.cur_buf_output)
+                        gen_str += '''#define RFCK_BUF1A_OUTPUT_IMPEDANCE\t\tCLK_BUF_OUTPUT_IMPEDANCE_%d\n''' % (idx)
+                    gen_str += '''\n'''
+                elif index == 7:
+                    if len(value.get_varName()):
+                        gen_str += '''#define RFCK_BUF1B_STATUS_PMIC\t\tCLOCK_BUFFER_%s\n''' % (value.get_varName().upper())
+                    if len(value.cur_buf_output_list) and len(value.cur_buf_output):
+                        idx = value.cur_buf_output_list.index(value.cur_buf_output)
+                        gen_str += '''#define RFCK_BUF1B_OUTPUT_IMPEDANCE\t\tCLK_BUF_OUTPUT_IMPEDANCE_%d\n''' % (idx)
+                    gen_str += '''\n'''
+                elif index == 8:
+                    if len(value.get_varName()):
+                        gen_str += '''#define RFCK_BUF2A_STATUS_PMIC\t\tCLOCK_BUFFER_%s\n''' % (value.get_varName().upper())
+                    if len(value.cur_buf_output_list) and len(value.cur_buf_output):
+                        idx = value.cur_buf_output_list.index(value.cur_buf_output)
+                        gen_str += '''#define RFCK_BUF2A_OUTPUT_IMPEDANCE\t\tCLK_BUF_OUTPUT_IMPEDANCE_%d\n''' % (idx)
+                    gen_str += '''\n'''
+                elif index == 9:
+                    if len(value.get_varName()):
+                        gen_str += '''#define RFCK_BUF2B_STATUS_PMIC\t\tCLOCK_BUFFER_%s\n''' % (value.get_varName().upper())
+                    if len(value.cur_buf_output_list) and len(value.cur_buf_output):
+                        idx = value.cur_buf_output_list.index(value.cur_buf_output)
+                        gen_str += '''#define RFCK_BUF2B_OUTPUT_IMPEDANCE\t\tCLK_BUF_OUTPUT_IMPEDANCE_%d\n''' % (idx)
+                    gen_str += '''\n'''
+            index = index + 1
+
+        gen_str += '''\n'''
+
+        return gen_str
+
+    def fill_dtsiFile(self):
+        return '';
+
+
+class ClkObj_MT6789(ClkObj):
+    def __init__(self):
+        ClkObj.__init__(self)
+
+    def get_cfgInfo(self):
+        cp = ConfigParser.ConfigParser(allow_no_value=True)
+        cp.read(ModuleObj.get_figPath())
+
+        hw_control_split = 0
+        if cp.has_option(r"Chip Type", r"CLK_BUF_HW_CONTROL_SPLIT"):
+            hw_control_split = cp.getint(r"Chip Type", r"CLK_BUF_HW_CONTROL_SPLIT")
+
+        ops = cp.options('CLK_BUF')
+        for op in ops:
+            if op == 'clk_buf_count':
+                self.__count = string.atoi(cp.get('CLK_BUF', op))
+                ClkData._count = string.atoi(cp.get('CLK_BUF', op))
+                continue
+
+            value = cp.get('CLK_BUF', op)
+            var_list = value.split(':')
+
+            data = OldClkData()
+            if hw_control_split != 0:
+                data.set_varNameList(['DISABLE', 'SW_CONTROL', 'HW_CONTROL1', 'HW_CONTROL2', 'HW_CONTROL3'])
+            data.set_curList(var_list[2:])
+            data.set_defVarName(string.atoi(var_list[0]))
+            data.set_defCurrent(string.atoi(var_list[1]))
+
+            key = op[16:].upper()
+            ModuleObj.set_data(self, key, data)
+
+    def read(self, node):
+        nodes = node.childNodes
+        for node in nodes:
+            if node.nodeType != xml.dom.Node.ELEMENT_NODE:
+                continue
+            if node.nodeName == 'count':
+                continue
+
+            varNode = node.getElementsByTagName('varName')
+            strengthNode = node.getElementsByTagName('buf_output_strenght')
+
+            key = re.findall(r'\D+', node.nodeName)[0].upper() + self._suffix + '%s' % (re.findall(r'\d+', node.nodeName)[0])
+
+            if key not in ModuleObj.get_data(self):
+                continue
+
+            data = ModuleObj.get_data(self)[key]
+
+            if len(varNode):
+                data.set_varName(varNode[0].childNodes[0].nodeValue)
+
+            if len(strengthNode):
+                data.set_current(strengthNode[0].childNodes[0].nodeValue)
+
+            ModuleObj.set_data(self, key, data)
+
+        return True
+
+    def fill_hFile(self):
+        gen_str = '''typedef enum {\n'''
+        gen_str += '''\tCLK_BUF_DISABLE,\n'''
+        gen_str += '''\tCLK_BUF_SW_CONTROL,\n'''
+        gen_str += '''\tCLK_BUF_HW_CONTROL1,\n'''
+        gen_str += '''\tCLK_BUF_HW_CONTROL2,\n'''
+        gen_str += '''\tCLK_BUF_HW_CONTROL3\n'''
+        gen_str += '''} MTK_CLK_BUF_STATUS;\n'''
+        gen_str += '''\n'''
+
+        gen_str += '''typedef enum {\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_0,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_1,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_2,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_3,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_STRENGTH_MAX\n'''
+        gen_str += '''} MTK_CLK_BUF_DRVING_STRENGTH;\n'''
+        gen_str += '''\n'''
+
+        gen_str += '''typedef enum {\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_CURRENT_0,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_CURRENT_1,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_CURRENT_2,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_CURRENT_3,\n'''
+        gen_str += '''\tCLK_BUF_DRIVING_CURRENT_MAX\n'''
+        gen_str += '''} MTK_CLK_BUF_DRIVING_CURRENT;\n'''
+        gen_str += '''\n'''
+
+        for key in sorted_key(ModuleObj.get_data(self).keys()):
+            value = ModuleObj.get_data(self)[key]
+            if len(value.get_varName()):
+                gen_str += '''#define %s_STATUS_PMIC\t\tCLK_BUF_%s\n''' % (key.replace(r"CLK_", r"EXT"),
+                                                                                value.get_varName().upper())
+
+        gen_str += '''\n'''
+
+        for key in sorted_key(ModuleObj.get_data(self).keys()):
+            value = ModuleObj.get_data(self)[key]
+            if len(value.get_curList()) and len(value.get_current()):
+                idx = value.get_curList().index(value.get_current())
+                gen_str += '''#define %s_DRIVING_STRENGTH\t\tCLK_BUF_DRIVING_STRENGTH_%d\n''' % (key.replace(r"CLK_", r"EXT"), idx)
+
+        gen_str += '''\n'''
+
+        for key in sorted_key(ModuleObj.get_data(self).keys()):
+            gen_str += '''#define %s_DRIVING_CURRENT\t\tCLK_BUF_DRIVING_CURRENT_1\n''' % key.replace(r"CLK_", r"EXT")
+
+        gen_str += '''\n'''
+
+        return gen_str
+
+    def fill_dtsiFile(self):
+        return ''

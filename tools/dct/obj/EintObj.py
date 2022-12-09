@@ -1,16 +1,41 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2016 MediaTek Inc.
+# Copyright Statement:
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
+# This software/firmware and related documentation ("MediaTek Software") are
+# protected under relevant copyright laws. The information contained herein is
+# confidential and proprietary to MediaTek Inc. and/or its licensors. Without
+# the prior written permission of MediaTek inc. and/or its licensors, any
+# reproduction, modification, use or disclosure of MediaTek Software, and
+# information contained herein, in whole or in part, shall be strictly
+# prohibited.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See http://www.gnu.org/licenses/gpl-2.0.html for more details.
+# MediaTek Inc. (C) 2019. All rights reserved.
+#
+# BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+# THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+# RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+# ON AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL
+# WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+# NONINFRINGEMENT. NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH
+# RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+# INCORPORATED IN, OR SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES
+# TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+# RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+# OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN MEDIATEK
+# SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE
+# RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+# STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S
+# ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE
+# RELEASED HEREUNDER WILL BE, AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE
+# MEDIATEK SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+# CHARGE PAID BY RECEIVER TO MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+#
+# The following software/firmware and/or related documentation ("MediaTek
+# Software") have been modified by MediaTek Inc. All revisions are subject to
+# any receiver's applicable license agreements with MediaTek Inc.
 
 import re
 import os
@@ -398,3 +423,122 @@ class EintObj_MT6739(EintObj):
                     return refGpio_defMode
 
         return refGpio_defMode
+
+class EintObj_MT6885(EintObj_MT6739):
+    def fill_hFile(self):
+	    gen_str = ''
+	    gen_str += '''#ifdef __cplusplus\n'''
+	    gen_str += '''extern \"C\" {\n'''
+	    gen_str += '''#endif\n'''
+	    gen_str += '''#define CUST_EINTF_TRIGGER_RISING\t\t\t1\n'''
+	    gen_str += '''#define CUST_EINTF_TRIGGER_FALLING\t\t\t2\n'''
+	    gen_str += '''#define CUST_EINTF_TRIGGER_HIGH\t\t\t4\n'''
+	    gen_str += '''#define CUST_EINTF_TRIGGER_LOW\t\t\t8\n'''
+	    gen_str += '''#define CUST_EINT_DEBOUNCE_DISABLE\t\t\t0\n'''
+	    gen_str += '''#define CUST_EINT_DEBOUNCE_ENABLE\t\t\t1\n'''
+	    gen_str += '''\n\n'''
+
+	    sorted_list = sorted(ModuleObj.get_data(self).keys(), key=compare)
+	    for key in sorted_list:
+	        value = ModuleObj.get_data(self)[key]
+	        gen_str += '''#define CUST_EINT_%s_NUM\t\t\t%s\n''' %(value.get_varName().upper(), key[4:])
+	        if int(key[4:]) < 32:
+	            gen_str += '''#define CUST_EINT_%s_DEBOUNCE_CN\t\t%s\n''' %(value.get_varName().upper(), value.get_debounceTime())
+
+	        temp = ''
+	        polarity = value.get_polarity()
+	        sensitive = value.get_sensitiveLevel()
+
+	        if cmp(polarity, 'High') == 0 and cmp(sensitive, 'Edge') == 0:
+	            temp = 'CUST_EINTF_TRIGGER_RISING'
+	        elif cmp(polarity, 'Low') == 0 and cmp(sensitive, 'Edge') == 0:
+	            temp = 'CUST_EINTF_TRIGGER_FALLING'
+	        elif cmp(polarity, 'High') == 0 and cmp(sensitive, 'Level') == 0:
+	            temp = 'CUST_EINTF_TRIGGER_HIGH'
+	        elif cmp(polarity, 'Low') == 0 and cmp(sensitive, 'Level') == 0:
+	            temp = 'CUST_EINTF_TRIGGER_LOW'
+
+	        gen_str += '''#define CUST_EINT_%s_TYPE\t\t\t%s\n''' %(value.get_varName().upper(), temp)
+
+	        temp = ''
+	        if cmp(value.get_debounceEnable(), 'Disable') == 0:
+	            temp = 'CUST_EINT_DEBOUNCE_DISABLE'
+	        elif cmp(value.get_debounceEnable(), 'Enable') == 0:
+	            temp = 'CUST_EINT_DEBOUNCE_ENABLE'
+	        gen_str += '''#define CUST_EINT_%s_DEBOUNCE_EN\t\t%s\n\n''' %(value.get_varName().upper(), temp)
+
+	    gen_str += '''#ifdef __cplusplus\n'''
+	    gen_str += '''}\n'''
+	    gen_str += '''#endif\n'''
+	    return gen_str
+
+    def fill_dtsiFile(self):
+        gen_str = '''#include <dt-bindings/interrupt-controller/irq.h>\n'''
+        gen_str += '''#include <dt-bindings/interrupt-controller/arm-gic.h>\n'''
+        gen_str += '''\n'''
+
+        gen_str += self.fill_mappingTable()
+
+        sorted_list = sorted(ModuleObj.get_data(self).keys(), key=compare)
+        for key in sorted_list:
+            value = ModuleObj.get_data(self)[key]
+            gen_str += '''&%s {\n''' % (value.get_varName().lower())
+            gen_str += '''\tinterrupt-parent = <&pio>;\n'''
+
+            temp = ''
+            polarity = value.get_polarity()
+            sensitive = value.get_sensitiveLevel()
+
+            if cmp(polarity, 'High') == 0 and cmp(sensitive, 'Edge') == 0:
+                temp = 'IRQ_TYPE_EDGE_RISING'
+            elif cmp(polarity, 'Low') == 0 and cmp(sensitive, 'Edge') == 0:
+                temp = 'IRQ_TYPE_EDGE_FALLING'
+            elif cmp(polarity, 'High') == 0 and cmp(sensitive, 'Level') == 0:
+                temp = 'IRQ_TYPE_LEVEL_HIGH'
+            elif cmp(polarity, 'Low') == 0 and cmp(sensitive, 'Level') == 0:
+                temp = 'IRQ_TYPE_LEVEL_LOW'
+
+            gen_str += '''\tinterrupts = <%s %s %s %d>;\n''' % (key[4:], temp, self.refGpio(key[4:], True)[0], self.refGpio_defMode(key[4:], True))
+            if cmp(value.get_debounceEnable(), 'Enable') == 0:
+                gen_str += '''\tdeb-gpios = <&pio %s 0>;\n''' % (self.refGpio(key[4:], True)[0])
+                gen_str += '''\tdebounce = <%d>;\n''' % (string.atoi(value.get_debounceTime()) * 1000)
+            gen_str += '''\tstatus = \"okay\";\n'''
+            gen_str += '''};\n'''
+            gen_str += '''\n'''
+        return gen_str
+
+class EintObj_MT6853(EintObj_MT6885):
+    def fill_dtsiFile(self):
+        gen_str = '''#include <dt-bindings/interrupt-controller/irq.h>\n'''
+        gen_str += '''#include <dt-bindings/interrupt-controller/arm-gic.h>\n'''
+        gen_str += '''\n'''
+
+        gen_str += self.fill_mappingTable()
+
+        sorted_list = sorted(ModuleObj.get_data(self).keys(), key=compare)
+        for key in sorted_list:
+            value = ModuleObj.get_data(self)[key]
+            gen_str += '''&%s {\n''' % (value.get_varName().lower())
+            gen_str += '''\tinterrupt-parent = <&pio>;\n'''
+
+            temp = ''
+            polarity = value.get_polarity()
+            sensitive = value.get_sensitiveLevel()
+
+            if cmp(polarity, 'High') == 0 and cmp(sensitive, 'Edge') == 0:
+                temp = 'IRQ_TYPE_EDGE_RISING'
+            elif cmp(polarity, 'Low') == 0 and cmp(sensitive, 'Edge') == 0:
+                temp = 'IRQ_TYPE_EDGE_FALLING'
+            elif cmp(polarity, 'High') == 0 and cmp(sensitive, 'Level') == 0:
+                temp = 'IRQ_TYPE_LEVEL_HIGH'
+            elif cmp(polarity, 'Low') == 0 and cmp(sensitive, 'Level') == 0:
+                temp = 'IRQ_TYPE_LEVEL_LOW'
+
+            gen_str += '''\tinterrupts = <%s %s>;\n''' % (key[4:], temp)
+            if cmp(value.get_debounceEnable(), 'Enable') == 0:
+                gen_str += '''\tdeb-gpios = <&pio %s 0>;\n''' % (self.refGpio(key[4:], True)[0])
+                gen_str += '''\tdebounce = <%d>;\n''' % (string.atoi(value.get_debounceTime()) * 1000)
+            gen_str += '''\tstatus = \"okay\";\n'''
+            gen_str += '''};\n'''
+            gen_str += '''\n'''
+        return gen_str
